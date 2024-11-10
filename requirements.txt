@@ -5,6 +5,7 @@ charset-normalizer==3.4.0
 cryptography==43.0.1
 Django==5.1.2
 django-allauth==65.0.2
+django-environ==0.11.2
 idna==3.10
 isort==5.13.2
 oauthlib==3.2.2
