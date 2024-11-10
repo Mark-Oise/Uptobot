@@ -1,6 +1,7 @@
 # Virtual environment
-.venv/
+venv/
 
+.env
 # Django
 db.sqlite3
 

@@ -10,7 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+
 from pathlib import Path
+import environ
+
+# Initialize environment variables
+env = environ.Env()
+environ.Env.read_env() 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,19 +32,26 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+
+SITE_ID = 1
+
 # Application definition
 
 DJANGO_APPS = [
+    
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'django.contrib.sites',
+    
 ]
 
 THIRD_PARTY_APPS = [
     'allauth',
+    'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
 ]
@@ -144,3 +157,21 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
     
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'CLIENT_ID': env('GOOGLE_CLIENT_ID'),
+        'SECRET': env('GOOGLE_CLIENT_SECRET'),
+    }
+}
+
+
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
