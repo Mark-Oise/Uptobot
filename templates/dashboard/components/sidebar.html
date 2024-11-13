@@ -1,0 +1,236 @@
+<aside id="logo-sidebar"
+       class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-all transform sidebar-transition -translate-x-full bg-gray-900 border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+       aria-label="Sidebar">
+    <div class="h-full px-3 pb-4 overflow-y-auto">
+        <ul class="space-y-4 font-medium">
+            <li>
+                <a href="#"
+                   class="flex items-center p-2 text-green-400 rounded-lg dark:text-white hover:bg-green-100 dark:hover:bg-green-700 group"
+                   data-tooltip-target="tooltip-inbox"
+                   data-tooltip-placement="right">
+                    <svg class="w-6 h-6 text-green-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                         fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                              d="M5.024 3.783A1 1 0 0 1 6 3h12a1 1 0 0 1 .976.783L20.802 12h-4.244a1.99 1.99 0 0 0-1.824 1.205 2.978 2.978 0 0 1-5.468 0A1.991 1.991 0 0 0 7.442 12H3.198l1.826-8.217ZM3 14v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5h-4.43a4.978 4.978 0 0 1-9.14 0H3Z"
+                              clip-rule="evenodd"/>
+                    </svg>
+                    <span class="flex-1 ms-3 whitespace-nowrap sidebar-text">Inbox</span>
+                    <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300 sidebar-text">3</span>
+                </a>
+                <div id="tooltip-inbox" role="tooltip"
+                     class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                    Inbox
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+            </li>
+            <li>
+                <a href="#"
+                   class="flex items-center p-2 text-green-400 rounded-lg dark:text-white hover:bg-green-100 dark:hover:bg-green-700 group"
+                   data-tooltip-target="tooltip-archive"
+                   data-tooltip-placement="right">
+                    <svg class="flex-shrink-0 w-6 h-6 text-green-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                         fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                              d="M20 10H4v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8ZM9 13v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z"
+                              clip-rule="evenodd"/>
+                        <path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 1 1 0 4H4a2 2 0 0 1-2-2Z"/>
+                    </svg>
+                    <span class="flex-1 ms-3 whitespace-nowrap sidebar-text">Archive</span>
+                    <span class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300 sidebar-text">Pro</span>
+                </a>
+                <div id="tooltip-archive" role="tooltip"
+                     class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                    Archive
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+            </li>
+            <li>
+                <a href="#"
+                   class="flex items-center p-2 text-green-400 rounded-lg dark:text-white hover:bg-green-100 dark:hover:bg-green-700 group"
+                   data-tooltip-target="tooltip-sent"
+                   data-tooltip-placement="right">
+                    <svg class="flex-shrink-0 w-6 h-6 text-green-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-whit"
+                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                         fill="currentColor" viewBox="0 0 24 24" style="transform: rotate(45deg);">
+                        <path fill-rule="evenodd"
+                              d="M12 2a1 1 0 0 1 .932.638l7 18a1 1 0 0 1-1.326 1.281L13 19.517V13a1 1 0 1 0-2 0v6.517l-5.606 2.402a1 1 0 0 1-1.326-1.281l7-18A1 1 0 0 1 12 2Z"
+                              clip-rule="evenodd"/>
+                    </svg>
+                    <span class="flex-1 ms-3 whitespace-nowrap sidebar-text">Sent</span>
+                    <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300 sidebar-text">3</span>
+                </a>
+                <div id="tooltip-sent" role="tooltip"
+                     class="ml-8 absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                    Sent
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+            </li>
+            <li>
+                <a href="#"
+                   class="flex items-center p-2 text-green-400 rounded-lg dark:text-white hover:bg-green-100 dark:hover:bg-green-700 group"
+                   data-tooltip-target="tooltip-trash"
+                   data-tooltip-placement="right">
+                    <svg class="flex-shrink-0 w-6 h-6 text-green-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                         fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                              d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+                              clip-rule="evenodd"/>
+                    </svg>
+                    <span class="flex-1 ms-3 whitespace-nowrap sidebar-text">Trash</span>
+                </a>
+                <div id="tooltip-trash" role="tooltip"
+                     class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                    Trash
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+            </li>
+            <li>
+                <a href="#"
+                   class="flex items-center p-2 text-green-400 rounded-lg dark:text-white hover:bg-green-100 dark:hover:bg-green-700 group"
+                   data-tooltip-target="tooltip-starred"
+                   data-tooltip-placement="right">
+                    <svg class="flex-shrink-0 w-6 h-6 text-green-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                         fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z"/>
+                    </svg>
+                    <span class="flex-1 ms-3 whitespace-nowrap sidebar-text">Starred</span>
+                </a>
+                <div id="tooltip-starred" role="tooltip"
+                     class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                    Starred
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+            </li>
+        </ul>
+        <div class="mb-8 absolute bottom-0 left-0 hidden px-3 pb-4 lg:flex dark:bg-gray-800 w-full">
+            <ul class="space-y-2 font-medium w-full">
+                <li class="w-full">
+                    <a href="#"
+                       class="flex items-center p-2 text-green-400 rounded-lg dark:text-white hover:bg-green-100 dark:hover:bg-green-700 group w-full"
+                       data-tooltip-target="tooltip-settings"
+                       data-tooltip-placement="right">
+
+                        <svg class="w-6 h-6 text-green-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                             fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                                  clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap sidebar-text">Settings</span>
+                    </a>
+                    <div id="tooltip-settings" role="tooltip"
+                         class="absolute mr-4 z-20 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                        Settings
+                        <div class="tooltip-arrow" data-popper-arrow></div>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+
+    <!-- Collapse button -->
+    <button id="sidebar-collapse-btn"
+            class="absolute top-1/2 -right-4 transform -translate-y-1/2 bg-green-400 hover:bg-green-500 text-white rounded-full p-2 w-8 h-8 flex items-center justify-center transition-transform duration-300 ease-in-out hidden sm:flex">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+    </button>
+</aside>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebar = document.getElementById('logo-sidebar');
+        const collapseBtn = document.getElementById('sidebar-collapse-btn');
+        const sidebarTexts = document.querySelectorAll('.sidebar-text');
+        const mainContent = document.getElementById('main-content');
+        const tooltips = document.querySelectorAll('[role="tooltip"]');
+        // Function to set sidebar state in localStorage
+        function setSidebarState(collapsed) {
+            localStorage.setItem('sidebarCollapsed', collapsed);
+        }
+
+        // Function to get sidebar state from localStorage
+        function getSidebarState() {
+            return localStorage.getItem('sidebarCollapsed') === 'true';
+        }
+
+        // Function to update sidebar UI based on state
+        function updateSidebarUI(collapsed) {
+            if (collapsed) {
+                sidebar.classList.remove('w-64');
+                sidebar.classList.add('w-16');
+                sidebarTexts.forEach(text => text.classList.add('hidden'));
+                mainContent.classList.remove('sm:ml-64');
+                mainContent.classList.add('sm:ml-16');
+                collapseBtn.querySelector('svg').classList.add('rotate-180');
+        
+            } else {
+                sidebar.classList.add('w-64');
+                sidebar.classList.remove('w-16');
+                sidebarTexts.forEach(text => text.classList.remove('hidden'));
+                mainContent.classList.add('sm:ml-64');
+                mainContent.classList.remove('sm:ml-16');
+                collapseBtn.querySelector('svg').classList.remove('rotate-180');
+             
+            }
+        }
+
+        // Initialize sidebar state
+        const initialState = getSidebarState();
+        updateSidebarUI(initialState);
+
+        collapseBtn.addEventListener('click', function() {
+            const newState = !getSidebarState();
+            setSidebarState(newState);
+            updateSidebarUI(newState);
+        });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

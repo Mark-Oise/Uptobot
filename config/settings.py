@@ -58,6 +58,7 @@ THIRD_PARTY_APPS = [
 
 PROJECT_APPS = [
     'apps.accounts',
+    'apps.dashboard',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
@@ -172,6 +173,6 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-
+LOGIN_REDIRECT_URL = 'dashboard:dashboard_home'
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
