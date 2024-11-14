@@ -6,9 +6,11 @@ cryptography==43.0.1
 Django==5.1.2
 django-allauth==65.0.2
 django-environ==0.11.2
+gunicorn==23.0.0
 idna==3.10
 isort==5.13.2
 oauthlib==3.2.2
+packaging==24.2
 pycparser==2.22
 PyJWT==2.9.0
 requests==2.32.3
