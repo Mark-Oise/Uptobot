@@ -29,7 +29,13 @@ SECRET_KEY = "django-insecure-00&)_vw^7=2apu$t(a5wk1@d_0d%m5msfr@5g+6*0sw((jkcq3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['watchtower-ydwj.onrender.com']
+ALLOWED_HOSTS = [
+    'watchtower-ydwj.onrender.com',
+    'localhost',  # For local development
+    '127.0.0.1'  # For local development
+]
+
+CSRF_TRUSTED_ORIGINS = ['https://watchtower-ydwj.onrender.com']
 
 SITE_ID = 1
 
