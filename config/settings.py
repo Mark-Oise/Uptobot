@@ -10,13 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-
 from pathlib import Path
 import environ
 
 # Initialize environment variables
 env = environ.Env()
-environ.Env.read_env() 
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,15 +29,14 @@ SECRET_KEY = "django-insecure-00&)_vw^7=2apu$t(a5wk1@d_0d%m5msfr@5g+6*0sw((jkcq3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['watchtower-ydwj.onrender.com']
 
 SITE_ID = 1
 
 # Application definition
 
 DJANGO_APPS = [
-    
+
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -46,7 +44,7 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'django.contrib.sites',
-    
+
 ]
 
 THIRD_PARTY_APPS = [
@@ -143,20 +141,18 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
-
 # Authentication
 
 AUTH_USER_MODEL = 'accounts.User'
 
 AUTHENTICATION_BACKENDS = [
-   
+
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
 
     # `allauth` specific authentication methods, such as login by email
     'allauth.account.auth_backends.AuthenticationBackend',
-    
+
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -175,4 +171,3 @@ SOCIALACCOUNT_PROVIDERS = {
 
 LOGIN_REDIRECT_URL = 'dashboard:dashboard_home'
 SOCIALACCOUNT_LOGIN_ON_GET = True
-
