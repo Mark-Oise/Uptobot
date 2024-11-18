@@ -131,23 +131,23 @@
 
         <div class="flex grid w-full max-w-lg gap-2 mt-4">
             <ul id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist"
-                class="bg-gray-100 rounded-lg px-2 flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-                <li class="me-2 py-2" role="presentation">
+                class="bg-gray-100 rounded-lg px-2 flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+                <li class="me-0 sm:me-2 py-2" role="presentation">
                     <button id="history-tab" data-tabs-target="#history" type="button" role="tab" aria-selected="false"
-                            class="inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white"
+                            class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white"
                             aria-current="page">Uptime History
                     </button>
                 </li>
-                <li class="me-2 py-2" role="presentation">
+                <li class="me-0 sm:me-2 py-2" role="presentation">
                     <button id="incidents-tab" data-tabs-target="#incidents" type="button" role="tab"
                             aria-controls="incidents" aria-selected="false"
-                            class="inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white">
+                            class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white">
                         Recent Incidents
                     </button>
                 </li>
-                <li class="me-2 py-2" role="presentation">
+                <li class="me-0 sm:me-2 py-2" role="presentation">
                     <button id="metrics-tab" data-tabs-target="#metrics" type="button" role="tab" aria-selected="false"
-                            class="inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white">
+                            class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white">
                         Performance Metrics
                     </button>
                 </li>
