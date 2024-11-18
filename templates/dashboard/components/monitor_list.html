@@ -133,7 +133,7 @@
             </div>
 
         </div>
-       
+
 
         <!-- Main modal -->
         <div id="addMonitorModal" tabindex="-1" aria-hidden="true"
@@ -168,18 +168,46 @@
                                        placeholder="Type product name" required="">
                             </div>
                             <div>
-                                <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Brand</label>
+                                <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Url</label>
                                 <input type="text" name="brand" id="brand"
                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                       placeholder="Product brand" required="">
+                                       placeholder="https://example.com" required="">
                             </div>
-                            <div>
-                                <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                                <input type="number" name="price" id="price"
-                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                       placeholder="$2999" required="">
+                            <div class="sm:col-span-2">
+                                <h6 class="mb-2 text-sm font-medium text-black dark:text-white">Condition</h6>
+
+                                <ul class="flex w-full items-center rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                                    <li class="w-full border-r border-gray-200 dark:border-gray-600">
+                                        <div class="flex items-center pl-3">
+                                            <input id="condition-all" type="radio" value="" name="list-radio" checked
+                                                   class="h-4 w-4 border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-primary-600"/>
+                                            <label for="condition-all"
+                                                   class="ml-2 w-full py-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                All </label>
+                                        </div>
+                                    </li>
+                                    <li class="w-full border-r border-gray-200 dark:border-gray-600">
+                                        <div class="flex items-center pl-3">
+                                            <input id="condition-new" type="radio" value="" name="list-radio"
+                                                   class="h-4 w-4 border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-primary-600"/>
+                                            <label for="condition-new"
+                                                   class="ml-2 w-full py-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                New </label>
+                                        </div>
+                                    </li>
+                                    <li class="w-full">
+                                        <div class="flex items-center pl-3">
+                                            <input id="condition-used" type="radio" value="" name="list-radio"
+                                                   class="h-4 w-4 border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-primary-600"/>
+                                            <label for="condition-used"
+                                                   class="ml-2 w-full py-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                Used </label>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
-                            <div>
+
+                            <div class="sm:col-span-2">
                                 <label for="category"
                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
                                 <select id="category"
@@ -191,6 +219,36 @@
                                     <option value="PH">Phones</option>
                                 </select>
                             </div>
+                            
+                            <div class="sm:col-span-2">
+                                <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
+                                <div class="flex mb-4 items-center rounded-b dark:border-gray-600">
+                                    <button type="button" class="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">5m</button>
+                                    <button type="button" class="ml-2 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">10m</button>
+                                    <button type="button" class="ml-2 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">15m</button>
+                                    <button type="button" class="ml-2 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">30m</button>
+                                    <button type="button" class="ml-2 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">60m</button>
+                                <div>
+                                    
+                                </div>
+                                </div>
+                                
+<div class="relative mb-6">
+    <label for="labels-range-input" class="sr-only">Labels range</label>
+    <input id="labels-range-input" type="range" min="1" max="60" value="5" step="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+    <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">5m</span>
+    <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-1/2 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">30m</span>
+    <span class="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">60m</span>
+    
+</div>
+
+                                
+                            </div>
+                            
+                                
+
+
+                            
                             <div class="sm:col-span-2">
                                 <label for="description"
                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
@@ -200,7 +258,7 @@
                             </div>
                         </div>
                         <button type="submit"
-                                class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                class="text-white inline-flex items-center bg-green-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                             <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
                                  xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
