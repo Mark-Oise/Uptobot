@@ -7,7 +7,9 @@
 
 <div id="main-content" class="sm:ml-64 transition-all duration-300 ease-in-out">
     {% include 'dashboard/components/navbar.html' %}
-    {% include 'dashboard/monitor/monitor_list.html' %}
+    <section id="monitor-list">
+        {% include 'dashboard/monitor/monitor_list.html' %}
+    </section>
 </div>
 
 {% endblock content %}

@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
+from .models import Monitor
 from .forms import AddMonitorForm
 # Create your views here.
 
@@ -15,6 +17,7 @@ def monitor_list(request):
         'page_obj': page_obj,
         'total_monitors': monitors.count(),
         'active_monitors': monitors.filter(is_online=True).count(),
+        'form': AddMonitorForm(),
     }
     return render(request, 'dashboard/monitor/monitor_list.html', context)
 
@@ -26,15 +29,25 @@ def monitor_detail(request, pk):
 
 
 
-def create_monitor(request):
+def add_monitor(request):
     if request.method == 'POST':
-        form = MonitorForm(request.POST)
+        form = AddMonitorForm(request.POST)
         if form.is_valid():
             monitor = form.save(commit=False)
             monitor.user = request.user
             monitor.save()
-            return redirect('monitor_list')
+            messages.success(request, 'Monitor added successfully')
+            return redirect('monitor:monitor_list')
     else:
-        form = MonitorForm()
+        form = AddMonitorForm()
     
-    return render(request, 'monitor/create_monitor.html', {'form': form})
+    return render(request, 'dashboard/monitor/add_monitor.html', {'form': form})
+
+
+def protocol_fields(request):
+    protocol = request.GET.get('protocol', 'HTTP')
+    context = {
+        'protocol': protocol,
+        'method_choices': Monitor.METHOD_CHOICES if protocol == 'HTTP' else None,
+    }
+    return render(request, 'dashboard/monitor/protocol_fields.html', context)

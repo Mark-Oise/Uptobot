@@ -13,20 +13,39 @@ class Monitor(models.Model):
         ('UDP', 'UDP'),
     ]
 
+    # HTTP Method choices
+    METHOD_CHOICES = [
+        ('GET', 'GET'),
+        ('POST', 'POST'),
+        ('PUT', 'PUT'),
+        ('DELETE', 'DELETE'),
+        ('PATCH', 'PATCH'),
+    ]
+
     # Interval choices in minutes
     INTERVAL_CHOICES = [
         (5, '5 minutes'),
+        (10, '10 minutes'),
         (15, '15 minutes'),
         (30, '30 minutes'),
-        ('custom', 'Custom'),
+        (60, '60 minutes'),
     ]
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='monitors')
-    url = models.CharField(max_length=255, )
+    name = models.CharField(max_length=255, help_text='Monitor name')
     protocol = models.CharField(max_length=4, choices=PROTOCOL_CHOICES, default='HTTP',
                                 help_text='Protocol to monitor.')
-    interval = models.CharField(max_length=10, choices=INTERVAL_CHOICES, default=5, help_text='Monitoring interval.')
-    custom_interval = models.PositiveIntegerField(null=True, blank=True, help_text='Custom interval in minutes.')
+    interval = models.IntegerField(choices=INTERVAL_CHOICES, default=5, help_text='Monitoring interval in minutes.')
+    
+    # Fields specific to HTTP
+    url = models.CharField(max_length=255, blank=True, null=True, help_text='URL to monitor.')
+    method = models.CharField(max_length=6, choices=METHOD_CHOICES, blank=True, null=True, help_text='HTTP method.')
+
+    # Fields specific to TCP/UDP
+    host = models.CharField(max_length=255, blank=True, null=True, help_text='Host address.')
+    port = models.PositiveIntegerField(blank=True, null=True, help_text='Port number.')
+
+    description = models.TextField(blank=True, null=True, help_text='Description of the monitor.')
     alert_threshold = models.PositiveIntegerField(default=3, help_text='Failures before alert is triggered.')
     last_checked = models.DateTimeField(null=True, blank=True, help_text='Last check timestamp.')
     is_online = models.BooleanField(default=True, help_text='Monitor active status.')
@@ -35,8 +54,7 @@ class Monitor(models.Model):
     updated_at = models.DateTimeField(auto_now=True, help_text='Timestamp of last update.')
 
     def __str__(self):
-        return f"{self.url} ({self.protocol})"
-
+        return f"{self.name} ({self.protocol})"
 
     class Meta:
         ordering = ['-created_at']
