@@ -7,10 +7,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>IronClad</title>
+<title>Uptobot</title>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css"  rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
-
+<link rel="stylesheet" href="{% static 'css/dashboard/main.css' %}">
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
     
@@ -26,11 +26,9 @@
 
 <body class="flex flex-col">
     {% block content %}
-
-    
     {% endblock content %}
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    <script src="{% static 'js/dashboard/forms.js' %}"></script>
 
 </body>
-
 </html>

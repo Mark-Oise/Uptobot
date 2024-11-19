@@ -1,15 +1,10 @@
 {% extends 'base.html' %}
-
 {% block content %}
-
 {% include 'dashboard/components/sidebar.html' %}
-
-
 <div id="main-content" class="sm:ml-64 transition-all duration-300 ease-in-out">
     {% include 'dashboard/components/navbar.html' %}
     <section id="monitor-list">
         {% include 'dashboard/monitor/monitor_list.html' %}
     </section>
 </div>
-
 {% endblock content %}

@@ -39,21 +39,32 @@ class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 
                    <ul class="flex w-full items-center rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                     {% for value, label in form.fields.protocol.choices %}
                     <li class="w-full border-r border-gray-200 dark:border-gray-600">
-                           <div class="flex items-center pl-3">
-                               <input
-                               hx-target="#protocol-specific-fields"
-                               hx-get="{% url 'monitor:protocol_fields' %}"
-                               hx-trigger="load, change" 
-                               value="{{ value }}"
-                               {% if value == 'HTTP' %}checked{% endif %}
-                               id="protocol" type="radio" value="{{ value }}" name="protocol"
-                                      class="h-4 w-4 border-gray-300 bg-gray-100 text-green-600 focus:ring-2 focus:ring-green-500 dark:border-gray-500 dark:bg-green-600 dark:ring-offset-gray-700 dark:focus:ring-green-600"/>
-                               <label for="condition-all"
-                                      class="ml-2 w-full py-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                      {{ label }} </label>
-                           </div>
-                       </li>
-                       {% endfor %}
+                        <div class="flex items-center pl-3">
+                            <input
+                                hx-target="#protocol-specific-fields"
+                                hx-get="{% url 'monitor:protocol_fields' %}"
+                                hx-trigger="load, change" 
+                                value="{{ value }}"
+                                {% if value == 'HTTP' %}checked{% endif %}
+                                id="protocol-{{ value|lower }}" 
+                                type="radio" 
+                                value="{{ value }}" 
+                                name="protocol"
+                                class="h-4 w-4 border-gray-300 bg-gray-100 text-green-600 focus:ring-2 focus:ring-green-500 dark:border-gray-500 dark:bg-green-600 dark:ring-offset-gray-700 dark:focus:ring-green-600"/>
+                            {% if value == 'HTTP' %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 lucide lucide-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                            {% elif value == 'TCP' %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 lucide lucide-server"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
+                            {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 lucide lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+                            {% endif %}
+                            <label for="protocol-{{ value|lower }}"
+                                class="ml-2 w-full py-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                {{ label }}
+                            </label>
+                        </div>
+                    </li>
+                    {% endfor %}
                        
                    </ul>
                </div>
@@ -119,69 +130,6 @@ class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 
 </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const intervalButtons = document.querySelectorAll('.interval-button');
-        const rangeInput = document.getElementById('interval-range-input');
-        const currentValueLabel = document.getElementById('current-value');
-        const validIntervals = [5, 10, 15, 30, 60];
 
-        function setActiveButton(activeInterval) {
-            intervalButtons.forEach(btn => {
-                const interval = btn.getAttribute('data-interval');
-                if (interval === String(activeInterval)) {
-                    btn.classList.remove('bg-white', 'text-gray-900', 'dark:bg-gray-800', 'dark:text-gray-400');
-                    btn.classList.add('bg-gray-800', 'text-white');
-                } else {
-                    btn.classList.remove('bg-gray-800', 'text-white');
-                    btn.classList.add('bg-white', 'text-gray-900', 'dark:bg-gray-800', 'dark:text-gray-400');
-                }
-            });
-        }
 
-        // Set initial active state
-        setActiveButton(5);
 
-        intervalButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const interval = parseInt(this.getAttribute('data-interval'), 10);
-                rangeInput.value = interval;
-                currentValueLabel.textContent = `${interval}m`;
-                setActiveButton(interval);
-            });
-        });
-
-        rangeInput.addEventListener('input', function () {
-            let interval = parseInt(this.value, 10);
-            interval = validIntervals.reduce((prev, curr) => 
-                Math.abs(curr - interval) < Math.abs(prev - interval) ? curr : prev
-            );
-            this.value = interval;
-            currentValueLabel.textContent = `${interval}m`;
-            setActiveButton(interval);
-        });
-    });
-</script>
-
-<style>
-    /* For Webkit browsers (Chrome, Safari) */
-    input[type="range"]::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 16px;
-        height: 16px;
-        background: rgb(22 163 74); /* bg-green-600 color */
-        border-radius: 50%;
-        cursor: pointer;
-    }
-
-    /* For Firefox */
-    input[type="range"]::-moz-range-thumb {
-        width: 16px;
-        height: 16px;
-        background: rgb(22 163 74); /* bg-green-600 color */
-        border-radius: 50%;
-        cursor: pointer;
-        border: none;
-    }
-</style>
