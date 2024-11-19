@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from apps.monitor.forms import AddMonitorForm
 
-@login_required
+
 def dashboard_home(request):
     context = {
         'form': AddMonitorForm(),
