@@ -19,7 +19,8 @@ def monitor_list(request):
 
 
 def monitor_detail(request, pk):
-    monitor = get_object_or_404(Monitor, pk=pk, user=request.user)
+    # monitor = get_object_or_404(Monitor, pk=pk, user=request.user)
+    monitor = get_object_or_404(Monitor, pk=pk)
     return render(request, 'dashboard/monitor/monitor_detail.html', {'monitor': monitor})
 
 
