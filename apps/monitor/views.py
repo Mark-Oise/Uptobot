@@ -8,16 +8,11 @@ from .forms import AddMonitorForm
 
 def monitor_list(request):
     monitors = Monitor.objects.filter(user=request.user)
-    paginator = Paginator(monitors, 10)  # Show 10 monitors per page
-    
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
     
     context = {
-        'page_obj': page_obj,
+        'monitors': monitors,
         'total_monitors': monitors.count(),
         'active_monitors': monitors.filter(is_online=True).count(),
-        'form': AddMonitorForm(),
     }
     return render(request, 'dashboard/monitor/monitor_list.html', context)
 

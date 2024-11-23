@@ -1,8 +1,9 @@
 <main>
     <div class="px-4 pt-6">
-        {% if page_obj %}
+        
+        {% if monitors %}
             <div class="grid gap-4 xl:grid-cols-3 2xl:grid-cols-3">
-                {% for monitor in page_obj %}
+                {% for monitor in monitors %}
                     <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                         <div class="flex items-center justify-between mb-2">
                             <!-- Favicon-sized Image -->
@@ -13,9 +14,9 @@
                                 <!-- Title and Link Container -->
                                 <div class="flex flex-col justify-between h-8">
                                     <a href="#"
-                                       class="text-lg font-bold text-gray-900 dark:text-white leading-none">Example.com</a>
+                                       class="text-lg font-bold text-gray-900 dark:text-white leading-none">{{ monitor.name }}</a>
                                     <p class="mt-1 inline-flex items-center text-sm font-medium text-gray-600 hover:underline dark:text-gray-400 leading-none">
-                                        https://domain.com
+                                        {{ monitor.url }}
                                         <svg class="w-3 h-3 ml-1 rtl:rotate-[270deg]" aria-hidden="true"
                                              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -28,10 +29,10 @@
 
                             <!-- Availability Indicator Wrapper for Right Alignment -->
                             <div>
-                    <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
-                        <span class="w-2 h-2 mr-1 bg-green-500 rounded-full"></span>
-                        Online
-                    </span>
+                                <span class="inline-flex items-center {% if monitor.is_online %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %} text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                    <span class="w-2 h-2 mr-1 {% if monitor.is_online %}bg-green-500{% else %}bg-red-500{% endif %} rounded-full"></span>
+                    {% if monitor.is_online %}Online{% else %}Offline{% endif %}
+                </span>
                             </div>
                         </div>
 
