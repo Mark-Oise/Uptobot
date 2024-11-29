@@ -1,15 +1,19 @@
+
 {% block content %}
 <main>
-    
     <div class="px-4 pt-6">
-        <button type="button" class="mb-4 text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 me-2 mb-2">
-            
+        <button type="button" 
+                hx-get="{% url 'monitor:monitor_list' %}"
+                hx-target="#monitor-list"
+                hx-push-url="true"
+                hx-trigger="click"
+                hx-swap="innerHTML transition:true"
+                class="mb-4 text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 me-2 mb-2">
             <svg class="w-6 h-6 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
-              </svg>
-              
+            </svg>
             Back to dashboard
-            </button>
+        </button>
 
 
         <div class="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
@@ -230,101 +234,6 @@
 
         </style>
 
-        <script>
-    // Get all tab buttons
-    const tabButtons = document.querySelectorAll('[role="tab"]');
-    const tabPanels = document.querySelectorAll('[role="tabpanel"]');
-
-    // Add click event listener to each button
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Remove active class from all buttons
-            tabButtons.forEach(btn => {
-                btn.classList.remove('active');
-                btn.setAttribute('aria-selected', 'false');
-            });
-
-            // Add active class to clicked button
-            button.classList.add('active');
-            button.setAttribute('aria-selected', 'true');
-
-            // Hide all tab panels
-            tabPanels.forEach(panel => {
-                panel.classList.add('hidden');
-            });
-
-            // Show the selected tab panel
-            const targetId = button.getAttribute('data-tabs-target');
-            const targetPanel = document.querySelector(targetId);
-            if (targetPanel) {
-                targetPanel.classList.remove('hidden');
-            }
-        });
-    });
-
-    // Initialize first tab as active
-    document.getElementById('history-tab').classList.add('active');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        </script>
         <div class="grid grid-cols-1 my-4 xl:gap-4">
 
             <div id="default-tab-content">

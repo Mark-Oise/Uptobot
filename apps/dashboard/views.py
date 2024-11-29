@@ -4,6 +4,7 @@ from apps.monitor.forms import AddMonitorForm
 from apps.monitor.models import Monitor
 
 
+@login_required
 def dashboard_home(request):
     monitors = Monitor.objects.filter(user=request.user)
     

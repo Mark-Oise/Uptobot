@@ -8,11 +8,10 @@ from .forms import AddMonitorForm
 
 def monitor_list(request):
     monitors = Monitor.objects.filter(user=request.user)
+
     
     context = {
         'monitors': monitors,
-        'total_monitors': monitors.count(),
-        'active_monitors': monitors.filter(is_online=True).count(),
     }
     return render(request, 'dashboard/monitor/monitor_list.html', context)
 
@@ -38,6 +37,31 @@ def add_monitor(request):
         form = AddMonitorForm()
     
     return render(request, 'dashboard/monitor/add_monitor.html', {'form': form})
+
+
+from django.db.models import Q
+
+def search_monitors(request):
+    search_query = request.GET.get('search', '').strip()
+    monitors = Monitor.objects.filter(user=request.user)
+    
+    if search_query:
+        monitors = monitors.filter(
+            Q(name__icontains=search_query) |
+            Q(url__icontains=search_query)
+        )
+    
+    context = {
+        'monitors': monitors,
+        'search_query': search_query,
+    }
+    return render(request, 'dashboard/monitor/monitor_list_items.html', context)
+
+
+
+
+
+
 
 
 def protocol_fields(request):
