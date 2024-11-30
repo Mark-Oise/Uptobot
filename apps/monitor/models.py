@@ -31,6 +31,13 @@ class Monitor(models.Model):
         (60, '60 minutes'),
     ]
 
+    # Status choices
+    STATUS_CHOICES = [
+        ('online', 'Online'),
+        ('offline', 'Offline'),
+        ('unknown', 'Unknown'),
+    ]
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='monitors')
     name = models.CharField(max_length=255, help_text='Monitor name')
     protocol = models.CharField(max_length=4, choices=PROTOCOL_CHOICES, default='HTTP',
@@ -48,10 +55,21 @@ class Monitor(models.Model):
     description = models.TextField(blank=True, null=True, help_text='Description of the monitor.')
     alert_threshold = models.PositiveIntegerField(default=3, help_text='Failures before alert is triggered.')
     last_checked = models.DateTimeField(null=True, blank=True, help_text='Last check timestamp.')
-    is_online = models.BooleanField(default=True, help_text='Monitor active status.')
+    is_active = models.BooleanField(default=True, help_text='Whether monitoring is active or paused.')
 
     created_at = models.DateTimeField(auto_now_add=True, help_text='Timestamp of creation.')
     updated_at = models.DateTimeField(auto_now=True, help_text='Timestamp of last update.')
+
+    availability = models.CharField(
+        max_length=7,
+        choices=STATUS_CHOICES,
+        default='unknown',
+        help_text='Current availability status of the monitored service.'
+    )
+    consecutive_failures = models.PositiveIntegerField(
+        default=0,
+        help_text='Number of consecutive failed checks.'
+    )
 
     def __str__(self):
         return f"{self.name} ({self.protocol})"
