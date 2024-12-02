@@ -1,20 +1,31 @@
  /* For Webkit browsers (Chrome, Safari) */
  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    background: rgb(22 163 74); /* bg-green-600 color */
-    border-radius: 50%;
-    cursor: pointer;
-}
+     -webkit-appearance: none;
+     appearance: none;
+     width: 16px;
+     height: 16px;
+     background: rgb(22 163 74);
+     /* bg-green-600 color */
+     border-radius: 50%;
+     cursor: pointer;
+ }
 
-/* For Firefox */
-input[type="range"]::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    background: rgb(22 163 74); /* bg-green-600 color */
-    border-radius: 50%;
-    cursor: pointer;
-    border: none;
-}
+ /* For Firefox */
+ input[type="range"]::-moz-range-thumb {
+     width: 16px;
+     height: 16px;
+     background: rgb(22 163 74);
+     /* bg-green-600 color */
+     border-radius: 50%;
+     cursor: pointer;
+     border: none;
+ }
+
+
+
+ /* Style for active tab */
+ button[role="tab"].active {
+     background-color: rgb(22 163 74);
+     /* green-600 */
+     color: white;
+ }

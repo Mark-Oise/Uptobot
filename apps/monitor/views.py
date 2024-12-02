@@ -2,13 +2,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from .models import Monitor
 from .forms import AddMonitorForm
+from django.db.models import Q
+from django.http import HttpResponse
+from django.contrib import messages
 # Create your views here.
 
 
 
 def monitor_list(request):
     monitors = Monitor.objects.filter(user=request.user)
-
     
     context = {
         'monitors': monitors,
@@ -18,9 +20,11 @@ def monitor_list(request):
 
 
 def monitor_detail(request, pk):
-    # monitor = get_object_or_404(Monitor, pk=pk, user=request.user)
-    monitor = get_object_or_404(Monitor, pk=pk)
-    return render(request, 'dashboard/monitor/monitor_detail.html', {'monitor': monitor})
+    
+    monitor = get_object_or_404(Monitor, pk=pk, user=request.user)
+    context = {'monitor': monitor}
+        
+    return render(request, 'dashboard/monitor/monitor_detail.html', context)
 
 
 
@@ -39,7 +43,6 @@ def add_monitor(request):
     return render(request, 'dashboard/monitor/add_monitor.html', {'form': form})
 
 
-from django.db.models import Q
 
 def search_monitors(request):
     search_query = request.GET.get('search', '').strip()

@@ -1,9 +1,9 @@
-<main>
-    <div class="px-4 pt-6">
-        <div id="monitor-container">
-            {% include 'dashboard/monitor/monitor_list_items.html' %}
-        </div>
-        {% include 'dashboard/monitor/add_monitor.html' %}
-    </div>
+{% extends 'base.html' %}
+{% block content %}
 
-</main>
+<div class="px-4 pt-6 h-full" id="monitor-listing">
+    {% include 'dashboard/monitor/monitor_list_items.html' %}
+</div>
+
+
+{% endblock content %}

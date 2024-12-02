@@ -12,7 +12,7 @@ def dashboard_home(request):
         'form': AddMonitorForm(),
         'monitors': monitors,
         'total_monitors': monitors.count(),
-        'active_monitors': monitors.filter(is_online=True).count(),
+        'active_monitors': monitors.filter(is_active=True).count(),
     }
     return render(request, 'dashboard/dashboard_home.html', context)
 
