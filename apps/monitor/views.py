@@ -5,6 +5,7 @@ from .forms import AddMonitorForm
 from django.db.models import Q
 from django.http import HttpResponse
 from django.contrib import messages
+
 # Create your views here.
 
 
@@ -14,6 +15,7 @@ def monitor_list(request):
     
     context = {
         'monitors': monitors,
+        'form': AddMonitorForm()
     }
     return render(request, 'dashboard/monitor/monitor_list.html', context)
 
@@ -62,7 +64,8 @@ def search_monitors(request):
 
 
 
-
+def settings(request):
+    return render(request, 'dashboard/monitor/settings.html')
 
 
 

@@ -1,43 +1,50 @@
 // static/js/dashboard/tabs.js
 
-document.addEventListener('DOMContentLoaded', () => {
-    initializeTabs();
-});
-
-function initializeTabs() {
+window.initializeTabs = function () {
     const tabButtons = document.querySelectorAll('[role="tab"]');
     const tabPanels = document.querySelectorAll('[role="tabpanel"]');
 
+    // Remove existing listeners
     tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Remove active class from all buttons
-            tabButtons.forEach(btn => {
-                btn.classList.remove('active');
-                btn.setAttribute('aria-selected', 'false');
-            });
-
-            // Add active class to clicked button
-            button.classList.add('active');
-            button.setAttribute('aria-selected', 'true');
-
-            // Hide all tab panels
-            tabPanels.forEach(panel => {
-                panel.classList.add('hidden');
-            });
-
-            // Show the selected tab panel
-            const targetId = button.getAttribute('data-tabs-target');
-            const targetPanel = document.querySelector(targetId);
-            if (targetPanel) {
-                targetPanel.classList.remove('hidden');
-            }
-        });
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
     });
 
-    // Initialize first tab as active
+    // Add new listeners
+    document.querySelectorAll('[role="tab"]').forEach(button => {
+        button.addEventListener('click', handleTabClick);
+    });
+
+    // Initialize first tab
     const firstTab = document.querySelector('[role="tab"]');
     if (firstTab) {
-        firstTab.classList.add('active');
-        firstTab.setAttribute('aria-selected', 'true');
+        setTimeout(() => firstTab.click(), 0);
+    }
+};
+
+function handleTabClick(event) {
+    // Remove active class from all buttons
+    const tabButtons = document.querySelectorAll('[role="tab"]');
+    tabButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+    });
+
+    // Add active class to clicked button
+    const button = event.target;
+    button.classList.add('active');
+    button.setAttribute('aria-selected', 'true');
+
+    // Hide all tab panels
+    const tabPanels = document.querySelectorAll('[role="tabpanel"]');
+    tabPanels.forEach(panel => {
+        panel.classList.add('hidden');
+    });
+
+    // Show the selected tab panel
+    const targetId = button.getAttribute('data-tabs-target');
+    const targetPanel = document.querySelector(targetId);
+    if (targetPanel) {
+        targetPanel.classList.remove('hidden');
     }
 }

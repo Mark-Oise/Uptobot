@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import monitor_list, monitor_detail, add_monitor, protocol_fields, search_monitors
+from .views import monitor_list, monitor_detail, add_monitor, protocol_fields, search_monitors, settings
 
 app_name = 'monitor'
 
@@ -9,4 +9,5 @@ urlpatterns = [
     path('add/', add_monitor, name='add_monitor'),
     path('protocol_fields/', protocol_fields, name='protocol_fields'),
     path('search/', search_monitors, name='search_monitors'),
+    path('settings/', settings, name='settings'),
 ]

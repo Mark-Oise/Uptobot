@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="px-4 pt-6 h-full" id="monitor-listing">
+<div class="px-4 pt-6  h-screen" id="monitor-listing">
     {% include 'dashboard/monitor/monitor_list_items.html' %}
 </div>
 
-
+{% include 'dashboard/monitor/add_monitor.html' %}
 {% endblock content %}

@@ -200,7 +200,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-LOGIN_REDIRECT_URL = 'dashboard:dashboard_home'
+LOGIN_REDIRECT_URL = 'monitor:monitor_list'
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
 

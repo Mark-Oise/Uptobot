@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="px-4 h-screen" id="profile-settings">
+
+    <div class=" flex grid w-full max-w-lg gap-2 mt-4">
+        <ul id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist"
+            class="rounded-lg px-2 flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+            <li class="me-0 sm:me-2 py-2" role="presentation">
+                <button id="history-tab" data-tabs-target="#history" type="button" role="tab" aria-selected="false"
+                    class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white flex items-center justify-center gap-2"
+                    aria-current="false">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    Account
+                </button>
+            </li>
+            <li class="me-0 sm:me-2 py-2" role="presentation">
+                <button id="incidents-tab" data-tabs-target="#incidents" type="button" role="tab"
+                    aria-controls="incidents" aria-selected="false"
+                    class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                        </path>
+                    </svg>
+                    Notifications
+                </button>
+            </li>
+            <li class="me-0 sm:me-2 py-2" role="presentation">
+                <button id="metrics-tab" data-tabs-target="#metrics" type="button" role="tab" aria-selected="false"
+                    class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01">
+                        </path>
+                    </svg>
+                    Appearance
+                </button>
+            </li>
+            <li class="me-0 sm:me-2 py-2" role="presentation">
+                <button id="metrics-tab" data-tabs-target="#metrics" type="button" role="tab" aria-selected="false"
+                    class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                        </path>
+                    </svg>
+                    Security
+                </button>
+            </li>
+        </ul>
+    </div>
+    <style>
+        /* Style for active tab */
+        button[role="tab"].active {
+            background-color: rgb(22 163 74);
+            /* green-600 */
+            color: white;
+        }
+    </style>
+
+    <div class="grid grid-cols-1 my-4 xl:gap-4">
+
+        <div id="default-tab-content">
+            <div class="hidden p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800"
+                id="history" role="tabpanel" aria-labelledby="history-tab">
+                <div class="items-center justify-between lg:flex">
+                    <div class="mb-4 lg:mb-0">
+                        <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">Uptime History (Last 5 days)
+                        </h3>
+                    </div>
+                </div>
+
+                <!-- Uptime History List -->
+
+                <form action="#">
+                    <div class="grid grid-cols-6 gap-6">
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="first-name"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First
+                                Name</label>
+                            <input type="text" name="first-name" id="first-name"
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Bonnie" required="">
+                        </div>
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="last-name"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last
+                                Name</label>
+                            <input type="text" name="last-name" id="last-name"
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Green" required="">
+                        </div>
+
+                        <div class="col-span-6 sm:col-full">
+                            <button
+                                class="text-white bg-green-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                                type="submit">Save all</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div
+                class="p-4 mt-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                <h3 class="mb-4 text-xl font-semibold dark:text-white">Language &amp; Time</h3>
+                <div class="mb-4">
+                    <label for="settings-language"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select language</label>
+                    <select id="settings-language" name="countries"
+                        class="bg-gray-50 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        <option>English (US)</option>
+                        <option>Italiano</option>
+                        <option>Français (France)</option>
+                        <option>正體字</option>
+                        <option>Español (España)</option>
+                        <option>Deutsch</option>
+                        <option>Português (Brasil)</option>
+                    </select>
+                </div>
+                <div class="mb-6">
+                    <label for="settings-timezone"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Time Zone</label>
+                    <select id="settings-timezone" name="countries"
+                        class="bg-gray-50 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        <option>GMT+0 Greenwich Mean Time (GMT)</option>
+                        <option>GMT+1 Central European Time (CET)</option>
+                        <option>GMT+2 Eastern European Time (EET)</option>
+                        <option>GMT+3 Moscow Time (MSK)</option>
+                        <option>GMT+5 Pakistan Standard Time (PKT)</option>
+                        <option>GMT+8 China Standard Time (CST)</option>
+                        <option>GMT+10 Eastern Australia Standard Time (AEST)</option>
+                    </select>
+                </div>
+                <div>
+                    <button
+                        class="text-white bg-green-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Save
+                        all</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="hidden p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800"
+            id="incidents" role="tabpanel" aria-labelledby="incidents-tab">
+            <div class="items-center justify-between lg:flex">
+                <div class="mb-4 lg:mb-0">
+                    <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">Recent Incidents</h3>
+                </div>
+            </div>
+
+            <!-- Recent Incidents List -->
+            <div class="space-y-4">
+                <!-- First Incident -->
+                <div class="flex items-start gap-2">
+                    <svg class="w-5 h-5 text-yellow-400 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
+                    <div>
+                        <h4 class="text-base font-semibold text-gray-900 dark:text-white">2023-06-04 15:23</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Duration: 5 minutes</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Reason: High latency</p>
+                    </div>
+                </div>
+
+                <!-- Second Incident -->
+                <div class="flex items-start gap-2">
+                    <svg class="w-5 h-5 text-yellow-400 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
+                    <div>
+                        <h4 class="text-base font-semibold text-gray-900 dark:text-white">2023-05-30 10:17</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Duration: 2 minutes</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Reason: Connection timeout</p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="hidden p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800"
+            id="metrics" role="tabpanel" aria-labelledby="metrics-tab">
+            <div class="items-center justify-between lg:flex">
+                <div class="mb-4 lg:mb-0">
+                    <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">Metrics</h3>
+                </div>
+
+
+            </div>
+            <div class="grid grid-cols-2 gap-6">
+                <!-- Server Response -->
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                        <svg class="w-6 h-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor">
+                            <rect x="2" y="4" width="20" height="16" rx="2" stroke-width="2" />
+                            <path d="M6 8h12" stroke-width="2" />
+                            <path d="M6 12h12" stroke-width="2" />
+                            <path d="M6 16h8" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Server Response</p>
+                        <p class="text-xl font-semibold text-gray-900 dark:text-white">187ms</p>
+                    </div>
+                </div>
+                <!-- Page Load Time -->
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                        <svg class="w-6 h-6 text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Page Load Time</p>
+                        <p class="text-xl font-semibold text-gray-900 dark:text-white">1.2s</p>
+                    </div>
+                </div>
+
+                <!-- SSL Certificate -->
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                        <svg class="w-6 h-6 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor">
+                            <path
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                                stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">SSL Certificate</p>
+                        <p class="text-xl font-semibold text-gray-900 dark:text-white">Valid (Expires in 3
+                            months)</p>
+                    </div>
+                </div>
+
+                <!-- DNS Issues -->
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                        <svg class="w-6 h-6 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="10" stroke-width="2" />
+                            <path d="M15 9l-6 6m0-6l6 6" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">DNS Issues</p>
+                        <p class="text-xl font-semibold text-gray-900 dark:text-white">None detected</p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+
+{% endblock content %}

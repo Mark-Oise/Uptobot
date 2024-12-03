@@ -71,10 +71,19 @@ const options = {
     },
 }
 
-function initializeChart() {
-    if (document.getElementById("line-chart") && typeof ApexCharts !== 'undefined') {
-        const chart = new ApexCharts(document.getElementById("line-chart"), options);
-        chart.render();
+window.chartInstances = window.chartInstances || {};
+
+window.initializeChart = function () {
+    // Cleanup existing chart
+    if (window.chartInstances.lineChart) {
+        window.chartInstances.lineChart.destroy();
+        delete window.chartInstances.lineChart;
     }
-}
+
+    const chartElement = document.getElementById("line-chart");
+    if (chartElement && typeof ApexCharts !== 'undefined') {
+        window.chartInstances.lineChart = new ApexCharts(chartElement, options);
+        window.chartInstances.lineChart.render();
+    }
+};
 
