@@ -1,4 +1,7 @@
-const options = {
+// Store chart instance globally
+let lineChart = null;
+
+const createChartOptions = (data = {}) => ({
     chart: {
         height: "100%",
         maxWidth: "100%",
@@ -32,17 +35,12 @@ const options = {
             top: -26
         },
     },
-    series: [
+    series: data.series || [
         {
-            name: "Clicks",
-            data: [6500, 6418, 6456, 6526, 6356, 6456],
+            name: "Response Time",
+            data: [187, 190, 185, 189, 187, 186],
             color: "#1A56DB",
-        },
-        {
-            name: "CPC",
-            data: [6456, 6356, 6526, 6332, 6418, 6500],
-            color: "#7E3AF2",
-        },
+        }
     ],
     legend: {
         show: false
@@ -51,7 +49,7 @@ const options = {
         curve: 'smooth'
     },
     xaxis: {
-        categories: ['01 Feb', '02 Feb', '03 Feb', '04 Feb', '05 Feb', '06 Feb', '07 Feb'],
+        categories: data.categories || ['09 Feb', '02 Feb', '03 Feb', '04 Feb', '05 Feb', '06 Feb'],
         labels: {
             show: true,
             style: {
@@ -69,21 +67,18 @@ const options = {
     yaxis: {
         show: false,
     },
-}
+});
 
-window.chartInstances = window.chartInstances || {};
-
-window.initializeChart = function () {
-    // Cleanup existing chart
-    if (window.chartInstances.lineChart) {
-        window.chartInstances.lineChart.destroy();
-        delete window.chartInstances.lineChart;
-    }
-
+window.initializeChart = function (data) {
     const chartElement = document.getElementById("line-chart");
-    if (chartElement && typeof ApexCharts !== 'undefined') {
-        window.chartInstances.lineChart = new ApexCharts(chartElement, options);
-        window.chartInstances.lineChart.render();
-    }
-};
+    if (!chartElement || typeof ApexCharts === 'undefined') return;
 
+    // Destroy existing chart if it exists
+    if (lineChart) {
+        lineChart.destroy();
+    }
+
+    // Create new chart
+    lineChart = new ApexCharts(chartElement, createChartOptions(data));
+    lineChart.render();
+};

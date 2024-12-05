@@ -11,15 +11,17 @@
     </button>
 
 
-    <div class="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
+
+
+    <div class="grid gap-4 md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
         <!-- Main widget -->
         <div
-            class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+            class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm lg:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
 
 
-            <div class="flex items-center justify-between mb-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
                 <!-- Favicon-sized Image -->
-                <div class="flex items-center space-x-2">
+                <div class="flex items-center space-x-2 mb-4 sm:mb-0">
                     <img class="w-6 h-6" src="https://www.ninniku.tw/wp-content/uploads/2023/02/wordpress.png"
                         alt="Rounded avatar">
 
@@ -56,7 +58,7 @@
 
 
             </div>
-            <ul class="grid grid-cols-2 gap-4 mt-6">
+            <ul class="grid grid-cols-2 sm:grid-cols-2 gap-4 mt-6">
                 <li class="p-4 bg-gray-100 rounded-lg dark:bg-gray-800">
                     <div class="flex flex-col">
                         <div class="flex items-center justify-between mb-1">
@@ -131,8 +133,8 @@
         <!--Tabs widget -->
         <div
             class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-            <div class="flex justify-between mb-5">
-                <div class="grid gap-4">
+            <div class="flex flex-col sm:flex-row justify-between mb-5">
+                <div class="grid gap-4 mb-4 sm:mb-0">
                     <div>
                         <h5
                             class="inline-flex font-semibold text-lg items-center text-gray-800 dark:text-gray-400 leading-none font-normal mb-2 whitespace-nowrap">
@@ -152,7 +154,7 @@
                 <div>
                     <button id="dropdownDefaultButton" data-dropdown-toggle="lastDaysdropdown"
                         data-dropdown-placement="bottom" type="button"
-                        class="px-3 py-2 inline-flex items-center text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 whitespace-nowrap">Last
+                        class="w-full sm:w-auto px-3 py-2 inline-flex items-center text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 whitespace-nowrap">Last
                         week <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 10 6">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -208,7 +210,7 @@
             <li class="me-0 sm:me-2 py-2" role="presentation">
                 <button id="history-tab" data-tabs-target="#history" type="button" role="tab" aria-selected="false"
                     class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white"
-                    aria-current="false">Uptime History
+                    aria-current="page">Uptime History
                 </button>
             </li>
             <li class="me-0 sm:me-2 py-2" role="presentation">
@@ -250,7 +252,7 @@
                 <!-- Uptime History List -->
                 <div class="space-y-4">
                     <!-- Each day's uptime record -->
-                    <div class="flex items-center justify-between">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
                         <div class="flex items-center gap-2">
                             <div class="w-3 h-3 bg-green-500 rounded-full"></div>
                             <span class="text-gray-900 dark:text-white">2023-06-01</span>
@@ -263,7 +265,7 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
                         <div class="flex items-center gap-2">
                             <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
                             <span class="text-gray-900 dark:text-white">2023-06-02</span>
@@ -276,7 +278,7 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
                         <div class="flex items-center gap-2">
                             <div class="w-3 h-3 bg-green-500 rounded-full"></div>
                             <span class="text-gray-900 dark:text-white">2023-06-03</span>
@@ -289,7 +291,7 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
                         <div class="flex items-center gap-2">
                             <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
                             <span class="text-gray-900 dark:text-white">2023-06-04</span>
@@ -302,7 +304,7 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
                         <div class="flex items-center gap-2">
                             <div class="w-3 h-3 bg-green-500 rounded-full"></div>
                             <span class="text-gray-900 dark:text-white">2023-06-05</span>
