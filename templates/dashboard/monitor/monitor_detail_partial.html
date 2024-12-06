@@ -24,7 +24,7 @@
                 <span class="sr-only">Icon description</span>
             </button>
 
-            <button type="button"
+            <button type="button" data-modal-target="deleteModal" data-modal-toggle="deleteModal"
                 class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
 
                 <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -35,6 +35,8 @@
 
                 <span class="sr-only">Icon description</span>
             </button>
+            {% include 'dashboard/components/modals/delete_monitor.html' %}
+
         </div>
     </div>
 
