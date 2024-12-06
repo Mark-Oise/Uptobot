@@ -48,10 +48,14 @@
             <!-- Availability Indicator Wrapper for Right Alignment -->
             <div>
                 <span
-                    class="inline-flex items-center {% if monitor.is_online %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %} text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                    class="inline-flex items-center {% if monitor.availability == 'online' %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %} text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
                     <span
-                        class="w-2 h-2 mr-1 {% if monitor.is_online %}bg-green-500{% else %}bg-red-500{% endif %} rounded-full"></span>
-                    {% if monitor.is_online %}Online{% else %}Offline{% endif %}
+                        class="w-2 h-2 mr-1 {% if monitor.availability == 'online' %}bg-green-500{% else %}bg-red-500{% endif %} rounded-full"></span>
+                    {% if monitor.availability == 'unknown' %}
+                    Unknown
+                    {% else %}
+                    {{ monitor.get_availability_display }}
+                    {% endif %}
                 </span>
             </div>
         </div>
