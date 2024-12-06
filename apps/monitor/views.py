@@ -70,10 +70,3 @@ def settings(request):
 
 
 
-def protocol_fields(request):
-    protocol = request.GET.get('protocol', 'HTTP')
-    context = {
-        'protocol': protocol,
-        'method_choices': Monitor.METHOD_CHOICES if protocol == 'HTTP' else None,
-    }
-    return render(request, 'dashboard/monitor/protocol_fields.html', context)

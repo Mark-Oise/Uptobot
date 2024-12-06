@@ -42,7 +42,7 @@ class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 
                         <div class="flex items-center pl-3">
                             <input
                                 hx-target="#protocol-specific-fields"
-                                hx-get="{% url 'monitor:protocol_fields' %}"
+                                hx-get=""
                                 hx-trigger="load, change" 
                                 value="{{ value }}"
                                 {% if value == 'HTTP' %}checked{% endif %}
@@ -155,7 +155,3 @@ class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 
    </div>
 </div>
 </div>
-
-
-
-
