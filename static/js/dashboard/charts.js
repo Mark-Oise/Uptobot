@@ -37,7 +37,7 @@ const createChartOptions = (data = {}) => ({
     },
     series: data.series || [
         {
-            name: "Response Time",
+            name: "Response Time (ms)",
             data: [187, 190, 185, 189, 187, 186],
             color: "#1A56DB",
         }
@@ -49,7 +49,7 @@ const createChartOptions = (data = {}) => ({
         curve: 'smooth'
     },
     xaxis: {
-        categories: data.categories || ['09 Feb', '02 Feb', '03 Feb', '04 Feb', '05 Feb', '06 Feb'],
+        categories: data.categories || ['09 Feb', '10 Feb', '11 Feb', '12 Feb', '13 Feb', '14 Feb'],
         labels: {
             show: true,
             style: {

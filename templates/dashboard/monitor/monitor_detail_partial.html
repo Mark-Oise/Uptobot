@@ -21,38 +21,40 @@
 
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
                 <!-- Favicon-sized Image -->
-                <div class="flex items-center space-x-2 mb-4 sm:mb-0">
-                    <img class="w-6 h-6" src="https://www.ninniku.tw/wp-content/uploads/2023/02/wordpress.png"
-                        alt="Rounded avatar">
+                <div class="flex flex-row items-center justify-between w-full">
+                    <div class="flex items-center space-x-2">
+                        <img class="w-6 h-6" src="https://www.ninniku.tw/wp-content/uploads/2023/02/wordpress.png"
+                            alt="Rounded avatar">
 
-                    <!-- Title and Link Container -->
-                    <div class="flex flex-col justify-between h-8">
-                        <a href="#" class="text-lg font-bold text-gray-900 dark:text-white leading-none">
-                            {{ monitor.name }}
-                        </a>
-                        <p hx-get="{% url 'monitor:monitor_detail' monitor.pk %}" hx-target="#monitor-list"
-                            hx-push-url="true" hx-trigger="click" hx-swap="innerHTML transition:true"
-                            class="mt-1 inline-flex items-center text-sm font-medium text-gray-600 hover:underline dark:text-gray-400 leading-none">
-                            {{ monitor.url }}
-                            <svg class="w-3 h-3 ml-1 rtl:rotate-[270deg]" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778">
-                                </path>
-                            </svg>
-                        </p>
+                        <!-- Title and Link Container -->
+                        <div class="flex flex-col justify-between h-8">
+                            <a href="#" class="text-lg font-bold text-gray-900 dark:text-white leading-none">
+                                {{ monitor.name }}
+                            </a>
+                            <p hx-get="{% url 'monitor:monitor_detail' monitor.pk %}" hx-target="#monitor-list"
+                                hx-push-url="true" hx-trigger="click" hx-swap="innerHTML transition:true"
+                                class="mt-1 inline-flex items-center text-sm font-medium text-gray-600 hover:underline dark:text-gray-400 leading-none">
+                                {{ monitor.url }}
+                                <svg class="w-3 h-3 ml-1 rtl:rotate-[270deg]" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778">
+                                    </path>
+                                </svg>
+                            </p>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Availability Indicator Wrapper for Right Alignment -->
-                <div>
-                    <span
-                        class="inline-flex items-center {% if monitor.is_online %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %} text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                    <!-- Availability Indicator -->
+                    <div>
                         <span
-                            class="w-2 h-2 mr-1 {% if monitor.is_online %}bg-green-500{% else %}bg-red-500{% endif %} rounded-full"></span>
-                        {% if monitor.is_online %}Online{% else %}Offline{% endif %}
-                    </span>
+                            class="inline-flex items-center {% if monitor.is_online %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %} text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                            <span
+                                class="w-2 h-2 mr-1 {% if monitor.is_online %}bg-green-500{% else %}bg-red-500{% endif %} rounded-full"></span>
+                            {% if monitor.is_online %}Online{% else %}Offline{% endif %}
+                        </span>
+                    </div>
                 </div>
 
 
@@ -192,6 +194,7 @@
                 </div>
             </div>
             <div id="line-chart"></div>
+
 
 
 
