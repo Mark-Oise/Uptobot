@@ -33,7 +33,9 @@ def monitor_detail(request, pk):
         'uptime_percentage': monitor.get_uptime_percentage(),
         'avg_response_time': monitor.get_average_response_time(),
         'ssl_info': monitor.get_ssl_info(),
-        'recent_incidents': recent_incidents,
+        'recent_incidents': monitor.logs.exclude(status='success').order_by('-checked_at')[:5],
+        'health_score': monitor.get_health_score(),
+        'health_status': monitor.get_health_status(),
     }
     
     return render(request, 'dashboard/monitor/monitor_detail.html', context)

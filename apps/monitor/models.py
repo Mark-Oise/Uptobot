@@ -130,6 +130,55 @@ class Monitor(models.Model):
                 'error': str(e)
             }
 
+    def get_health_score(self, days=7):
+        """
+        Calculate health score (0-100) based on:
+        - Uptime percentage (50% of score)
+        - Response time performance (30% of score)
+        - Recent failures (20% of score)
+        """
+        # Get uptime score (0-50 points)
+        uptime_score = self.get_uptime_percentage(days=days) * 0.5
+
+        # Get response time score (0-30 points)
+        avg_response_time = self.get_average_response_time(days=days)
+        if avg_response_time == 0:
+            response_time_score = 0
+        else:
+            # Assuming response times under 500ms are ideal
+            # Score decreases linearly until 2000ms (2 seconds)
+            response_time_score = max(0, 30 * (1 - (avg_response_time - 500) / 1500))
+            response_time_score = min(30, response_time_score)  # Cap at 30 points
+
+        # Get recent failures score (0-20 points)
+        recent_failures = self.logs.filter(
+            status__in=['failure', 'error'],
+            checked_at__gte=timezone.now() - timedelta(days=days)
+        ).count()
+        
+        # Deduct points for each failure (max 20 points deduction)
+        failure_deduction = min(20, recent_failures * 4)  # 4 points per failure
+        failure_score = 20 - failure_deduction
+
+        # Calculate total score
+        total_score = uptime_score + response_time_score + failure_score
+        
+        return round(total_score, 1)
+
+    def get_health_status(self):
+        """
+        Returns a tuple of (status, color) based on health score
+        """
+        score = self.get_health_score()
+        if score >= 90:
+            return ('Excellent', 'green')
+        elif score >= 75:
+            return ('Good', 'blue')
+        elif score >= 50:
+            return ('Fair', 'yellow')
+        else:
+            return ('Poor', 'red')
+
 
 class MonitorLog(models.Model):
     STATUS_CHOICES = [
