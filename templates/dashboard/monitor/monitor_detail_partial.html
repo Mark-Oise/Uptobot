@@ -377,34 +377,51 @@
 
                 <!-- Recent Incidents List -->
                 <div class="space-y-4">
-                    <!-- First Incident -->
+                    {% if recent_incidents %}
+                    {% for log in recent_incidents %}
                     <div class="flex items-start gap-2">
-                        <svg class="w-5 h-5 text-yellow-400 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 {% if log.status == 'error' %}text-red-400{% else %}text-yellow-400{% endif %} mt-1"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                         </svg>
                         <div>
-                            <h4 class="text-base font-semibold text-gray-900 dark:text-white">2023-06-04 15:23</h4>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Duration: 5 minutes</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Reason: High latency</p>
+                            <h4 class="text-base font-semibold text-gray-900 dark:text-white">
+                                {{ log.checked_at|date:"Y-m-d H:i" }}
+                            </h4>
+                            {% if log.response_time %}
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                Response Time: {{ log.response_time|floatformat:0 }}ms
+                            </p>
+                            {% endif %}
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                {% if log.status_code %}
+                                Status Code: {{ log.status_code }}
+                                {% endif %}
+                                {% if log.error_message %}
+                                - {{ log.error_message }}
+                                {% endif %}
+                            </p>
                         </div>
                     </div>
-
-                    <!-- Second Incident -->
-                    <div class="flex items-start gap-2">
-                        <svg class="w-5 h-5 text-yellow-400 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    {% endfor %}
+                    {% else %}
+                    <div class="flex items-center p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
+                        role="alert">
+                        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
                         </svg>
+                        <span class="sr-only">Info</span>
                         <div>
-                            <h4 class="text-base font-semibold text-gray-900 dark:text-white">2023-05-30 10:17</h4>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Duration: 2 minutes</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Reason: Connection timeout</p>
+                            <span class="font-medium">Great news!</span> No recent incidents have been recorded for this
+                            monitor.
                         </div>
                     </div>
+                    {% endif %}
                 </div>
+
 
 
             </div>

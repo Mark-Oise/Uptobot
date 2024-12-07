@@ -24,11 +24,15 @@ def monitor_list(request):
 def monitor_detail(request, pk):
     monitor = get_object_or_404(Monitor, pk=pk, user=request.user)
     
+    # Get recent incidents (non-successful logs)
+    recent_incidents = monitor.logs.exclude(status='success').order_by('-checked_at')[:5]
+    
     context = {
         'monitor': monitor,
         'uptime_percentage': monitor.get_uptime_percentage(),
         'avg_response_time': monitor.get_average_response_time(),
         'ssl_info': monitor.get_ssl_info(),
+        'recent_incidents': recent_incidents,
     }
     
     return render(request, 'dashboard/monitor/monitor_detail.html', context)
