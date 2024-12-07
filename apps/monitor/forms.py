@@ -7,6 +7,10 @@ class AddMonitorForm(forms.ModelForm):
     Form for creating a new Monitor instance.
     """
 
+    method = forms.ChoiceField(
+        choices=Monitor.METHOD_CHOICES,
+    )
+
     class Meta:
         model = Monitor
         fields = [
