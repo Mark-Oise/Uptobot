@@ -75,6 +75,13 @@ def search_monitors(request):
     return render(request, 'dashboard/monitor/monitor_list_items.html', context)
 
 
+def delete_monitor(request, pk):
+    monitor = get_object_or_404(Monitor, pk=pk, user=request.user)
+    monitor.delete()
+    messages.success(request, 'Monitor deleted successfully')
+    return redirect('monitor:monitor_list')
+
+
 @login_required
 def settings(request):
     return render(request, 'dashboard/monitor/settings.html')
