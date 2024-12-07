@@ -5,11 +5,12 @@ from .forms import AddMonitorForm
 from django.db.models import Q
 from django.http import HttpResponse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
 
-
+@login_required
 def monitor_list(request):
     monitors = Monitor.objects.filter(user=request.user)
     
@@ -20,7 +21,7 @@ def monitor_list(request):
     return render(request, 'dashboard/monitor/monitor_list.html', context)
 
 
-
+@login_required
 def monitor_detail(request, pk):
     monitor = get_object_or_404(Monitor, pk=pk, user=request.user)
     
@@ -38,7 +39,7 @@ def monitor_detail(request, pk):
     return render(request, 'dashboard/monitor/monitor_detail.html', context)
 
 
-
+@login_required
 def add_monitor(request):
     if request.method == 'POST':
         form = AddMonitorForm(request.POST)
@@ -72,7 +73,7 @@ def search_monitors(request):
     return render(request, 'dashboard/monitor/monitor_list_items.html', context)
 
 
-
+@login_required
 def settings(request):
     return render(request, 'dashboard/monitor/settings.html')
 
