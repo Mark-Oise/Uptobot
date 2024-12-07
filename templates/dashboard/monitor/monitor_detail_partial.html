@@ -105,7 +105,9 @@
                             </svg>
                             <span class="text-sm text-gray-500 dark:text-gray-400">Uptime</span>
                         </div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">99.98%</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">
+                            {% if monitor.uptime_percentage%}{{ monitor.uptime_percentage }}%{% else %}N/A{% endif %}
+                        </div>
                         <div class="text-sm text-gray-500 dark:text-gray-400">Last 30 days</div>
                     </div>
                 </li>
@@ -120,7 +122,9 @@
                             </svg>
                             <span class="text-sm text-gray-500 dark:text-gray-400">Response</span>
                         </div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">187ms</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">
+                            {% if monitor.avg_response_time %}{{ monitor.avg_response_time }}ms{% else %}N/A{% endif %}
+                        </div>
                         <div class="text-sm text-gray-500 dark:text-gray-400">Average</div>
                     </div>
                 </li>
@@ -136,8 +140,11 @@
 
                             <span class="text-sm text-gray-500 dark:text-gray-400">Last Check</span>
                         </div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">2 min ago</div>
-                        <div class="text-sm text-gray-500 dark:text-gray-400">Frequency: Every 5 minutes</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">
+                            {% if monitor.last_checked %}{{ monitor.last_checked }}{% else %}N/A{% endif %}
+                        </div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">Frequency: Every
+                            {{ monitor.interval }} minutes</div>
                     </div>
                 </li>
 
@@ -156,8 +163,13 @@
 
                             <span class="text-sm text-gray-500 dark:text-gray-400">SSL Status</span>
                         </div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">Valid</div>
-                        <div class="text-sm text-gray-500 dark:text-gray-400">Expires in 3 months</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">
+                            {% if monitor.ssl_info.valid %}Valid{% else %}Invalid{% endif %}
+                        </div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">
+                            {% if monitor.ssl_info.expiry_date %}{{ monitor.ssl_info.expiry_date }}{% else %}N/A
+                            {% endif %}
+                        </div>
                     </div>
                 </li>
             </ul>
