@@ -1,18 +1,17 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
+from datetime import timedelta
+import ssl
+import socket
+import OpenSSL.SSL
+from urllib.parse import urlparse
 
 
 # Create your models here.
 
 
 class Monitor(models.Model):
-    # Protocol choices
-    PROTOCOL_CHOICES = [
-        ('HTTP', 'HTTP'),
-        ('TCP', 'TCP'),
-        ('UDP', 'UDP'),
-    ]
-
     # HTTP Method choices
     METHOD_CHOICES = [
         ('GET', 'GET'),
@@ -40,18 +39,10 @@ class Monitor(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='monitors')
     name = models.CharField(max_length=255, help_text='Monitor name')
-    protocol = models.CharField(max_length=4, choices=PROTOCOL_CHOICES, default='HTTP',
-                                help_text='Protocol to monitor.')
-    interval = models.IntegerField(choices=INTERVAL_CHOICES, default=5, help_text='Monitoring interval in minutes.')
+    url = models.URLField(max_length=255, help_text='URL to monitor')
+    method = models.CharField(max_length=6, choices=METHOD_CHOICES, default='GET', help_text='HTTP method')
+    interval = models.IntegerField(choices=INTERVAL_CHOICES, default=5, help_text='Monitoring interval in minutes')
     
-    # Fields specific to HTTP
-    url = models.CharField(max_length=255, blank=True, null=True, help_text='URL to monitor.')
-    method = models.CharField(max_length=6, choices=METHOD_CHOICES, blank=True, null=True, help_text='HTTP method.')
-
-    # Fields specific to TCP/UDP
-    host = models.CharField(max_length=255, blank=True, null=True, help_text='Host address.')
-    port = models.PositiveIntegerField(blank=True, null=True, help_text='Port number.')
-
     description = models.TextField(blank=True, null=True, help_text='Description of the monitor.')
     alert_threshold = models.PositiveIntegerField(default=3, help_text='Failures before alert is triggered.')
     last_checked = models.DateTimeField(null=True, blank=True, help_text='Last check timestamp.')
@@ -72,12 +63,72 @@ class Monitor(models.Model):
     )
 
     def __str__(self):
-        return f"{self.name} ({self.protocol})"
+        return f"{self.name} ({self.url})"
 
     class Meta:
         ordering = ['-created_at']
         verbose_name = 'Monitor'
         verbose_name_plural = 'Monitors'
+
+
+    def get_uptime_percentage(self, days=30):
+        """Calculate uptime percentage for the last n days"""
+        end_date = timezone.now()
+        start_date = end_date - timedelta(days=days)
+        
+        # Get all logs for the period
+        logs = self.logs.filter(checked_at__range=(start_date, end_date))
+        
+        if not logs.exists():
+            return 0
+        
+        successful_checks = logs.filter(status='success').count()
+        total_checks = logs.count()
+        
+        return round((successful_checks / total_checks) * 100, 2) if total_checks > 0 else 0
+
+    def get_average_response_time(self, days=30):
+        """Calculate average response time for the last n days"""
+        end_date = timezone.now()
+        start_date = end_date - timedelta(days=days)
+        
+        # Get successful logs with response times
+        logs = self.logs.filter(
+            checked_at__range=(start_date, end_date),
+            status='success',
+            response_time__isnull=False
+        )
+        
+        if not logs.exists():
+            return 0
+            
+        return round(logs.aggregate(avg_time=models.Avg('response_time'))['avg_time'], 2)
+
+    def get_ssl_info(self):
+        """Get SSL certificate information"""
+        if not self.url.startswith('https'):
+            return {'valid': False, 'expiry_date': None, 'error': 'Not an HTTPS URL'}
+            
+        try:
+            hostname = urlparse(self.url).netloc
+            context = ssl.create_default_context()
+            with socket.create_connection((hostname, 443)) as sock:
+                with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+                    cert = ssock.getpeercert()
+                    not_after = ssl.cert_time_to_seconds(cert['notAfter'])
+                    expiry_date = timezone.datetime.fromtimestamp(not_after)
+                    
+                    return {
+                        'valid': True,
+                        'expiry_date': expiry_date,
+                        'error': None
+                    }
+        except Exception as e:
+            return {
+                'valid': False,
+                'expiry_date': None,
+                'error': str(e)
+            }
 
 
 class MonitorLog(models.Model):

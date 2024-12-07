@@ -1,7 +1,5 @@
-import socket
 import requests
 from celery import shared_task
-from datetime import datetime
 from django.utils import timezone
 from .models import Monitor, MonitorLog
 
@@ -17,12 +15,7 @@ def check_monitor(monitor_id):
         if not monitor.is_active:
             return "Monitor is disabled"
 
-        if monitor.protocol == 'HTTP':
-            result = check_http(monitor)
-        elif monitor.protocol == 'TCP':
-            result = check_tcp(monitor)
-        elif monitor.protocol == 'UDP':
-            result = check_udp(monitor)
+        result = check_http(monitor)
         
         # Update availability based on result
         if result.status == 'success':
@@ -49,14 +42,54 @@ def check_http(monitor):
     start_time = timezone.now()
     try:
         method = getattr(requests, monitor.method.lower())
-        response = method(monitor.url, timeout=10)
+        response = method(
+            monitor.url, 
+            timeout=10,
+            verify=True,  # Always verify SSL certificates
+            allow_redirects=True  # Follow redirects
+        )
         response_time = (timezone.now() - start_time).total_seconds() * 1000
         
-        return MonitorLog.objects.create(
+        # Get SSL info if HTTPS
+        ssl_info = monitor.get_ssl_info() if monitor.url.startswith('https') else None
+        
+        # Check if status code is successful (2xx)
+        if 200 <= response.status_code < 300:
+            status = 'success'
+        else:
+            status = 'failure'
+        
+        log = MonitorLog.objects.create(
             monitor=monitor,
-            status='success',
+            status=status,
             response_time=response_time,
             status_code=response.status_code
+        )
+        
+        # Store SSL info in error_message if there are issues
+        if ssl_info and not ssl_info['valid']:
+            log.error_message = f"SSL Certificate Issue: {ssl_info['error']}"
+            log.save()
+            
+        return log
+        
+    except requests.exceptions.SSLError as e:
+        return MonitorLog.objects.create(
+            monitor=monitor,
+            status='error',
+            error_message=f"SSL Certificate Error: {str(e)}"
+        )
+    except requests.exceptions.Timeout:
+        return MonitorLog.objects.create(
+            monitor=monitor,
+            status='failure',
+            error_message="Request timed out"
+        )
+    except requests.exceptions.ConnectionError:
+        return MonitorLog.objects.create(
+            monitor=monitor,
+            status='failure',
+            error_message="Failed to establish connection"
         )
     except requests.RequestException as e:
         return MonitorLog.objects.create(
@@ -64,58 +97,6 @@ def check_http(monitor):
             status='failure',
             error_message=str(e)
         )
-
-
-def check_tcp(monitor):
-    """Helper function to check TCP endpoints"""
-    start_time = timezone.now()
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.settimeout(10)
-    
-    try:
-        sock.connect((monitor.host, monitor.port))
-        response_time = (timezone.now() - start_time).total_seconds() * 1000
-        sock.close()
-        
-        return MonitorLog.objects.create(
-            monitor=monitor,
-            status='success',
-            response_time=response_time
-        )
-    except socket.error as e:
-        return MonitorLog.objects.create(
-            monitor=monitor,
-            status='failure',
-            error_message=str(e)
-        )
-    finally:
-        sock.close()
-
-
-def check_udp(monitor):
-    """Helper function to check UDP endpoints"""
-    start_time = timezone.now()
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.settimeout(10)
-    
-    try:
-        # Send a dummy packet
-        sock.sendto(b"ping", (monitor.host, monitor.port))
-        response_time = (timezone.now() - start_time).total_seconds() * 1000
-        
-        return MonitorLog.objects.create(
-            monitor=monitor,
-            status='success',
-            response_time=response_time
-        )
-    except socket.error as e:
-        return MonitorLog.objects.create(
-            monitor=monitor,
-            status='failure',
-            error_message=str(e)
-        )
-    finally:
-        sock.close()
 
 
 @shared_task
@@ -127,7 +108,6 @@ def schedule_monitor_checks():
     monitors = Monitor.objects.filter(is_active=True)
     
     for monitor in monitors:
-        # Check if it's time to run this monitor based on its interval
         if (not monitor.last_checked or 
             (current_time - monitor.last_checked).total_seconds() >= monitor.interval * 60):
             check_monitor.delay(monitor.id)
