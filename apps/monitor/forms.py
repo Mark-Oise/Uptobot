@@ -47,3 +47,30 @@ class AddMonitorForm(forms.ModelForm):
                 self.add_error('alert_threshold', 'Alert threshold must be between 5 and 60 seconds.')
 
         return cleaned_data
+    
+
+class UpdateMonitorForm(forms.ModelForm):
+    """
+    Form for updating an existing Monitor instance.
+    """
+    method = forms.ChoiceField(
+        choices=Monitor.METHOD_CHOICES,
+    )
+    
+    alert_threshold = forms.IntegerField(
+        min_value=5,
+        max_value=60,
+        required=True,
+        widget=forms.NumberInput(attrs={'type': 'hidden'})
+    )
+
+    class Meta:
+        model = Monitor
+        fields = [
+            'name',
+            'interval',
+            'url',
+            'method',
+            'alert_threshold',
+            'description',
+        ]
