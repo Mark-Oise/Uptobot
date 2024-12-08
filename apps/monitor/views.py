@@ -52,10 +52,7 @@ def monitor_detail(request, pk):
     
     context = {
         'monitor': monitor,
-        'form': form,  # Add the form to the context
-        'uptime_percentage': monitor.get_uptime_percentage(),
-        'avg_response_time': monitor.get_average_response_time(),
-        'ssl_info': monitor.get_ssl_info(),
+        'form': form,
         'recent_incidents': monitor.logs.exclude(status='success').order_by('-checked_at')[:5],
         'health_score': monitor.get_health_score(),
         'health_status': monitor.get_health_status(),

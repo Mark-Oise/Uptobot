@@ -107,7 +107,9 @@
                             <span class="text-sm text-gray-500 dark:text-gray-400">Uptime</span>
                         </div>
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {% if monitor.uptime_percentage%}{{ monitor.uptime_percentage }}%{% else %}N/A{% endif %}
+                            {% with uptime=monitor.get_uptime_percentage %}
+                            {% if uptime %}{{ uptime|floatformat:2 }}%{% else %}N/A{% endif %}
+                            {% endwith %}
                         </div>
                         <div class="text-sm text-gray-500 dark:text-gray-400">Last 30 days</div>
                     </div>
@@ -124,7 +126,9 @@
                             <span class="text-sm text-gray-500 dark:text-gray-400">Response</span>
                         </div>
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {% if monitor.avg_response_time %}{{ monitor.avg_response_time }}ms{% else %}N/A{% endif %}
+                            {% with avg_time=monitor.get_average_response_time %}
+                            {% if avg_time %}{{ avg_time|floatformat:0 }} ms{% else %}N/A{% endif %}
+                            {% endwith %}
                         </div>
                         <div class="text-sm text-gray-500 dark:text-gray-400">Average</div>
                     </div>
@@ -165,11 +169,30 @@
                             <span class="text-sm text-gray-500 dark:text-gray-400">SSL Status</span>
                         </div>
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {% if monitor.ssl_info.valid %}Valid{% else %}Invalid{% endif %}
+                            {% with ssl_info=monitor.get_ssl_info %}
+                            {% if ssl_info.valid %}
+                            <span class="text-green-600">Valid</span>
+                            {% else %}
+                            <span class="text-red-600">Invalid</span>
+                            {% endif %}
+                            {% endwith %}
                         </div>
                         <div class="text-sm text-gray-500 dark:text-gray-400">
-                            {% if monitor.ssl_info.expiry_date %}{{ monitor.ssl_info.expiry_date }}{% else %}N/A
+                            {% with ssl_info=monitor.get_ssl_info %}
+                            {% if ssl_info.expiry_date %}
+                            Expires: {{ ssl_info.expiry_date|date:"Y-m-d" }}
+                            {% if ssl_info.issuer.organizationName %}
+                            <br>
+                            <span class="text-xs">
+                                Issued by: {{ ssl_info.issuer.organizationName }}
+                            </span>
                             {% endif %}
+                            {% elif ssl_info.error %}
+                            Error: {{ ssl_info.error }}
+                            {% else %}
+                            N/A
+                            {% endif %}
+                            {% endwith %}
                         </div>
                     </div>
                 </li>
@@ -381,7 +404,7 @@
                     {% if recent_incidents %}
                     {% for log in recent_incidents %}
                     <div class="flex items-start gap-2">
-                        <svg class="w-5 h-5 {% if log.status == 'error' %}text-red-400{% else %}text-yellow-400{% endif %} mt-1"
+                        <svg class="w-5 h-5 {% if log.status == 'error' %}text-red-400{% elif log.status == 'warning' %}text-yellow-400{% else %}text-gray-400{% endif %} mt-1"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
@@ -469,8 +492,9 @@
                     <!-- SSL Certificate -->
                     <div class="flex items-start gap-4">
                         <div class="flex-shrink-0">
-                            <svg class="w-6 h-6 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor">
+                            <svg class="w-6 h-6 {% if monitor.get_ssl_info.valid %}text-green-500{% else %}text-red-500{% endif %}"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor">
                                 <path
                                     d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                                     stroke-width="2" />
@@ -478,8 +502,28 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-500">SSL Certificate</p>
-                            <p class="text-xl font-semibold text-gray-900 dark:text-white">Valid (Expires in 3
-                                months)</p>
+                            {% with ssl_info=monitor.get_ssl_info %}
+                            {% if ssl_info.valid %}
+                            <p class="text-xl font-semibold text-gray-900 dark:text-white">
+                                Valid {% if ssl_info.chain_valid %}(Chain Verified){% endif %}
+                            </p>
+                            <p class="text-sm text-gray-600">
+                                Expires: {{ ssl_info.expiry_date|date:"Y-m-d" }}
+                            </p>
+                            {% if ssl_info.issuer %}
+                            <p class="text-xs text-gray-500">
+                                Issued by: {{ ssl_info.issuer.organizationName }}
+                            </p>
+                            {% endif %}
+                            {% else %}
+                            <p class="text-xl font-semibold text-red-600">
+                                Invalid
+                            </p>
+                            <p class="text-sm text-red-500">
+                                {{ ssl_info.error }}
+                            </p>
+                            {% endif %}
+                            {% endwith %}
                         </div>
                     </div>
 

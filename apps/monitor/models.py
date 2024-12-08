@@ -5,7 +5,10 @@ from datetime import timedelta
 import ssl
 import socket
 import OpenSSL.SSL
+from datetime import datetime
+import OpenSSL.crypto
 from urllib.parse import urlparse
+import requests
 
 
 # Create your models here.
@@ -80,13 +83,14 @@ class Monitor(models.Model):
         logs = self.logs.filter(checked_at__range=(start_date, end_date))
         
         if not logs.exists():
-            return 0
+            return None  # Return None instead of 0 for no data
         
         successful_checks = logs.filter(status='success').count()
         total_checks = logs.count()
         
-        return round((successful_checks / total_checks) * 100, 2) if total_checks > 0 else 0
+        return round((successful_checks / total_checks) * 100, 2) if total_checks > 0 else None
 
+    
     def get_average_response_time(self, days=30):
         """Calculate average response time for the last n days"""
         end_date = timezone.now()
@@ -100,34 +104,69 @@ class Monitor(models.Model):
         )
         
         if not logs.exists():
-            return 0
+            return None  # Return None instead of 0 for no data
             
         return round(logs.aggregate(avg_time=models.Avg('response_time'))['avg_time'], 2)
 
+    
     def get_ssl_info(self):
-        """Get SSL certificate information"""
+        """Get SSL certificate information using requests with proper connection handling"""
         if not self.url.startswith('https'):
             return {'valid': False, 'expiry_date': None, 'error': 'Not an HTTPS URL'}
-            
+        
         try:
-            hostname = urlparse(self.url).netloc
-            context = ssl.create_default_context()
-            with socket.create_connection((hostname, 443)) as sock:
-                with context.wrap_socket(sock, server_hostname=hostname) as ssock:
-                    cert = ssock.getpeercert()
-                    not_after = ssl.cert_time_to_seconds(cert['notAfter'])
-                    expiry_date = timezone.datetime.fromtimestamp(not_after)
+            # Use a session to maintain the connection
+            with requests.Session() as session:
+                # Prepare the request but don't send it yet
+                req = requests.Request('GET', self.url)
+                prepped = session.prepare_request(req)
+                
+                # Send the request and keep the connection open
+                with session.send(prepped, verify=True, timeout=10, stream=True) as response:
+                    # Get the certificate while connection is still open
+                    if not response.raw.connection or not response.raw.connection.sock:
+                        return {
+                            'valid': False,
+                            'expiry_date': None,
+                            'error': 'Could not establish secure connection'
+                        }
+                    
+                    cert = response.raw.connection.sock.getpeercert()
+                    
+                    if not cert:
+                        return {
+                            'valid': False,
+                            'expiry_date': None,
+                            'error': 'No certificate provided'
+                        }
+                    
+                    # Parse expiry date
+                    expiry_date = datetime.strptime(cert['notAfter'], '%b %d %H:%M:%S %Y %Z')
                     
                     return {
                         'valid': True,
-                        'expiry_date': expiry_date,
+                        'expiry_date': timezone.make_aware(expiry_date),
+                        'issuer': dict(x[0] for x in cert['issuer']),
                         'error': None
                     }
-        except Exception as e:
+            
+        except requests.exceptions.SSLError as e:
+            return {
+                'valid': False,
+                'expiry_date': None,
+                'error': f'SSL Certificate Invalid: {str(e)}'
+            }
+        except requests.exceptions.RequestException as e:
             return {
                 'valid': False,
                 'expiry_date': None,
                 'error': str(e)
+            }
+        except Exception as e:
+            return {
+                'valid': False,
+                'expiry_date': None,
+                'error': f'Unexpected error: {str(e)}'
             }
 
     def get_health_score(self, days=7):
@@ -138,11 +177,12 @@ class Monitor(models.Model):
         - Recent failures (20% of score)
         """
         # Get uptime score (0-50 points)
-        uptime_score = self.get_uptime_percentage(days=days) * 0.5
+        uptime = self.get_uptime_percentage(days=days)
+        uptime_score = (uptime * 0.5) if uptime is not None else 0
 
         # Get response time score (0-30 points)
         avg_response_time = self.get_average_response_time(days=days)
-        if avg_response_time == 0:
+        if avg_response_time is None:
             response_time_score = 0
         else:
             # Assuming response times under 500ms are ideal
@@ -179,12 +219,29 @@ class Monitor(models.Model):
         else:
             return ('Poor', 'red')
 
+    def save(self, *args, **kwargs):
+        # Check if this is a new monitor or if is_active changed from False to True
+        is_new = not self.pk
+        if not is_new:
+            old_instance = Monitor.objects.get(pk=self.pk)
+            was_reactivated = not old_instance.is_active and self.is_active
+        else:
+            was_reactivated = False
+
+        super().save(*args, **kwargs)
+
+        # Schedule immediate check for new or reactivated monitors
+        if (is_new or was_reactivated) and self.is_active:
+            from .tasks import check_monitor
+            check_monitor.delay(self.id)
+
 
 class MonitorLog(models.Model):
     STATUS_CHOICES = [
         ('success', 'Success'),
         ('failure', 'Failure'),
         ('error', 'Error'),
+        ('warning', 'Warning'),
     ]
 
     monitor = models.ForeignKey(Monitor, on_delete=models.CASCADE, related_name='logs', 

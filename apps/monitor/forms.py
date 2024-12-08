@@ -1,5 +1,6 @@
 from django import forms
 from .models import Monitor
+from .tasks import check_monitor
 
 
 class AddMonitorForm(forms.ModelForm):
@@ -47,6 +48,15 @@ class AddMonitorForm(forms.ModelForm):
                 self.add_error('alert_threshold', 'Alert threshold must be between 5 and 60 seconds.')
 
         return cleaned_data
+
+    def save(self, commit=True):
+        monitor = super().save(commit=commit)
+        if commit:
+            from .tasks import check_monitor
+            # Trigger an immediate check
+            check_monitor.delay(monitor.id)
+        return monitor
+    
     
 
 class UpdateMonitorForm(forms.ModelForm):
@@ -74,3 +84,15 @@ class UpdateMonitorForm(forms.ModelForm):
             'alert_threshold',
             'description',
         ]
+
+
+    def save(self, commit=True):
+        monitor = super().save(commit=commit)
+        if commit:
+            # Check if critical monitoring parameters have changed
+            critical_fields = ['url', 'method', 'interval']
+            if self.has_changed() and any(field in self.changed_data for field in critical_fields):
+                from .tasks import check_monitor
+                # Trigger an immediate check
+                check_monitor.delay(monitor.id)
+        return monitor
