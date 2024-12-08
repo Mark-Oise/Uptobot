@@ -22,8 +22,23 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <form hx-post="{% url 'monitor:add_monitor' %}" hx-target="#monitor-list" hx-swap="innerHTML">
+            <form method="post" action="{% url 'monitor:monitor_list' %}">
                 {% csrf_token %}
+
+                <!-- Add error messages -->
+                {% if form.errors %}
+                <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                    Please correct the errors below:
+                    <ul>
+                        {% for field in form %}
+                        {% for error in field.errors %}
+                        <li>{{ field.label }}: {{ error }}</li>
+                        {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div class="sm:col-span-2">
                         <label for="name"
@@ -93,47 +108,44 @@
 
                     <div class="sm:col-span-2">
                         <div class="flex justify-between items-center">
-                            <label for="description" class="text-sm font-medium text-gray-900 dark:text-white">Alerts
-                                threshold (seconds)</label>
+                            <label for="alert_threshold" class="text-sm font-medium text-gray-900 dark:text-white">
+                                Alerts threshold (seconds)
+                            </label>
                             <label class="inline-flex items-center cursor-pointer">
-                                <input type="checkbox" value="" class="sr-only peer" checked>
+                                <input type="checkbox" id="custom_threshold_toggle" class="sr-only peer">
                                 <span class="mr-2 ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Custom
                                     threshold</span>
                                 <div
                                     class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600">
                                 </div>
-
                             </label>
-
                         </div>
-                        <div>
-                            <p class="mt-2 mb-4 text-sm text-gray-800 dark:text-gray-300">Using default threshold (60
-                                seconds)</p>
+
+                        <div id="threshold_message" class="mt-2 mb-4">
+                            <p class="text-sm text-gray-800 dark:text-gray-300">Using default threshold (60 seconds)</p>
                         </div>
 
                         <div class="relative mt-2 mb-4">
-                            <label for="interval-range-input" class="sr-only">Interval range</label>
-                            <input id="interval-range-input" name="interval" type="range" min="5" max="60" value="5"
-                                step="5"
+                            <label for="alert_threshold_range" class="sr-only">Alert threshold range</label>
+                            <input id="alert_threshold_range" name="alert_threshold" type="range" min="5" max="60"
+                                value="60" step="5"
                                 class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
-                            <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">5m</span>
-                            <span id="current-value"
-                                class="text-sm text-gray-500 dark:text-gray-400 absolute start-1/2 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">5m</span>
-                            <span class="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">60m</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">5s</span>
+                            <span id="threshold_value"
+                                class="text-sm text-gray-500 dark:text-gray-400 absolute start-1/2 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">60s</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">60s</span>
                         </div>
-
-
                     </div>
 
                     <div class="sm:col-span-2">
                         <label for="description"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                        <textarea id="description" rows="4"
+                        <textarea id="description" name="description" rows="4"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-600 focus:border-green-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Write product description here"></textarea>
+                            placeholder="Write monitor description here"></textarea>
                     </div>
                 </div>
-                <button data-modal-hide="addMonitorModal" type="submit"
+                <button type="submit"
                     class="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                     <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">

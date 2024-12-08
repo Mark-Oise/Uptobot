@@ -12,11 +12,25 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def monitor_list(request):
-    monitors = Monitor.objects.filter(user=request.user)
+    if request.method == 'POST':
+        form = AddMonitorForm(request.POST)
+        if form.is_valid():
+            monitor = form.save(commit=False)
+            monitor.user = request.user
+            monitor.save()
+            messages.success(request, 'Monitor added successfully')
+            return redirect('monitor:monitor_list')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+            # Print form errors to console for debugging
+            print(form.errors)
+    else:
+        form = AddMonitorForm()
     
+    monitors = Monitor.objects.filter(user=request.user)
     context = {
         'monitors': monitors,
-        'form': AddMonitorForm()
+        'form': form
     }
     return render(request, 'dashboard/monitor/monitor_list.html', context)
 

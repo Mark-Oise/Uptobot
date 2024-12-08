@@ -45,11 +45,41 @@ document.addEventListener('DOMContentLoaded', function () {
     rangeInput.addEventListener('input', function () {
         let interval = parseInt(this.value, 10);
         // Snap to nearest valid interval
-        interval = validIntervals.reduce((prev, curr) => 
+        interval = validIntervals.reduce((prev, curr) =>
             Math.abs(curr - interval) < Math.abs(prev - interval) ? curr : prev
         );
         this.value = interval;
         currentValueLabel.textContent = `${interval}m`;
         setActiveButton(interval);
     });
+
+    // Alert threshold handling
+    const thresholdToggle = document.getElementById('custom_threshold_toggle');
+    const thresholdRange = document.getElementById('alert_threshold_range');
+    const thresholdValue = document.getElementById('threshold_value');
+    const thresholdMessage = document.getElementById('threshold_message');
+
+    function updateThresholdUI(isCustom) {
+        thresholdRange.disabled = !isCustom;
+        thresholdMessage.textContent = isCustom
+            ? `Custom threshold: ${thresholdRange.value} seconds`
+            : 'Using default threshold (60 seconds)';
+        thresholdValue.textContent = `${thresholdRange.value}s`;
+    }
+
+    thresholdToggle.addEventListener('change', function () {
+        updateThresholdUI(this.checked);
+        if (!this.checked) {
+            thresholdRange.value = 60;
+            thresholdValue.textContent = '60s';
+        }
+    });
+
+    thresholdRange.addEventListener('input', function () {
+        thresholdValue.textContent = `${this.value}s`;
+        thresholdMessage.textContent = `Custom threshold: ${this.value} seconds`;
+    });
+
+    // Initialize with default state
+    updateThresholdUI(thresholdToggle.checked);
 });
