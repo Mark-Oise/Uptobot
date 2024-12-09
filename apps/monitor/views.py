@@ -47,23 +47,21 @@ def monitor_list(request):
 def monitor_detail(request, pk):
     monitor = get_object_or_404(Monitor, pk=pk, user=request.user)
     
-    if request.method == 'POST':
-        form = UpdateMonitorForm(request.POST, instance=monitor)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Monitor updated successfully')
-            return redirect('monitor:monitor_detail', pk=pk)
-        else:
-            messages.error(request, 'Please correct the errors below.')
-    else:
-        form = UpdateMonitorForm(instance=monitor)
+    # Get initial chart data (7 days by default)
+    response_time_data = monitor.get_response_time_data(period='7d')
+    chart_data = {
+        'dates': [entry['date'].strftime('%d %b') if hasattr(entry['date'], 'strftime') 
+                 else entry['date'] for entry in response_time_data],
+        'data': [round(entry['avg_response_time'], 2) for entry in response_time_data]
+    }
     
     context = {
         'monitor': monitor,
-        'form': form,
+        'form': UpdateMonitorForm(instance=monitor),
         'recent_incidents': monitor.logs.exclude(status='success').order_by('-checked_at')[:5],
         'health_score': monitor.get_health_score(),
         'health_status': monitor.get_health_status(),
+        'chart_data': chart_data,
     }
     
     return render(request, 'dashboard/monitor/monitor_detail.html', context)
@@ -121,6 +119,29 @@ def delete_monitor(request, pk):
 @login_required
 def settings(request):
     return render(request, 'dashboard/monitor/settings.html')
+
+
+@login_required
+def response_time_chart(request, pk):
+    monitor = get_object_or_404(Monitor, pk=pk, user=request.user)
+    period = request.GET.get('period', '7d')
+    
+    try:
+        data = monitor.get_response_time_data(period)
+        
+        # Format data for ApexCharts
+        categories = [entry['date'].strftime('%d %b') for entry in data]
+        series = [round(entry['avg_response_time'], 2) for entry in data]
+        
+        context = {
+            'categories': categories,
+            'series': series,
+            'period': period
+        }
+        
+        return render(request, 'dashboard/monitor/charts.html', context)
+    except Exception as e:
+        return HttpResponse(f"Error: {str(e)}", status=500)
 
 
 

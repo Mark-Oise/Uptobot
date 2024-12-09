@@ -272,7 +272,40 @@ class Monitor(models.Model):
             current_date -= timedelta(days=1)
         
         return history
-        return history
+    
+        
+    def get_response_time_data(self, period='7d'):
+        """Get response time data for different time periods"""
+        end_date = timezone.now()
+    
+        # Define time periods
+        if period == '1d':  # Today
+            start_date = end_date.replace(hour=0, minute=0, second=0, microsecond=0)
+        elif period == 'yesterday':
+            end_date = timezone.now().replace(hour=23, minute=59, second=59)
+            start_date = end_date.replace(hour=0, minute=0, second=0) - timedelta(days=1)
+        elif period == '7d':
+            start_date = end_date - timedelta(days=7)
+        elif period == '14d':
+            start_date = end_date - timedelta(days=14)
+        else:
+            raise ValueError("Invalid period")
+
+        # Get logs for the period
+        logs = self.logs.filter(
+            checked_at__range=(start_date, end_date),
+            status='success',
+            response_time__isnull=False
+        ).order_by('checked_at')
+
+        # Group by date and calculate average
+        data = logs.extra(
+            select={'date': "DATE(checked_at)"}
+        ).values('date').annotate(
+            avg_response_time=models.Avg('response_time')
+        ).order_by('date')
+
+        return list(data)
 
 
 class MonitorLog(models.Model):
