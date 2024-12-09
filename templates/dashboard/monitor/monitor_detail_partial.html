@@ -228,7 +228,7 @@
                 <div>
                     <button id="dropdownDefaultButton" data-dropdown-toggle="lastDaysdropdown"
                         data-dropdown-placement="bottom" type="button"
-                        class="w-full sm:w-auto px-3 py-2 inline-flex items-center text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 whitespace-nowrap">
+                        class="w-full sm:w-auto px-3 py-2 inline-flex items-center justify-center text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 whitespace-nowrap">
                         Last 7 days
                         <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 10 6">
@@ -243,28 +243,28 @@
                             <li>
                                 <a hx-get="{% url 'monitor:response_time_chart' monitor.id %}?period=1d"
                                     hx-target="#chart-container" hx-swap="outerHTML"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    class="block px-4 py-2 text-center hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                     Today
                                 </a>
                             </li>
                             <li>
                                 <a hx-get="{% url 'monitor:response_time_chart' monitor.id %}?period=yesterday"
                                     hx-target="#chart-container"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    class="block px-4 py-2 text-center hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                     Yesterday
                                 </a>
                             </li>
                             <li>
                                 <a hx-get="{% url 'monitor:response_time_chart' monitor.id %}?period=7d"
                                     hx-target="#chart-container"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    class="block px-4 py-2 text-center hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                     Last 7 days
                                 </a>
                             </li>
                             <li>
                                 <a hx-get="{% url 'monitor:response_time_chart' monitor.id %}?period=14d"
                                     hx-target="#chart-container"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    class="block px-4 py-2 text-center hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                     Last 14 days
                                 </a>
                             </li>
