@@ -45,7 +45,9 @@ const createChartOptions = (data = {}) => ({
     legend: {
         show: false
     },
-
+    stroke: {
+        curve: 'smooth'
+    },
     xaxis: {
         categories: data.categories || ['09 Feb', '10 Feb', '11 Feb', '12 Feb', '13 Feb', '14 Feb'],
         labels: {
