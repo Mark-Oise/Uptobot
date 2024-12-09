@@ -236,6 +236,45 @@ class Monitor(models.Model):
             check_monitor.delay(self.id)
 
 
+    def get_daily_uptime_history(self, days=5):
+        """
+        Get daily uptime percentages for the last n days
+        Returns a list of dictionaries containing date and uptime percentage, most recent first
+        """
+        history = []
+        end_date = timezone.now().date()
+        start_date = end_date - timedelta(days=days-1)  # -1 because we want to include today
+        
+        # Iterate through dates in reverse order (newest to oldest)
+        current_date = end_date
+        while current_date >= start_date:
+            # Get start and end of the day in timezone-aware datetime
+            day_start = timezone.make_aware(datetime.combine(current_date, datetime.min.time()))
+            day_end = timezone.make_aware(datetime.combine(current_date, datetime.max.time()))
+            
+            # Get logs for the day
+            daily_logs = self.logs.filter(
+                checked_at__range=(day_start, day_end)
+            )
+            
+            if daily_logs.exists():
+                successful_checks = daily_logs.filter(status='success').count()
+                total_checks = daily_logs.count()
+                uptime = (successful_checks / total_checks) * 100 if total_checks > 0 else 0
+            else:
+                uptime = None  # No data for this day
+            
+            history.append({
+                'date': current_date,
+                'uptime': uptime
+            })
+            
+            current_date -= timedelta(days=1)
+        
+        return history
+        return history
+
+
 class MonitorLog(models.Model):
     STATUS_CHOICES = [
         ('success', 'Success'),
