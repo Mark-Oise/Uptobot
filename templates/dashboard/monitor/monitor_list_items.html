@@ -120,7 +120,7 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                            Last checked: 1 min ago
+                            Last checked: {{ monitor.last_checked|timesince }} ago
                         </p>
                     </div>
                     <div class="inline-flex items-center text-sm font-medium text-gray-900 dark:text-white">
@@ -152,6 +152,46 @@
     </div>
     {% endfor %}
 </div>
+
+<!-- Pagination Controls -->
+{% if monitors.paginator.num_pages > 1 %}
+<div class="flex flex-col items-center mt-8">
+    <span class="text-sm text-gray-700 dark:text-gray-400">
+        Showing <span class="font-semibold text-gray-900 dark:text-white">{{ monitors.start_index }}</span> to
+        <span class="font-semibold text-gray-900 dark:text-white">{{ monitors.end_index }}</span> of
+        <span class="font-semibold text-gray-900 dark:text-white">{{ monitors.paginator.count }}</span> Monitors
+    </span>
+    <div class="inline-flex mt-2 xs:mt-0">
+        {% if monitors.has_previous %}
+        <button
+            hx-get="{% url 'monitor:search_monitors' %}?page={{ monitors.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}"
+            hx-target="#monitor-listing"
+            class="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <svg class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 5H1m0 0 4 4M1 5l4-4" />
+            </svg>
+            Prev
+        </button>
+        {% endif %}
+        {% if monitors.has_next %}
+        <button
+            hx-get="{% url 'monitor:search_monitors' %}?page={{ monitors.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}"
+            hx-target="#monitor-listing"
+            class="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            Next
+            <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M1 5h12m0 0L9 1m4 4L9 9" />
+            </svg>
+        </button>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
 <div id="search-alert" class="hidden"><!-- Search alert will be shown via JavaScript --></div>
 {% else %}
 {% if search_query %}

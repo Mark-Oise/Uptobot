@@ -27,7 +27,15 @@ def monitor_list(request):
     else:
         form = AddMonitorForm()
     
-    monitors = Monitor.objects.filter(user=request.user)
+    # Add pagination
+    monitors_list = Monitor.objects.filter(user=request.user)
+    paginator = Paginator(monitors_list, 6)  # Show 6 monitors per page
+    page = request.GET.get('page', 1)
+    try:
+        monitors = paginator.page(page)
+    except:
+        monitors = paginator.page(1)
+    
     context = {
         'monitors': monitors,
         'form': form
@@ -80,13 +88,21 @@ def add_monitor(request):
 
 def search_monitors(request):
     search_query = request.GET.get('search', '').strip()
-    monitors = Monitor.objects.filter(user=request.user)
+    monitors_list = Monitor.objects.filter(user=request.user)
     
     if search_query:
-        monitors = monitors.filter(
+        monitors_list = monitors_list.filter(
             Q(name__icontains=search_query) |
             Q(url__icontains=search_query)
         )
+    
+    # Add pagination
+    paginator = Paginator(monitors_list, 6)  # Show 6 monitors per page
+    page = request.GET.get('page', 1)
+    try:
+        monitors = paginator.page(page)
+    except:
+        monitors = paginator.page(1)
     
     context = {
         'monitors': monitors,
