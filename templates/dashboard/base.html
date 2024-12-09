@@ -41,9 +41,9 @@
 
 </head>
 
-<body class="flex flex-col">
+<body class="flex flex-col bg-gray-50 dark:bg-gray-900">
     {% include 'dashboard/components/sidebar.html' %}
-    <div id="main-content" class="bg-gray-50 dark:bg-gray-900 sm:ml-64 lg:px-8 transition-all duration-300 ease-in-out">
+    <div id="main-content" class=" sm:ml-64 lg:px-8 transition-all duration-300 ease-in-out">
         {% include 'dashboard/components/navbar.html' %}
         <main id="main-container" class="mt-2">
             {% block content %}
