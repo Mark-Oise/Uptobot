@@ -65,6 +65,12 @@ class Monitor(models.Model):
         help_text='Number of consecutive failed checks.'
     )
 
+    last_ssl_check = models.DateTimeField(
+        null=True, 
+        blank=True,
+        help_text='Last SSL certificate check timestamp'
+    )
+
     def __str__(self):
         return f"{self.name} ({self.url})"
 

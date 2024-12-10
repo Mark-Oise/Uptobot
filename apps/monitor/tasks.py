@@ -40,30 +40,35 @@ def check_monitor(monitor_id):
 def check_http(monitor):
     """Helper function to check HTTP endpoints"""
     try:
-        # Get SSL info first if HTTPS
-        ssl_info = None
+        # Only check SSL info once per day
+        should_check_ssl = False
         if monitor.url.startswith('https'):
-            ssl_info = monitor.get_ssl_info()
-        
-        method = getattr(requests, monitor.method.lower())
+            last_ssl_check = getattr(monitor, 'last_ssl_check', None)
+            if not last_ssl_check or (timezone.now() - last_ssl_check).days >= 1:
+                should_check_ssl = True
         
         # Use requests.Session() for connection pooling
         with requests.Session() as session:
-            # Measure only the actual request time, not SSL handshake
+            # Measure only the actual request time
             start_time = timezone.now()
             response = session.request(
                 monitor.method,
                 monitor.url, 
                 timeout=10,
-                verify=False,  # Don't fail immediately on SSL issues
+                verify=True,  # Re-enable SSL verification
                 allow_redirects=True
             )
             end_time = timezone.now()
             
-            # Calculate response time in milliseconds, excluding SSL handshake
             response_time = (end_time - start_time).total_seconds() * 1000
-            
             status = 'success' if 200 <= response.status_code < 300 else 'failure'
+            
+            # Check SSL only if needed
+            ssl_info = None
+            if should_check_ssl:
+                ssl_info = monitor.get_ssl_info()
+                monitor.last_ssl_check = timezone.now()
+                monitor.save(update_fields=['last_ssl_check'])
             
             # Create log entry
             log = MonitorLog.objects.create(
@@ -73,14 +78,14 @@ def check_http(monitor):
                 status_code=response.status_code
             )
             
-            # Add SSL warning if there are issues but site is still accessible
+            # Add SSL warning if there are issues
             if ssl_info and not ssl_info['valid']:
                 log.error_message = f"Warning: {ssl_info['error']} (Site still accessible)"
                 log.status = 'warning'
                 log.save()
                 
             return log
-        
+            
     except requests.exceptions.SSLError as e:
         # More detailed SSL error handling
         error_msg = str(e)
