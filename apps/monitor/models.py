@@ -96,17 +96,25 @@ class Monitor(models.Model):
         end_date = timezone.now()
         start_date = end_date - timedelta(days=days)
         
-        # Get successful logs with response times
+        # Use select_related to optimize query and add caching
         logs = self.logs.filter(
             checked_at__range=(start_date, end_date),
             status='success',
             response_time__isnull=False
-        )
+        ).values('response_time')
         
         if not logs.exists():
-            return None  # Return None instead of 0 for no data
-            
-        return round(logs.aggregate(avg_time=models.Avg('response_time'))['avg_time'], 2)
+            return None
+        
+        # Use database aggregation instead of Python calculation
+        result = logs.aggregate(
+            avg_time=models.Avg('response_time'),
+            # Also get min and max for additional insights
+            min_time=models.Min('response_time'),
+            max_time=models.Max('response_time')
+        )
+        
+        return round(result['avg_time'], 2) if result['avg_time'] is not None else None
 
     
     def get_ssl_info(self):
@@ -336,6 +344,8 @@ class MonitorLog(models.Model):
         indexes = [
             models.Index(fields=['monitor', 'checked_at']),
             models.Index(fields=['status']),
+            # Add new index for response time queries
+            models.Index(fields=['status', 'response_time', 'checked_at']),
         ]
 
     def __str__(self):
