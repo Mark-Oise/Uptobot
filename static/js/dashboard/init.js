@@ -5,6 +5,11 @@ const AppInit = {
             window.initFlowbite();
         }
 
+        // Initialize charts
+        if (document.getElementById("labels-chart")) {
+            window.initializeChart();
+        }
+
         // Initialize tabs
         if (document.querySelector('[role="tab"]')) {
             window.initializeTabs();
