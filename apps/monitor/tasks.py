@@ -40,13 +40,6 @@ def check_monitor(monitor_id):
 def check_http(monitor):
     """Helper function to check HTTP endpoints"""
     try:
-        # Only check SSL info once per day
-        should_check_ssl = False
-        if monitor.url.startswith('https'):
-            last_ssl_check = getattr(monitor, 'last_ssl_check', None)
-            if not last_ssl_check or (timezone.now() - last_ssl_check).days >= 1:
-                should_check_ssl = True
-        
         # Use requests.Session() for connection pooling
         with requests.Session() as session:
             # Measure only the actual request time
@@ -55,7 +48,7 @@ def check_http(monitor):
                 monitor.method,
                 monitor.url, 
                 timeout=10,
-                verify=True,  # Re-enable SSL verification
+                verify=True,
                 allow_redirects=True
             )
             end_time = timezone.now()
@@ -63,42 +56,14 @@ def check_http(monitor):
             response_time = (end_time - start_time).total_seconds() * 1000
             status = 'success' if 200 <= response.status_code < 300 else 'failure'
             
-            # Check SSL only if needed
-            ssl_info = None
-            if should_check_ssl:
-                ssl_info = monitor.get_ssl_info()
-                monitor.last_ssl_check = timezone.now()
-                monitor.save(update_fields=['last_ssl_check'])
-            
             # Create log entry
-            log = MonitorLog.objects.create(
+            return MonitorLog.objects.create(
                 monitor=monitor,
                 status=status,
                 response_time=response_time,
                 status_code=response.status_code
             )
             
-            # Add SSL warning if there are issues
-            if ssl_info and not ssl_info['valid']:
-                log.error_message = f"Warning: {ssl_info['error']} (Site still accessible)"
-                log.status = 'warning'
-                log.save()
-                
-            return log
-            
-    except requests.exceptions.SSLError as e:
-        # More detailed SSL error handling
-        error_msg = str(e)
-        if "certificate verify failed" in error_msg:
-            error_msg = "SSL certificate validation failed. Certificate may be self-signed or missing intermediate certificates."
-        elif "certificate has expired" in error_msg:
-            error_msg = "SSL certificate has expired."
-        
-        return MonitorLog.objects.create(
-            monitor=monitor,
-            status='warning',  # Changed from 'error' to 'warning'
-            error_message=f"SSL Warning: {error_msg}"
-        )
     except requests.exceptions.Timeout:
         return MonitorLog.objects.create(
             monitor=monitor,
