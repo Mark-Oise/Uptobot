@@ -6,7 +6,7 @@ const AppInit = {
         }
 
         // Initialize charts
-        if (document.getElementById("labels-chart")) {
+        if (document.getElementById("line-chart")) {
             window.initializeChart();
         }
 

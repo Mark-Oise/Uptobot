@@ -17,6 +17,13 @@
 
     <script src="https://unpkg.com/htmx.org@2.0.3"></script>
 
+    <!-- Add CSRF token for HTMX -->
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        });
+    </script>
+
     <!-- Load other libraries -->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
@@ -34,11 +41,15 @@
 
 </head>
 
-<body class="flex flex-col">
-
-    {% block content %}
-    {% endblock content %}
-
+<body class="flex flex-col bg-gray-100 dark:bg-gray-900">
+    {% include 'dashboard/components/sidebar.html' %}
+    <div id="main-content" class=" sm:ml-64 lg:px-8 transition-all duration-300 ease-in-out">
+        {% include 'dashboard/components/navbar.html' %}
+        <main id="main-container" class="mt-2">
+            {% block content %}
+            {% endblock content %}
+        </main>
+    </div>
     <script src="{% static 'js/dashboard/forms.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
 
