@@ -7,10 +7,6 @@ class AddMonitorForm(forms.ModelForm):
     """
     Form for creating a new Monitor instance.
     """
-    method = forms.ChoiceField(
-        choices=Monitor.METHOD_CHOICES,
-    )
-    
     alert_threshold = forms.IntegerField(
         min_value=5,
         max_value=60,
@@ -25,7 +21,6 @@ class AddMonitorForm(forms.ModelForm):
             'name',
             'interval',
             'url',
-            'method',
             'alert_threshold',
             'description',
         ]
@@ -33,14 +28,11 @@ class AddMonitorForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         url = cleaned_data.get('url')
-        method = cleaned_data.get('method')
         alert_threshold = cleaned_data.get('alert_threshold')
         interval = cleaned_data.get('interval')
 
         if not url:
             self.add_error('url', 'URL is required.')
-        if not method:
-            self.add_error('method', 'HTTP method is required.')
         if not interval or interval < 5 or interval > 60:
             self.add_error('interval', 'Interval must be between 5 and 60 minutes.')
         if alert_threshold is not None:
@@ -63,10 +55,6 @@ class UpdateMonitorForm(forms.ModelForm):
     """
     Form for updating an existing Monitor instance.
     """
-    method = forms.ChoiceField(
-        choices=Monitor.METHOD_CHOICES,
-    )
-    
     alert_threshold = forms.IntegerField(
         min_value=5,
         max_value=60,
@@ -80,7 +68,6 @@ class UpdateMonitorForm(forms.ModelForm):
             'name',
             'interval',
             'url',
-            'method',
             'alert_threshold',
             'description',
         ]
@@ -90,7 +77,7 @@ class UpdateMonitorForm(forms.ModelForm):
         monitor = super().save(commit=commit)
         if commit:
             # Check if critical monitoring parameters have changed
-            critical_fields = ['url', 'method', 'interval']
+            critical_fields = ['url', 'interval']
             if self.has_changed() and any(field in self.changed_data for field in critical_fields):
                 from .tasks import check_monitor
                 # Trigger an immediate check

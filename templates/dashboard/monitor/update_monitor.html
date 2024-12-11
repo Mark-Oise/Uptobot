@@ -40,7 +40,7 @@
                 {% endif %}
 
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                    <div class="sm:col-span-2">
+                    <div class="">
                         <label for="name"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                         <input type="text" name="name" id="name" value="{{monitor.name}}"
@@ -55,20 +55,7 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
                             placeholder="http://example.com" required="">
                     </div>
-                    <div>
-                        <label for="method"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Method</label>
-                        <select id="method" name="method" required
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500">
-                            {% for value, label in form.method.field.choices %}
-                            <option value="{{ value }}" {% if value == monitor.method %}selected{% endif %}>{{ label }}
-                            </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <section id="protocol-specific-fields" class="sm:col-span-2 grid grid-cols-2 gap-4">
-                        <!-- Protocol-specific fields will be inserted here -->
-                    </section>
+
                     <div class="sm:col-span-2">
                         <label for="interval"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Interval</label>

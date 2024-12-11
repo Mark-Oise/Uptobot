@@ -38,14 +38,13 @@ def check_monitor(monitor_id):
 
 
 def check_http(monitor):
-    """Helper function to check HTTP endpoints"""
+    """Helper function to check HTTP endpoints using HEAD method only"""
     try:
         # Use requests.Session() for connection pooling
         with requests.Session() as session:
-            # Measure only the actual request time
+            # Always use HEAD method regardless of monitor.method setting
             start_time = timezone.now()
-            response = session.request(
-                monitor.method,
+            response = session.head(
                 monitor.url, 
                 timeout=10,
                 verify=True,

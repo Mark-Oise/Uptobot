@@ -15,15 +15,6 @@ import requests
 
 
 class Monitor(models.Model):
-    # HTTP Method choices
-    METHOD_CHOICES = [
-        ('GET', 'GET'),
-        ('POST', 'POST'),
-        ('PUT', 'PUT'),
-        ('DELETE', 'DELETE'),
-        ('PATCH', 'PATCH'),
-    ]
-
     # Interval choices in minutes
     INTERVAL_CHOICES = [
         (5, '5 minutes'),
@@ -43,7 +34,6 @@ class Monitor(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='monitors')
     name = models.CharField(max_length=255, help_text='Monitor name')
     url = models.URLField(max_length=255, help_text='URL to monitor')
-    method = models.CharField(max_length=6, choices=METHOD_CHOICES, default='GET', help_text='HTTP method')
     interval = models.IntegerField(choices=INTERVAL_CHOICES, default=5, help_text='Monitoring interval in minutes')
     
     description = models.TextField(blank=True, null=True, help_text='Description of the monitor.')
