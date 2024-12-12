@@ -19,7 +19,7 @@
                 </button>
             </li>
             <li class="me-0 sm:me-2 py-2" role="presentation">
-                <button id="incidents-tab" data-tabs-target="#incidents" type="button" role="tab"
+                <button id="notifications-tab" data-tabs-target="#notifications" type="button" role="tab"
                     aria-controls="incidents" aria-selected="false"
                     class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white flex items-center justify-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -31,18 +31,7 @@
                     Notifications
                 </button>
             </li>
-            <li class="me-0 sm:me-2 py-2" role="presentation">
-                <button id="metrics-tab" data-tabs-target="#metrics" type="button" role="tab" aria-selected="false"
-                    class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white flex items-center justify-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01">
-                        </path>
-                    </svg>
-                    Appearance
-                </button>
-            </li>
+
             <li class="me-0 sm:me-2 py-2" role="presentation">
                 <button id="security-tab" data-tabs-target="#security" type="button" role="tab" aria-selected="false"
                     class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white flex items-center justify-center gap-2">
@@ -146,123 +135,79 @@
                     </div>
                 </div>
             </div>
+            <div id="notifications" role="tabpanel" aria-labelledby="notifications-tab"
+                class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800 xl:mb-0">
+                <div class="flow-root">
+                    <h3 class="text-xl font-semibold dark:text-white">Alerts &amp; Notifications</h3>
 
-            <div class="hidden p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800"
-                id="incidents" role="tabpanel" aria-labelledby="incidents-tab">
-                <div class="items-center justify-between lg:flex">
-                    <div class="mb-4 lg:mb-0">
-                        <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">Recent Incidents</h3>
-                    </div>
-                </div>
+                    <div class="divide-y divide-gray-200 dark:divide-gray-700">
+                        <!-- Item 1 -->
+                        <div class="flex items-center justify-between py-4">
+                            <div class="flex flex-col flex-grow">
+                                <div class="text-lg font-semibold text-gray-900 dark:text-white">Email Alerts
+                                </div>
+                                <div class="text-base font-normal text-gray-500 dark:text-gray-400">Receive
+                                    notifications via email</div>
+                            </div>
+                            <label for="company-news" class="relative flex items-center cursor-pointer">
+                                <input type="checkbox" id="company-news" class="sr-only">
+                                <span
+                                    class="h-6 bg-gray-200 border border-gray-200 rounded-full w-11 toggle-bg dark:bg-gray-700 dark:border-gray-600"></span>
+                            </label>
+                        </div>
+                        <!-- Item 2 -->
+                        <div class="flex items-center justify-between py-4">
+                            <div class="flex flex-col flex-grow">
+                                <div class="text-lg font-semibold text-gray-900 dark:text-white">SMS Alerts</div>
+                                <div class="text-base font-normal text-gray-500 dark:text-gray-400">Receive
+                                    notifications via SMS</div>
+                            </div>
+                            <label for="account-activity" class="relative flex items-center cursor-pointer">
+                                <input type="checkbox" id="account-activity" class="sr-only" checked="">
+                                <span
+                                    class="h-6 bg-gray-200 border border-gray-200 rounded-full w-11 toggle-bg dark:bg-gray-700 dark:border-gray-600"></span>
+                            </label>
+                        </div>
+                        <!-- Item 3 -->
+                        <div class="flex items-center justify-between py-4">
+                            <div class="flex flex-col flex-grow">
+                                <div class="text-lg font-semibold text-gray-900 dark:text-white">Meetups Near
+                                    You</div>
+                                <div class="text-base font-normal text-gray-500 dark:text-gray-400">Get an email
+                                    when a Dribbble Meetup is posted close to my location</div>
+                            </div>
+                            <label for="meetups" class="relative flex items-center cursor-pointer">
+                                <input type="checkbox" id="meetups" class="sr-only" checked="">
+                                <span
+                                    class="h-6 bg-gray-200 border border-gray-200 rounded-full w-11 toggle-bg dark:bg-gray-700 dark:border-gray-600"></span>
+                            </label>
+                        </div>
 
-                <!-- Recent Incidents List -->
-                <div class="space-y-4">
-                    <!-- First Incident -->
-                    <div class="flex items-start gap-2">
-                        <svg class="w-5 h-5 text-yellow-400 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                        </svg>
-                        <div>
-                            <h4 class="text-base font-semibold text-gray-900 dark:text-white">2023-06-04 15:23</h4>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Duration: 5 minutes</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Reason: High latency</p>
+                        <!-- Item 4 -->
+                        <div class="flex items-center justify-between pt-4">
+                            <div class="flex flex-col flex-grow">
+                                <div class="text-lg font-semibold text-gray-900 dark:text-white">New Messages
+                                </div>
+                                <div class="text-base font-normal text-gray-500 dark:text-gray-400">Get
+                                    Themsberg news, announcements, and product updates</div>
+                            </div>
+                            <label for="new-messages" class="relative flex items-center cursor-pointer">
+                                <input type="checkbox" id="new-messages" class="sr-only">
+                                <span
+                                    class="h-6 bg-gray-200 border border-gray-200 rounded-full w-11 toggle-bg dark:bg-gray-700 dark:border-gray-600"></span>
+                            </label>
                         </div>
                     </div>
-
-                    <!-- Second Incident -->
-                    <div class="flex items-start gap-2">
-                        <svg class="w-5 h-5 text-yellow-400 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                        </svg>
-                        <div>
-                            <h4 class="text-base font-semibold text-gray-900 dark:text-white">2023-05-30 10:17</h4>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Duration: 2 minutes</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Reason: Connection timeout</p>
-                        </div>
+                    <div class="mt-6">
+                        <button
+                            class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Save
+                            all</button>
                     </div>
                 </div>
-
-
             </div>
-            <div class="hidden p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800"
-                id="metrics" role="tabpanel" aria-labelledby="metrics-tab">
-                <div class="items-center justify-between lg:flex">
-                    <div class="mb-4 lg:mb-0">
-                        <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">Metrics</h3>
-                    </div>
 
 
-                </div>
-                <div class="grid grid-cols-2 gap-6">
-                    <!-- Server Response -->
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0">
-                            <svg class="w-6 h-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor">
-                                <rect x="2" y="4" width="20" height="16" rx="2" stroke-width="2" />
-                                <path d="M6 8h12" stroke-width="2" />
-                                <path d="M6 12h12" stroke-width="2" />
-                                <path d="M6 16h8" stroke-width="2" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Server Response</p>
-                            <p class="text-xl font-semibold text-gray-900 dark:text-white">187ms</p>
-                        </div>
-                    </div>
-                    <!-- Page Load Time -->
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0">
-                            <svg class="w-6 h-6 text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor">
-                                <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-width="2" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Page Load Time</p>
-                            <p class="text-xl font-semibold text-gray-900 dark:text-white">1.2s</p>
-                        </div>
-                    </div>
 
-                    <!-- SSL Certificate -->
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0">
-                            <svg class="w-6 h-6 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor">
-                                <path
-                                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                                    stroke-width="2" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">SSL Certificate</p>
-                            <p class="text-xl font-semibold text-gray-900 dark:text-white">Valid (Expires in 3
-                                months)</p>
-                        </div>
-                    </div>
-
-                    <!-- DNS Issues -->
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0">
-                            <svg class="w-6 h-6 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor">
-                                <circle cx="12" cy="12" r="10" stroke-width="2" />
-                                <path d="M15 9l-6 6m0-6l6 6" stroke-width="2" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">DNS Issues</p>
-                            <p class="text-xl font-semibold text-gray-900 dark:text-white">None detected</p>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
             <div class="hidden p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800"
                 id="security" role="tabpanel" aria-labelledby="security-tab">
                 <h3 class="mb-4 text-xl font-semibold dark:text-white">Password information</h3>
