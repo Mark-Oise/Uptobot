@@ -3,13 +3,16 @@
 
 <div class="px-4 h-screen" id="profile-settings">
 
+
+
     <div class=" flex grid w-full max-w-lg gap-2 mt-4">
         <ul id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist"
-            class="rounded-lg px-2 flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-            <li class="me-0 sm:me-2 py-2" role="presentation">
-                <button id="history-tab" data-tabs-target="#history" type="button" role="tab" aria-selected="false"
-                    class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white flex items-center justify-center gap-2"
-                    aria-current="false">
+            class="grid grid-cols-2 text-sm font-medium text-center text-gray-500 shadow md:rounded-lg md:grid-cols-4 dark:divide-gray-600 dark:text-gray-400"
+            role="tablist">
+            <li class="w-full" role="presentation">
+                <button id="history-tab" data-tabs-target="#history" type="button" role="tab" aria-controls="history"
+                    aria-selected="false"
+                    class="inline-block p-4 w-full border border-gray-200 dark:border-gray-500 md:rounded-l-lg flex items-center justify-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -18,10 +21,10 @@
                     Account
                 </button>
             </li>
-            <li class="me-0 sm:me-2 py-2" role="presentation">
+            <li class="w-full" role="presentation">
                 <button id="notifications-tab" data-tabs-target="#notifications" type="button" role="tab"
-                    aria-controls="incidents" aria-selected="false"
-                    class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white flex items-center justify-center gap-2">
+                    aria-controls="notifications" aria-selected="false"
+                    class="inline-block p-4 w-full border dark:border-gray-500 border-gray-200 flex items-center justify-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -31,10 +34,10 @@
                     Notifications
                 </button>
             </li>
-
-            <li class="me-0 sm:me-2 py-2" role="presentation">
-                <button id="security-tab" data-tabs-target="#security" type="button" role="tab" aria-selected="false"
-                    class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white flex items-center justify-center gap-2">
+            <li class="w-full" role="presentation">
+                <button id="security-tab" data-tabs-target="#security" type="button" role="tab" aria-controls="security"
+                    aria-selected="false"
+                    class="inline-block p-4 w-full border dark:border-gray-500 border-gray-200 flex items-center justify-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -44,7 +47,20 @@
                     Security
                 </button>
             </li>
+            <li class="w-full" role="presentation">
+                <button id="billing-tab" aria-selected="false"
+                    class="inline-block p-4 w-full border border-gray-200 dark:border-gray-500 md:rounded-r-lg flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
+                        </path>
+                    </svg>
+                    Billing
+                </button>
+            </li>
         </ul>
+
     </div>
     <style>
         /* Style for active tab */
@@ -198,6 +214,21 @@
                             </label>
                         </div>
                     </div>
+
+                    <form class="flex flex-col pt-4">
+                        <label for="countries"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an
+                            option</label>
+                        <select id="countries"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option selected>Choose a country</option>
+                            <option value="US">United States</option>
+                            <option value="CA">Canada</option>
+                            <option value="FR">France</option>
+                            <option value="DE">Germany</option>
+                        </select>
+                    </form>
+
                     <div class="mt-6">
                         <button
                             class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Save
