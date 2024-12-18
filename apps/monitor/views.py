@@ -44,8 +44,8 @@ def monitor_list(request):
 
 
 @login_required
-def monitor_detail(request, pk):
-    monitor = get_object_or_404(Monitor, pk=pk, user=request.user)
+def monitor_detail(request, slug):
+    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
     
     # Get initial chart data (7 days by default)
     response_time_data = monitor.get_response_time_data(period='7d')
@@ -109,8 +109,8 @@ def search_monitors(request):
     return render(request, 'dashboard/monitor/monitor_list_items.html', context)
 
 
-def delete_monitor(request, pk):
-    monitor = get_object_or_404(Monitor, pk=pk, user=request.user)
+def delete_monitor(request, slug):
+    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
     monitor.delete()
     messages.success(request, 'Monitor deleted successfully')
     return redirect('monitor:monitor_list')
@@ -122,8 +122,8 @@ def settings(request):
 
 
 @login_required
-def response_time_chart(request, pk):
-    monitor = get_object_or_404(Monitor, pk=pk, user=request.user)
+def response_time_chart(request, slug):
+    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
     period = request.GET.get('period', '7d')
     
     try:

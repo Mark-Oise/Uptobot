@@ -44,7 +44,6 @@ class AddMonitorForm(forms.ModelForm):
     def save(self, commit=True):
         monitor = super().save(commit=commit)
         if commit:
-            from .tasks import check_monitor
             # Trigger an immediate check
             check_monitor.delay(monitor.id)
         return monitor
@@ -79,7 +78,6 @@ class UpdateMonitorForm(forms.ModelForm):
             # Check if critical monitoring parameters have changed
             critical_fields = ['url', 'interval']
             if self.has_changed() and any(field in self.changed_data for field in critical_fields):
-                from .tasks import check_monitor
                 # Trigger an immediate check
                 check_monitor.delay(monitor.id)
         return monitor

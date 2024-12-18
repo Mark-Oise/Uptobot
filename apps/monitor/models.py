@@ -9,6 +9,9 @@ from datetime import datetime
 import OpenSSL.crypto
 from urllib.parse import urlparse
 import requests
+from django.utils.text import slugify
+from django.utils.crypto import get_random_string
+from django.urls import reverse
 
 
 # Create your models here.
@@ -61,6 +64,14 @@ class Monitor(models.Model):
         help_text='Last SSL certificate check timestamp'
     )
 
+    slug = models.SlugField(
+        max_length=255,
+        unique=True,
+        db_index=True,
+        blank=True,
+        help_text='URL-friendly identifier for the monitor'
+    )
+
     def __str__(self):
         return f"{self.name} ({self.url})"
 
@@ -68,6 +79,9 @@ class Monitor(models.Model):
         ordering = ['-created_at']
         verbose_name = 'Monitor'
         verbose_name_plural = 'Monitors'
+        indexes = [
+            models.Index(fields=['slug']),
+        ]
 
 
     def get_uptime_percentage(self, days=30):
@@ -224,6 +238,10 @@ class Monitor(models.Model):
             return ('Poor', 'red')
 
     def save(self, *args, **kwargs):
+        # Generate slug if it doesn't exist
+        if not self.slug:
+            self.slug = self.generate_unique_slug()
+            
         # Check if this is a new monitor or if is_active changed from False to True
         is_new = not self.pk
         if not is_new:
@@ -310,6 +328,26 @@ class Monitor(models.Model):
         ).order_by('date')
 
         return list(data)
+
+    def generate_unique_slug(self):
+        """Generate a unique slug with optional random suffix"""
+        max_length = self._meta.get_field('slug').max_length
+        base_slug = slugify(self.name)[:max_length - 8]  # Leave room for random suffix
+        
+        while True:
+            slug = base_slug
+            if not Monitor.objects.filter(slug=slug).exists():
+                return slug
+                
+            # If slug exists, append random string
+            suffix = get_random_string(4)
+            slug = f"{base_slug}-{suffix}"
+            if not Monitor.objects.filter(slug=slug).exists():
+                return slug
+
+    def get_absolute_url(self):
+        return reverse('monitor:detail', kwargs={'slug': self.slug})
+
 
 
 class MonitorLog(models.Model):
