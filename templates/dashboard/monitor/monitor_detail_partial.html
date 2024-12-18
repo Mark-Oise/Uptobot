@@ -54,15 +54,14 @@
                 <!-- Favicon-sized Image -->
                 <div class="flex flex-row items-center justify-between w-full">
                     <div class="flex items-center space-x-2">
-                        <img class="w-6 h-6" src="https://www.ninniku.tw/wp-content/uploads/2023/02/wordpress.png"
-                            alt="Rounded avatar">
+
 
                         <!-- Title and Link Container -->
                         <div class="flex flex-col justify-between h-8">
                             <a href="#" class="text-lg font-bold text-gray-900 dark:text-white leading-none">
                                 {{ monitor.name }}
                             </a>
-                            <p hx-get="{% url 'monitor:monitor_detail' monitor.pk %}" hx-target="#monitor-list"
+                            <p hx-get="{% url 'monitor:monitor_detail' monitor.slug %}" hx-target="#monitor-list"
                                 hx-push-url="true" hx-trigger="click" hx-swap="innerHTML transition:true"
                                 class="mt-1 inline-flex items-center text-sm font-medium text-gray-600 hover:underline dark:text-gray-400 leading-none">
                                 {{ monitor.url }}
