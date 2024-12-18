@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 # Create your views here.
 
@@ -19,7 +20,7 @@ def monitor_list(request):
             monitor.user = request.user
             monitor.save()
             messages.success(request, 'Monitor added successfully')
-            return redirect('monitor:monitor_list')
+            return redirect(reverse('monitor:monitor_detail', kwargs={'slug': monitor.slug}))
         else:
             messages.error(request, 'Please correct the errors below.')
             # Print form errors to console for debugging
