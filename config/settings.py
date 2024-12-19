@@ -38,7 +38,7 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = ['https://watchtower-ydwj.onrender.com']
 
 DJANGO_ENV = env('DJANGO_ENV', default='development')
-SITE_ID = 3 if DJANGO_ENV == 'production' else 1
+SITE_ID = 1
 
 # Application definition
 
