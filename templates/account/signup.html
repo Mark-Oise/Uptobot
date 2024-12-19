@@ -98,7 +98,18 @@
                     <div class="px-5 text-center text-gray-500 dark:text-gray-400">or</div>
                     <div class="w-full h-0.5 bg-gray-200 dark:bg-gray-700"></div>
                 </div>
-                <form class="space-y-4 lg:space-y-6" action="#">
+                <form class="space-y-4 lg:space-y-6" action="{% url 'account_signup' %}" method="post">
+                    {% csrf_token %}
+                    {% if form.errors %}
+                    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                        role="alert">
+                        {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                     <div>
                         <label for="username"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
@@ -107,16 +118,16 @@
                             placeholder="Enter your username" required="">
                     </div>
                     <div>
-                        <label for="username"
+                        <label for="email"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                        <input type="text" name="username" id="email"
+                        <input type="text" name="email" id="email"
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Enter your email" required="">
                     </div>
                     <div>
                         <label for="password"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                        <input type="password" name="password" id="password" placeholder="••••••••"
+                        <input type="password" name="password1" id="password1" placeholder="••••••••"
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             required="">
                     </div>
