@@ -204,7 +204,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 LOGIN_REDIRECT_URL = 'monitor:monitor_list'
 SOCIALACCOUNT_LOGIN_ON_GET = True
-
+ACCOUNT_LOGOUT_ON_GET = True
 
 
 # Celery settings
