@@ -105,22 +105,13 @@ def handle_ssl_certificate_alerts(sender, instance, **kwargs):
             )
 
 def create_alert(monitor, alert_type, severity, message):
-    """Helper function to create alerts and prevent duplicates"""
-    
-    # Prevent duplicate alerts within a time window
-    recent_similar_alert = Alert.objects.filter(
+    """Helper function to create alerts"""
+    Alert.objects.create(
         monitor=monitor,
         alert_type=alert_type,
-        created_at__gte=timezone.now() - timedelta(hours=1)  # 1-hour window
-    ).exists()
-
-    if not recent_similar_alert:
-        Alert.objects.create(
-            monitor=monitor,
-            alert_type=alert_type,
-            severity=severity,
-            message=message
-        )
+        severity=severity,
+        message=message
+    )
 
 @receiver(post_save, sender=Alert)
 def handle_alert_delivery(sender, instance, created, **kwargs):
