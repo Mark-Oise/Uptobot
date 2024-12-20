@@ -105,21 +105,12 @@ def handle_ssl_certificate_notifications(sender, instance, **kwargs):
             )
 
 def create_notification(monitor, notification_type, severity, message):
-    """Helper function to create notifications and prevent duplicates"""
-    
-    # Prevent duplicate notifications within a time window
-    recent_similar_notification = Notification.objects.filter(
-        monitor=monitor,
+    """Helper function to create notifications"""
+    Notification.objects.create(
+        user=monitor.user,
+        title=f"{notification_type.replace('_', ' ').title()}: {monitor.name}",
+        message=message,
         notification_type=notification_type,
-        created_at__gte=timezone.now() - timedelta(hours=1)  # 1-hour window
-    ).exists()
-
-    if not recent_similar_notification:
-        Notification.objects.create(
-            user=monitor.user,
-            title=f"{notification_type.replace('_', ' ').title()}: {monitor.name}",
-            message=message,
-            notification_type=notification_type,
-            severity=severity,
-            monitor=monitor
-        )
+        severity=severity,
+        monitor=monitor
+    )
