@@ -81,5 +81,5 @@ class Notification(models.Model):
         if self.action_url:
             return self.action_url
         if self.monitor:
-            return reverse('monitor:monitor_detail', kwargs={'pk': self.monitor.pk})
+            return reverse('monitor:monitor_detail', kwargs={'slug': self.monitor.slug})
         return reverse('notifications:list')

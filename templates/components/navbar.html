@@ -95,9 +95,10 @@
                                     d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z">
                                 </path>
                             </svg>
-                            <div
+                            <div hx-ext="sse" sse-connect="{% url 'notifications:stream' %}" sse-swap="innerHTML"
                                 class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-gray-200 rounded-full -top-2 -end-2 dark:border-gray-900">
-                                8</div>
+                                {{ unread_notification_count }}
+                            </div>
 
                         </button>
                         <button type="button"
@@ -109,7 +110,7 @@
                         </button>
                     </div>
                 </div>
-                {% include 'dashboard/components/notification_list.html' %}
+                {% include 'components/notification_list.html' %}
                 <!-- Dropdown menu -->
                 <div class="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
                     id="dropdown-user">

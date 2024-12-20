@@ -40,12 +40,13 @@
     <!-- Load initialization script last -->
     <script src="{% static 'js/dashboard/init.js' %}"></script>
     {% endcompress %}
+    <script src="https://unpkg.com/htmx-ext-sse@2.2.2/sse.js"></script>
 </head>
 
 <body class="flex flex-col bg-gray-100 dark:bg-gray-900">
-    {% include 'dashboard/components/sidebar.html' %}
+    {% include 'components/sidebar.html' %}
     <div id="main-content" class=" sm:ml-64 lg:px-8 transition-all duration-300 ease-in-out">
-        {% include 'dashboard/components/navbar.html' %}
+        {% include 'components/navbar.html' %}
         <main id="main-container" class="mt-2">
             {% block content %}
             {% endblock content %}

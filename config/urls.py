@@ -25,6 +25,7 @@ urlpatterns = [
     # path('dashboard/', include('apps.dashboard.urls')),
     path('', include('apps.monitor.urls')),
     path('', include('apps.landing.urls')),
+    path('', include('apps.notifications.urls')),
     path('accounts/', include('allauth.urls')),
 ]
 
