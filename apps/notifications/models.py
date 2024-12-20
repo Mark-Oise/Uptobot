@@ -6,11 +6,11 @@ from django.urls import reverse
 
 class Notification(models.Model):
     NOTIFICATION_TYPES = [
+        ('availability', 'Availability'),
+        ('response_time', 'Response Time'),
+        ('ssl_expiry', 'SSL Expiry'),
         ('monitor_down', 'Monitor Down'),
         ('monitor_up', 'Monitor Up'),
-        ('ssl_expiring', 'SSL Certificate Expiring'),
-        ('response_time', 'Response Time Alert'),
-        ('system', 'System Notification'),
     ]
 
     SEVERITY_LEVELS = [
