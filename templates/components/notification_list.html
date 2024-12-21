@@ -5,7 +5,6 @@
         Notifications
     </div>
     <div id="notification-list" hx-ext="sse" sse-connect="{% url 'notifications:stream' %}" sse-swap="innerHTML">
-
         {% include 'components/notifications/notification_items.html' %}
     </div>
 
