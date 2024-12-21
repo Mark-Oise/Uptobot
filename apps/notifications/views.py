@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_http_methods
@@ -12,7 +12,7 @@ from .models import Notification
 def notification_list(request):
     """Main view for displaying notifications"""
     notifications = (Notification.objects
-                    .filter(user=request.user)
+                    .filter(user=request.user, is_read=False)
                     .select_related('monitor')
                     .order_by('-created_at')[:5])
     
@@ -32,31 +32,25 @@ def notification_stream(request):
     """SSE endpoint for real-time notifications"""
     def event_stream():
         while True:
-            # Get new notifications
+            # Get latest notifications
             notifications = (Notification.objects
                            .filter(user=request.user, is_read=False)
                            .select_related('monitor')
                            .order_by('-created_at')[:5])
             
-            if notifications.exists():
-                # Render notification HTML
-                html = render_to_string(
-                    'components/notifications/notification_items.html',
-                    {'notifications': notifications},
-                    request=request
-                )
-                
-                # Create SSE data
-                data = {
-                    'html': html,
-                    'count': notifications.count()
-                }
-                
-                yield f"data: {json.dumps(data)}\n\n"
+            # Render notification HTML
+            html = render_to_string(
+                'components/notifications/notification_items.html',
+                {'notifications': notifications},
+                request=request
+            )
             
-            time.sleep(3)  # Poll every 3 seconds
+            # Send the HTML directly
+            yield f"data: {html}\n\n"
+            
+            time.sleep(10)  # Poll every 3 seconds
 
-    response = HttpResponse(
+    response = StreamingHttpResponse(
         event_stream(),
         content_type='text/event-stream'
     )
@@ -67,44 +61,37 @@ def notification_stream(request):
 @login_required
 @require_http_methods(['POST'])
 def mark_as_read(request, pk):
-    """Mark a single notification as read"""
-    notification = get_object_or_404(
-        Notification,
-        pk=pk,
-        user=request.user
-    )
+    """Mark a notification as read and trigger updates"""
+    notification = get_object_or_404(Notification, pk=pk, user=request.user)
     notification.mark_as_read()
     
-    if request.headers.get('HX-Request'):
-        return HttpResponse(status=200)
-    return HttpResponse(status=204)
+    response = HttpResponse(status=200)
+    response['HX-Trigger'] = 'notification-update'
+    return response
+
 
 @login_required
 @require_http_methods(['POST'])
 def mark_all_as_read(request):
-    """Mark all notifications as read"""
+    """Mark all notifications as read and trigger updates"""
     Notification.mark_all_as_read(request.user)
     
-    if request.headers.get('HX-Request'):
-        # Return empty notification list for HTMX to update the UI
-        context = {'notifications': []}
-        return render(request, 'notifications/components/notification_items.html', context)
+    # Return updated notification list
+    notifications = (Notification.objects
+                    .filter(user=request.user)
+                    .select_related('monitor')
+                    .order_by('-created_at')[:5])
     
-    return HttpResponse(status=204)
+    response = render(request, 
+                     'components/notifications/notification_items.html',
+                     {'notifications': notifications})
+    response['HX-Trigger'] = 'notification-update'
+    return response
+
 
 @login_required
 @require_http_methods(['GET'])
 def notification_count(request):
     """Get unread notification count for the badge"""
     count = Notification.get_unread_count(request.user)
-    
-    if request.headers.get('HX-Request'):
-        return HttpResponse(
-            f'<span class="notification-count">{count}</span>',
-            content_type='text/html'
-        )
-    
-    return HttpResponse(
-        json.dumps({'count': count}),
-        content_type='application/json'
-    )
+    return HttpResponse(count)
