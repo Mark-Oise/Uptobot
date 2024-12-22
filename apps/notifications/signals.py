@@ -4,6 +4,8 @@ from django.utils import timezone
 from datetime import timedelta
 from apps.monitor.models import Monitor, MonitorLog
 from .models import Notification
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 
 @receiver(post_save, sender=MonitorLog)
@@ -105,8 +107,9 @@ def handle_ssl_certificate_notifications(sender, instance, **kwargs):
             )
 
 def create_notification(monitor, notification_type, severity, message):
-    """Helper function to create notifications"""
-    Notification.objects.create(
+    """Helper function to create notifications and send via WebSocket"""
+    # Create the notification
+    notification = Notification.objects.create(
         user=monitor.user,
         title=f"{notification_type.replace('_', ' ').title()}: {monitor.name}",
         message=message,
@@ -114,3 +117,23 @@ def create_notification(monitor, notification_type, severity, message):
         severity=severity,
         monitor=monitor
     )
+    
+    # Send WebSocket notification
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        f"notifications_{monitor.user.id}",
+        {
+            "type": "notification_message",
+            "notification": {
+                "id": notification.id,
+                "title": notification.title,
+                "message": notification.message,
+                "severity": notification.severity,
+                "created_at": notification.created_at.isoformat(),
+                "url": notification.get_absolute_url() if hasattr(notification, 'get_absolute_url') else "#"
+            }
+        }
+    )
+    
+    return notification
+    
