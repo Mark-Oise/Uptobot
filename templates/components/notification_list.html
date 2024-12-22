@@ -4,7 +4,7 @@
         class="block px-4 py-2 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         Notifications
     </div>
-    <div id="notification-list">
+    <div id="notification-list" hx-ext="ws" ws-connect="/ws/notifications/" hx-swap-oob="afterbegin">
         {% if notifications %}
         {% for notification in notifications %}
         {% include 'components/notifications/notification_items.html' with notification=notification %}
@@ -25,7 +25,7 @@
         {% endif %}
     </div>
 
-    <a href=" #"
+    <a href="#"
         class="block py-2 text-base font-normal text-center text-gray-900 bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:text-white dark:hover:underline">
         <div class="inline-flex items-center ">
             <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
