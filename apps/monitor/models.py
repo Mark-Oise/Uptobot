@@ -127,7 +127,7 @@ class Monitor(models.Model):
         return round(result['avg_time'], 2) if result['avg_time'] is not None else None
 
     
-    
+    def get_ssl_certificate_info(self):
         """Get SSL certificate information using requests with proper connection handling"""
         if not self.url.startswith('https'):
             return {'valid': False, 'expiry_date': None, 'error': 'Not an HTTPS URL'}
