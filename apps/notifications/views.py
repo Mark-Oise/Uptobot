@@ -26,11 +26,13 @@ def notification_list(request):
     
     return render(request, 'notifications/notification_list.html', context)
 
+
 @login_required
 @require_http_methods(['GET'])
 def notification_stream(request):
     """SSE endpoint for real-time notifications"""
     def event_stream():
+        last_check_id = None
         while True:
             # Get latest notifications
             notifications = (Notification.objects
@@ -57,6 +59,7 @@ def notification_stream(request):
     response['Cache-Control'] = 'no-cache'
     response['X-Accel-Buffering'] = 'no'
     return response
+
 
 @login_required
 @require_http_methods(['POST'])
