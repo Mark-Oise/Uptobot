@@ -4,8 +4,7 @@
         class="block px-4 py-2 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         Notifications
     </div>
-    <div id="notification-list" hx-ext="sse" sse-connect="{% url 'notifications:stream' %}" sse-swap="message"
-        hx-swap="afterbegin">
+    <div id="notification-list">
         {% if notifications %}
         {% for notification in notifications %}
         {% include 'components/notifications/notification_items.html' with notification=notification %}
