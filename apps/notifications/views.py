@@ -32,14 +32,19 @@ def notification_list(request):
 def notification_stream(request):
     """SSE endpoint for real-time notifications"""
     def event_stream():
-        last_check_id = None
+        last_notification_id = None
         while True:
             # Get latest notifications
-            notifications = (Notification.objects
-                           .filter(user=request.user, is_read=False)
-                           .select_related('monitor')
-                           .order_by('-created_at')[:5])
-            
+            notifications = Notification.objects.filter(
+                user=request.user,
+            ).order_by('-created_at')
+
+            if last_notification_id is not None:
+                notifications = notifications.filter(id__gt=last_notification_id)
+
+            if notifications.exists():
+                last_notification_id = notifications.first().id
+
             # Render notification HTML
             html = render_to_string(
                 'components/notifications/notification_items.html',
@@ -50,7 +55,7 @@ def notification_stream(request):
             # Send the HTML directly
             yield f"data: {html}\n\n"
             
-            time.sleep(10)  # Poll every 3 seconds
+            time.sleep(15)  # Poll every 15 seconds
 
     response = StreamingHttpResponse(
         event_stream(),
