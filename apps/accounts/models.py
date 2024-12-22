@@ -3,13 +3,14 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import EmailValidator
 from .managers import CustomUserManager
-
+from uuid import uuid4
 
 # Create your models here.
 
 class User(AbstractUser):
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True, validators=[EmailValidator()])
+    public_id = models.UUIDField(default=uuid4, editable=False)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
