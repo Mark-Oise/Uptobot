@@ -44,16 +44,30 @@ def check_http(monitor):
         with requests.Session() as session:
             # Measure only the actual request time
             start_time = timezone.now()
-            response = session.head(
+            response = session.get(
                 monitor.url, 
                 timeout=10,
                 verify=True,
-                allow_redirects=True
+                allow_redirects=True,
+                stream=True
             )
             end_time = timezone.now()
             
             response_time = (end_time - start_time).total_seconds() * 1000
             status = 'success' if 200 <= response.status_code < 300 else 'failure'
+
+            # Update SSL info if it's an HTTPS URL and hasn't been checked in the last 24 hours
+            if (monitor.url.startswith('https') and 
+                (not monitor.last_ssl_check or 
+                 timezone.now() - monitor.last_ssl_check > timezone.timedelta(hours=24))):
+                ssl_info = monitor.get_ssl_certificate_info()
+                if ssl_info['valid']:
+                    monitor.ssl_expiry_date = ssl_info['expiry_date']
+                    monitor.ssl_issuer = str(ssl_info['issuer'])
+                    monitor.last_ssl_check = timezone.now()
+                    monitor.save(update_fields=['ssl_expiry_date', 'ssl_issuer', 'last_ssl_check'])
+        
+            
             
             # Create log entry
             return MonitorLog.objects.create(
