@@ -34,6 +34,16 @@ class Monitor(models.Model):
         ('unknown', 'Unknown'),
     ]
 
+    # Add SSL status choices
+    SSL_STATUS_CHOICES = [
+        ('valid', 'Valid'),
+        ('expired', 'Expired'),
+        ('expiring_soon', 'Expiring Soon'),
+        ('invalid', 'Invalid'),
+        ('not_found', 'Not Found'),
+        ('unknown', 'Unknown'),
+    ]
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='monitors')
     name = models.CharField(max_length=255, help_text='Monitor name')
     url = models.URLField(max_length=255, help_text='URL to monitor')
@@ -63,6 +73,9 @@ class Monitor(models.Model):
         blank=True,
         help_text='Last SSL certificate check timestamp'
     )
+    ssl_expiry_date = models.DateTimeField(null=True, blank=True, help_text='SSL certificate expiry date')
+    ssl_issuer = models.TextField(null=True, blank=True, help_text='SSL certificate issuer details')
+    
 
     slug = models.SlugField(
         max_length=255,
@@ -72,6 +85,9 @@ class Monitor(models.Model):
         help_text='URL-friendly identifier for the monitor'
     )
 
+    ssl_expiry_date = models.DateTimeField(null=True, blank=True, help_text='SSL certificate expiry date')
+    ssl_issuer = models.TextField(null=True, blank=True, help_text='SSL certificate issuer details')
+    
     def __str__(self):
         return f"{self.name} ({self.url})"
 
