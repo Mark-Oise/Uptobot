@@ -34,15 +34,6 @@ class Monitor(models.Model):
         ('unknown', 'Unknown'),
     ]
 
-    # Add SSL status choices
-    SSL_STATUS_CHOICES = [
-        ('valid', 'Valid'),
-        ('expired', 'Expired'),
-        ('expiring_soon', 'Expiring Soon'),
-        ('invalid', 'Invalid'),
-        ('not_found', 'Not Found'),
-        ('unknown', 'Unknown'),
-    ]
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='monitors')
     name = models.CharField(max_length=255, help_text='Monitor name')
@@ -84,9 +75,6 @@ class Monitor(models.Model):
         blank=True,
         help_text='URL-friendly identifier for the monitor'
     )
-
-    ssl_expiry_date = models.DateTimeField(null=True, blank=True, help_text='SSL certificate expiry date')
-    ssl_issuer = models.TextField(null=True, blank=True, help_text='SSL certificate issuer details')
     
     def __str__(self):
         return f"{self.name} ({self.url})"
@@ -149,15 +137,11 @@ class Monitor(models.Model):
             return {'valid': False, 'expiry_date': None, 'error': 'Not an HTTPS URL'}
         
         try:
-            # Use a session to maintain the connection
             with requests.Session() as session:
-                # Prepare the request but don't send it yet
                 req = requests.Request('GET', self.url)
                 prepped = session.prepare_request(req)
                 
-                # Send the request and keep the connection open
                 with session.send(prepped, verify=True, timeout=10, stream=True) as response:
-                    # Get the certificate while connection is still open
                     if not response.raw.connection or not response.raw.connection.sock:
                         return {
                             'valid': False,
@@ -177,30 +161,26 @@ class Monitor(models.Model):
                     # Parse expiry date
                     expiry_date = datetime.strptime(cert['notAfter'], '%b %d %H:%M:%S %Y %Z')
                     
+                    
+                    
                     return {
                         'valid': True,
                         'expiry_date': timezone.make_aware(expiry_date),
                         'issuer': dict(x[0] for x in cert['issuer']),
                         'error': None
                     }
-            
+                    
         except requests.exceptions.SSLError as e:
             return {
                 'valid': False,
                 'expiry_date': None,
                 'error': f'SSL Certificate Invalid: {str(e)}'
             }
-        except requests.exceptions.RequestException as e:
-            return {
-                'valid': False,
-                'expiry_date': None,
-                'error': str(e)
-            }
         except Exception as e:
             return {
                 'valid': False,
                 'expiry_date': None,
-                'error': f'Unexpected error: {str(e)}'
+                'error': str(e)
             }
 
     def get_health_score(self, days=7):
