@@ -161,12 +161,14 @@ class Monitor(models.Model):
                     # Parse expiry date
                     expiry_date = datetime.strptime(cert['notAfter'], '%b %d %H:%M:%S %Y %Z')
                     
-                    
+                    # Extract organization name from issuer
+                    issuer_dict = dict(x[0] for x in cert['issuer'])
+                    organization_name = issuer_dict.get('organizationName', 'Unknown Issuer')
                     
                     return {
                         'valid': True,
                         'expiry_date': timezone.make_aware(expiry_date),
-                        'issuer': dict(x[0] for x in cert['issuer']),
+                        'issuer': organization_name,  # Now just returns the organization name
                         'error': None
                     }
                     

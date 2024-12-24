@@ -68,53 +68,8 @@ def monitor_detail(request, slug):
     return render(request, 'dashboard/monitor/monitor_detail.html', context)
 
 
-@login_required
-def add_monitor(request):
-    if request.method == 'POST':
-        form = AddMonitorForm(request.POST)
-        if form.is_valid():
-            monitor = form.save(commit=False)
-            monitor.user = request.user
-            monitor.save()
-            messages.success(request, 'Monitor added successfully')
-            return redirect('monitor:monitor_list')
-    else:
-        form = AddMonitorForm()
-    
-    return render(request, 'dashboard/monitor/add_monitor.html', {'form': form})
 
 
-
-def search_monitors(request):
-    search_query = request.GET.get('search', '').strip()
-    monitors_list = Monitor.objects.filter(user=request.user)
-    
-    if search_query:
-        monitors_list = monitors_list.filter(
-            Q(name__icontains=search_query) |
-            Q(url__icontains=search_query)
-        )
-    
-    # Add pagination
-    paginator = Paginator(monitors_list, 6)  # Show 6 monitors per page
-    page = request.GET.get('page', 1)
-    try:
-        monitors = paginator.page(page)
-    except:
-        monitors = paginator.page(1)
-    
-    context = {
-        'monitors': monitors,
-        'search_query': search_query,
-    }
-    return render(request, 'dashboard/monitor/monitor_list_items.html', context)
-
-
-def delete_monitor(request, slug):
-    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
-    monitor.delete()
-    messages.success(request, 'Monitor deleted successfully')
-    return redirect('monitor:monitor_list')
 
 
 @login_required
@@ -143,6 +98,9 @@ def response_time_chart(request, slug):
         return render(request, 'dashboard/monitor/charts.html', context)
     except Exception as e:
         return HttpResponse(f"Error: {str(e)}", status=500)
+
+
+
 
 
 

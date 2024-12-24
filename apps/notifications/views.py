@@ -44,8 +44,7 @@ def mark_as_read(request, pk):
 @login_required
 @require_http_methods(['GET'])
 def notification_count(request):
-    """Get unread notification count for the badge"""
-    count = Notification.get_unread_count(request.user)
-    return HttpResponse(count)
+    """Return notification count for HTMX request."""
+    return render(request, 'components/notification_count.html', {})
 
 

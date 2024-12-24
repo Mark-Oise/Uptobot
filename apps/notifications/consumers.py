@@ -2,6 +2,7 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from django.template.loader import render_to_string
+from .models import Notification
 
 
 class NotificationConsumer(AsyncWebsocketConsumer):
@@ -32,12 +33,25 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         """Handle incoming notification messages"""
         notification = event["notification"]
         html = await self.render_notification(notification)
+        count = await self.get_unread_notification_count()
         
-        # Send the rendered notification HTML to the client
-        await self.send(text_data=json.dumps({
-            "type": "notification",
-            "html": html
-        }))
+        # Create the message with OOB swap directives
+        message = f"""
+            <div id="notification-list" hx-swap-oob="afterbegin">{html}</div>
+            <div id="notification-count" hx-swap-oob="innerHTML">{count}</div>
+        """
+        
+        # Send the raw HTML directly
+        await self.send(text_data=message)
+
+
+    @database_sync_to_async
+    def get_unread_notification_count(self):
+        """Get the current unread notification count for the user"""
+        return Notification.objects.filter(
+            user=self.user, 
+            is_read=False
+        ).count()
 
     @database_sync_to_async
     def render_notification(self, notification):

@@ -10,9 +10,9 @@
         {% endif %}
     </div>
     <div class="w-full pl-3">
-        <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
-            {{ notification.title }}
-        </div>
+        <div class="text-gray-500 font-bold text-sm mb-1.5 dark:text-gray-400">{{ notification.title }}<span
+                class="font-normal text-gray-900 dark:text-white">: {{ notification.message }}</span></div>
+
         <div class="text-xs font-medium text-primary-700 dark:text-primary-400">
             {{ notification.created_at|timesince }} ago
         </div>

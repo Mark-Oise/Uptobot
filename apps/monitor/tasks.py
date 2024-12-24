@@ -63,7 +63,7 @@ def check_http(monitor):
                 ssl_info = monitor.get_ssl_certificate_info()
                 if ssl_info['valid']:
                     monitor.ssl_expiry_date = ssl_info['expiry_date']
-                    monitor.ssl_issuer = str(ssl_info['issuer'])
+                    monitor.ssl_issuer = ssl_info['issuer'] 
                     monitor.last_ssl_check = timezone.now()
                     monitor.save(update_fields=['ssl_expiry_date', 'ssl_issuer', 'last_ssl_check'])
         

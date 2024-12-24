@@ -94,7 +94,7 @@
 
 
             </div>
-            <ul class="grid grid-cols-2 sm:grid-cols-2 gap-4 mt-6">
+            <ul id="monitor-metrics-container" class="grid grid-cols-2 sm:grid-cols-2 gap-4 mt-6">
                 <li class="p-4 bg-gray-100 rounded-lg dark:bg-gray-800">
                     <div class="flex flex-col">
                         <div class="flex items-center justify-between mb-1">
@@ -105,11 +105,14 @@
                             </svg>
                             <span class="text-sm text-gray-500 dark:text-gray-400">Uptime</span>
                         </div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {% with uptime=monitor.get_uptime_percentage %}
-                            {% if uptime %}{{ uptime|floatformat:2 }}%{% else %}N/A{% endif %}
-                            {% endwith %}
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white"
+                            hx-get="{% url 'monitor:uptime_metric' monitor.slug %}"
+                            hx-trigger="load, retry-soon delay:5s, every 45s" hx-target="#uptime-metric"
+                            hx-swap="innerHTML">
+                            {% include 'dashboard/monitor/partials/uptime_metric.html' %}
                         </div>
+
+
                         <div class="text-sm text-gray-500 dark:text-gray-400">Last 30 days</div>
                     </div>
                 </li>
@@ -124,10 +127,11 @@
                             </svg>
                             <span class="text-sm text-gray-500 dark:text-gray-400">Response</span>
                         </div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {% with avg_time=monitor.get_average_response_time %}
-                            {% if avg_time %}{{ avg_time|floatformat:0 }} ms{% else %}N/A{% endif %}
-                            {% endwith %}
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white"
+                            hx-get="{% url 'monitor:response_time_metric' monitor.slug %}"
+                            hx-trigger="load, retry-soon delay:5s, every 45s" hx-target="#response-time-metric"
+                            hx-swap="innerHTML">
+                            {% include 'dashboard/monitor/partials/response_time_metric.html' %}
                         </div>
                         <div class="text-sm text-gray-500 dark:text-gray-400">Average</div>
                     </div>
@@ -144,9 +148,11 @@
 
                             <span class="text-sm text-gray-500 dark:text-gray-400">Last Check</span>
                         </div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {% if monitor.last_checked %}{{ monitor.last_checked|timesince }} ago{% else %}N/A
-                            {% endif %}
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white"
+                            hx-get="{% url 'monitor:last_checked_metric' monitor.slug %}"
+                            hx-trigger="load, retry-soon delay:5s, every 30s" hx-target="#last-checked-metric"
+                            hx-swap="innerHTML">
+                            {% include 'dashboard/monitor/partials/last_checked_metric.html' %}
                         </div>
                         <div class="text-sm text-gray-500 dark:text-gray-400">Frequency: Every
                             {{ monitor.interval }} minutes</div>
@@ -156,47 +162,21 @@
                 <li class="p-4 bg-gray-100 rounded-lg dark:bg-gray-800">
                     <div class="flex flex-col">
                         <div class="flex items-center justify-between mb-1">
-
-
                             <svg class="w-6 h-6 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="2"
                                     d="M9.5 11H5a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h4.5M7 11V7a3 3 0 0 1 6 0v1.5m2.5 5.5v1.5l1 1m3.5-1a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" />
                             </svg>
-
-
-
-
-
                             <span class="text-sm text-gray-500 dark:text-gray-400">SSL Status</span>
                         </div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {% with ssl_info=monitor.get_ssl_info %}
-                            {% if ssl_info.valid %}
-                            <span class="text-green-600">Valid</span>
-                            {% else %}
-                            <span class="text-red-600">Invalid</span>
-                            {% endif %}
-                            {% endwith %}
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white"
+                            hx-get="{% url 'monitor:ssl_status_metric' monitor.slug %}"
+                            hx-trigger="load, retry-soon delay:5s, every 30s" hx-target="#ssl-status-metric"
+                            hx-swap="innerHTML">
+                            {% include 'dashboard/monitor/partials/ssl_status_metric.html' %}
                         </div>
-                        <div class="text-sm text-gray-500 dark:text-gray-400">
-                            {% with ssl_info=monitor.get_ssl_info %}
-                            {% if ssl_info.expiry_date %}
-                            Expires: {{ ssl_info.expiry_date|date:"Y-m-d" }}
-                            {% if ssl_info.issuer.organizationName %}
-                            <br>
-                            <span class="text-xs">
-                                Issued by: {{ ssl_info.issuer.organizationName }}
-                            </span>
-                            {% endif %}
-                            {% elif ssl_info.error %}
-                            Error: {{ ssl_info.error }}
-                            {% else %}
-                            N/A
-                            {% endif %}
-                            {% endwith %}
-                        </div>
+
                     </div>
                 </li>
             </ul>
@@ -417,7 +397,8 @@
                             <div class="w-64 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                                 {% if day.uptime is not None %}
                                 <div class="bg-gray-800 h-2.5 rounded-full"
-                                    style="width: {{ day.uptime|floatformat:2 }}%"></div>
+                                    style="width: {{ day.uptime|floatformat:2 }}%">
+                                </div>
                                 {% else %}
                                 <div class="bg-gray-400 h-2.5 rounded-full" style="width: 100%"></div>
                                 {% endif %}
@@ -537,7 +518,7 @@
                     <!-- SSL Certificate -->
                     <div class="flex items-start gap-4">
                         <div class="flex-shrink-0">
-                            <svg class="w-6 h-6 {% if monitor.get_ssl_info.valid %}text-green-500{% else %}text-red-500{% endif %}"
+                            <svg class="w-6 h-6 {% if monitor.ssl_expiry_date and monitor.ssl_expiry_date > now %}text-green-500{% else %}text-red-500{% endif %}"
                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor">
                                 <path
@@ -547,28 +528,37 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-500">SSL Certificate</p>
-                            {% with ssl_info=monitor.get_ssl_info %}
-                            {% if ssl_info.valid %}
+                            {% if monitor.ssl_expiry_date %}
+                            {% if monitor.ssl_expiry_date > now %}
                             <p class="text-xl font-semibold text-gray-900 dark:text-white">
-                                Valid {% if ssl_info.chain_valid %}(Chain Verified){% endif %}
+                                Valid
                             </p>
                             <p class="text-sm text-gray-600">
-                                Expires: {{ ssl_info.expiry_date|date:"Y-m-d" }}
+                                Expires: {{ monitor.ssl_expiry_date|date:"Y-m-d" }}
                             </p>
-                            {% if ssl_info.issuer %}
+                            {% if monitor.ssl_issuer %}
                             <p class="text-xs text-gray-500">
-                                Issued by: {{ ssl_info.issuer.organizationName }}
+                                Issued by: {{ monitor.ssl_issuer }}
                             </p>
                             {% endif %}
                             {% else %}
                             <p class="text-xl font-semibold text-red-600">
-                                Invalid
+                                Expired
                             </p>
                             <p class="text-sm text-red-500">
-                                {{ ssl_info.error }}
+                                Expired on {{ monitor.ssl_expiry_date|date:"Y-m-d" }}
                             </p>
                             {% endif %}
-                            {% endwith %}
+                            {% else %}
+                            <p class="text-xl font-semibold text-gray-900 dark:text-white">
+                                Not Available
+                            </p>
+                            {% if monitor.url|slice:":5" != 'https' %}
+                            <p class="text-sm text-gray-500">Not an HTTPS site</p>
+                            {% else %}
+                            <p class="text-sm text-gray-500">Unable to fetch SSL information</p>
+                            {% endif %}
+                            {% endif %}
                         </div>
                     </div>
 

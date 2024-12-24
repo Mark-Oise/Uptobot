@@ -1,0 +1,30 @@
+<div id="ssl-status-metric">
+    <div id="">
+        {% if monitor.ssl_expiry_date %}
+        {% now "Y-m-d H:i:s" as current_time %}
+        {% if monitor.ssl_expiry_date|date:"Y-m-d H:i:s" > current_time %}
+        <span class="text-green-600">Valid</span>
+        {% else %}
+        <span class="text-red-600">Expired</span>
+        {% endif %}
+        {% else %}
+        <span class="text-gray-600">Not Available</span>
+        {% endif %}
+    </div>
+    <div class="text-sm text-gray-500 dark:text-gray-400">
+        {% if monitor.ssl_expiry_date %}
+        Expires: {{ monitor.ssl_expiry_date|date:"M d, Y" }}
+        {% if monitor.ssl_issuer %}
+        <br>
+        <span class="text-xs">
+        </span>
+        {% endif %}
+        {% else %}
+        {% if monitor.url|slice:":5" != 'https' %}
+        Not HTTPS
+        {% else %}
+        Unable to fetch SSL info
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
