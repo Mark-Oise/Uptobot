@@ -41,7 +41,7 @@ def monitor_list(request):
         'monitors': monitors,
         'form': form
     }
-    return render(request, 'dashboard/monitor/monitor_list.html', context)
+    return render(request, 'dashboard/monitor_list.html', context)
 
 
 @login_required
@@ -65,7 +65,7 @@ def monitor_detail(request, slug):
         'chart_data': chart_data,
     }
     
-    return render(request, 'dashboard/monitor/monitor_detail.html', context)
+    return render(request, 'dashboard/monitor_detail.html', context)
 
 
 
@@ -77,27 +77,6 @@ def settings(request):
     return render(request, 'dashboard/monitor/settings.html')
 
 
-@login_required
-def response_time_chart(request, slug):
-    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
-    period = request.GET.get('period', '7d')
-    
-    try:
-        data = monitor.get_response_time_data(period)
-        
-        # Format data for ApexCharts
-        categories = [entry['date'].strftime('%d %b') for entry in data]
-        series = [round(entry['avg_response_time'], 2) for entry in data]
-        
-        context = {
-            'categories': categories,
-            'series': series,
-            'period': period
-        }
-        
-        return render(request, 'dashboard/monitor/charts.html', context)
-    except Exception as e:
-        return HttpResponse(f"Error: {str(e)}", status=500)
 
 
 

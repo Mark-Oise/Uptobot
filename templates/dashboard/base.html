@@ -34,13 +34,6 @@
     <script src="https://unpkg.com/htmx-ext-ws@2.0.1/ws.js"></script>
 
     <!-- Load our JavaScript files -->
-    {% compress js %}
-    <script type="module" src="{% static 'js/dashboard/charts.js' %}"></script>
-    <script src="{% static 'js/dashboard/tabs.js' %}"></script>
-    <script src="{% static 'js/dashboard/sidebar.js' %}"></script>
-    <!-- Load initialization script last -->
-    <script src="{% static 'js/dashboard/init.js' %}"></script>
-    {% endcompress %}
 
 
 
@@ -57,6 +50,14 @@
     </div>
     <script src="{% static 'js/dashboard/forms.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    {% compress js %}
+
+    <script src="{% static 'js/dashboard/tabs.js' %}"></script>
+    <script src="{% static 'js/dashboard/sidebar.js' %}"></script>
+    <!-- Load initialization script last -->
+    <script src="{% static 'js/dashboard/init.js' %}"></script>
+    {% endcompress %}
+
 
 
 

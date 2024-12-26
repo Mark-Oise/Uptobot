@@ -29,7 +29,7 @@ def search_monitors(request):
         'monitors': monitors,
         'search_query': search_query,
     }
-    return render(request, 'dashboard/monitor/monitor_list_items.html', context)
+    return render(request, 'dashboard/monitor_list_items.html', context)
 
 
 def delete_monitor(request, slug):
@@ -168,15 +168,37 @@ def uptime_history(request, slug):
 
 def recent_incidents(request, slug):
     monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
-    incidents = monitor.get_recent_incidents()
+    incidents = monitor.logs.exclude(status='success').order_by('-checked_at')[:5]
 
     response = render(request, 'dashboard/monitor/partials/recent_incidents.html', {
         'monitor': monitor,
-        'incidents': incidents,
+        'recent_incidents': incidents, 
     })
-    
-    if not incidents:
+    if incidents:
         response['HX-Trigger'] = 'retry-soon'
         response['HX-Retries'] = '3'
     
+    return response
+
+
+@login_required
+def response_time_chart(request, slug):
+    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
+    
+    # Get initial chart data (7 days by default)
+    response_time_data = monitor.get_response_time_data(period='7d')
+    chart_data = {
+        'dates': [entry['date'].strftime('%d %b') if hasattr(entry['date'], 'strftime') 
+                 else entry['date'] for entry in response_time_data],
+        'data': [round(entry['avg_response_time'], 2) for entry in response_time_data]
+    }
+    
+    response = render (request, 'dashboard/monitor/partials/charts.html', {
+        'monitor': monitor,
+        'chart_data': chart_data,
+    })
+
+    response['HX-Trigger'] = 'retry-soon'
+    response['HX-Retries'] = '3'
+
     return response

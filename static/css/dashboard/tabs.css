@@ -1,6 +1,6 @@
   /* Style for active tab */
-  button[role="tab"].active {
-      background-color: rgb(22 163 74);
-      /* green-600 */
-      color: white;
+  button[role="tab"][aria-selected="true"] {
+    background-color: rgb(22 163 74);
+    /* bg-green-600 */
+    color: white;
   }

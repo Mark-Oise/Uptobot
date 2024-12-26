@@ -1,0 +1,309 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+<div class="px-6 pt-4 pb-8" id="monitor-detail">
+    <div hx-ext="head-support">
+        <div class="flex justify-between items-center mb-4">
+            <button type="button" hx-get="{% url 'monitor:monitor_list' %}" hx-target="#main-container"
+                hx-select="#monitor-listing" hx-push-url="true" hx-trigger="click" hx-swap="innerHTML transition:true"
+                class="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30">
+                <svg class="w-6 h-6 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M5 12h14M5 12l4-4m-4 4 4 4" />
+                </svg>
+                Back to monitors
+            </button>
+
+            <div class="flex gap-2">
+                <button type="button" data-modal-target="updateMonitorModal" data-modal-toggle="updateMonitorModal"
+                    class="text-blue-700 border border-gray-800 hover:bg-green-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+
+                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28" />
+                    </svg>
+
+                    <span class="sr-only">Icon description</span>
+                </button>
+                {% include 'components/modals/update_monitor.html' %}
+
+                <button type="button" data-modal-target="deleteModal" data-modal-toggle="deleteModal"
+                    class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+
+                    <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                    </svg>
+
+                    <span class="sr-only">Icon description</span>
+                </button>
+                {% include 'components/modals/delete_monitor.html' %}
+
+            </div>
+        </div>
+
+
+
+
+        <div class="grid gap-4 md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
+            <!-- Main widget -->
+            <div
+                class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm lg:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+
+
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+                    <!-- Favicon-sized Image -->
+                    <div class="flex flex-row items-center justify-between w-full">
+                        <div class="flex items-center space-x-2">
+
+
+                            <!-- Title and Link Container -->
+                            <div class="flex flex-col justify-between h-8">
+                                <a href="#" class="text-lg font-bold text-gray-900 dark:text-white leading-none">
+                                    {{ monitor.name }}
+                                </a>
+                                <p hx-get="{% url 'monitor:monitor_detail' monitor.slug %}" hx-target="#monitor-list"
+                                    hx-push-url="true" hx-trigger="click" hx-swap="innerHTML transition:true"
+                                    class="mt-1 inline-flex items-center text-sm font-medium text-gray-600 hover:underline dark:text-gray-400 leading-none">
+                                    {{ monitor.url }}
+                                    <svg class="w-3 h-3 ml-1 rtl:rotate-[270deg]" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778">
+                                        </path>
+                                    </svg>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Availability Indicator -->
+                        <div>
+                            <span
+                                class="inline-flex items-center {% if monitor.availability == 'online' %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %} text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                                <span
+                                    class="w-2 h-2 mr-1 {% if monitor.availability == 'online' %}bg-green-500{% else %}bg-red-500{% endif %} rounded-full"></span>
+                                {% if monitor.availability == 'unknown' %}
+                                Unknown
+                                {% else %}
+                                {{ monitor.get_availability_display }}
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <ul id="monitor-metrics-container" class="grid grid-cols-2 sm:grid-cols-2 gap-4 mt-6">
+                    <li class="p-4 bg-gray-100 rounded-lg dark:bg-gray-800">
+                        <div class="flex flex-col">
+                            <div class="flex items-center justify-between mb-1">
+                                <svg class="w-6 h-6 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M3 12h4l3-9 4 18 3-9h4" />
+                                </svg>
+                                <span class="text-sm text-gray-500 dark:text-gray-400">Uptime</span>
+                            </div>
+                            <div class="text-2xl font-bold text-gray-900 dark:text-white"
+                                hx-get="{% url 'monitor:uptime_metric' monitor.slug %}"
+                                hx-trigger="load, retry-soon delay:5s, every 45s" hx-target="this"
+                                hx-select="#uptime-metric" hx-swap="innerHTML">
+                                {% include 'dashboard/monitor/partials/uptime_metric.html' %}
+                            </div>
+
+
+                            <div class="text-sm text-gray-500 dark:text-gray-400">Last 30 days</div>
+                        </div>
+                    </li>
+
+                    <li class="p-4 bg-gray-100 rounded-lg dark:bg-gray-800">
+                        <div class="flex flex-col">
+                            <div class="flex items-center justify-between mb-1">
+                                <svg class="w-6 h-6 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                                <span class="text-sm text-gray-500 dark:text-gray-400">Response</span>
+                            </div>
+                            <div class="text-2xl font-bold text-gray-900 dark:text-white"
+                                hx-get="{% url 'monitor:response_time_metric' monitor.slug %}"
+                                hx-trigger="load, retry-soon delay:5s, every 45s" hx-target="#response-time-metric"
+                                hx-swap="innerHTML">
+                                {% include 'dashboard/monitor/partials/response_time_metric.html' %}
+                            </div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">Average</div>
+                        </div>
+                    </li>
+
+                    <li class="p-4 bg-gray-100 rounded-lg dark:bg-gray-800">
+                        <div class="flex flex-col">
+                            <div class="flex items-center justify-between mb-1">
+                                <svg class="w-6 h-6 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+
+                                <span class="text-sm text-gray-500 dark:text-gray-400">Last Check</span>
+                            </div>
+                            <div class="text-2xl font-bold text-gray-900 dark:text-white"
+                                hx-get="{% url 'monitor:last_checked_metric' monitor.slug %}"
+                                hx-trigger="load, retry-soon delay:5s, every 30s" hx-target="#last-checked-metric"
+                                hx-swap="innerHTML">
+                                {% include 'dashboard/monitor/partials/last_checked_metric.html' %}
+                            </div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">Frequency: Every
+                                {{ monitor.interval }} minutes</div>
+                        </div>
+                    </li>
+
+                    <li class="p-4 bg-gray-100 rounded-lg dark:bg-gray-800">
+                        <div class="flex flex-col">
+                            <div class="flex items-center justify-between mb-1">
+                                <svg class="w-6 h-6 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M9.5 11H5a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h4.5M7 11V7a3 3 0 0 1 6 0v1.5m2.5 5.5v1.5l1 1m3.5-1a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" />
+                                </svg>
+                                <span class="text-sm text-gray-500 dark:text-gray-400">SSL Status</span>
+                            </div>
+                            <div class="text-2xl font-bold text-gray-900 dark:text-white"
+                                hx-get="{% url 'monitor:ssl_status_metric' monitor.slug %}"
+                                hx-trigger="load, retry-soon delay:5s, every 30s" hx-target="this"
+                                hx-select="#ssl-status-metric" hx-swap="innerHTML">
+                                {% include 'dashboard/monitor/partials/ssl_status_metric.html' %}
+                            </div>
+
+                        </div>
+                    </li>
+                </ul>
+
+
+
+
+            </div>
+            <!--Tabs widget -->
+            <div
+                class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                <div class="flex flex-col sm:flex-row justify-between mb-5">
+                    <div class="grid gap-4 mb-4 sm:mb-0">
+                        <div>
+                            <h5
+                                class="inline-flex font-semibold text-lg items-center text-gray-800 dark:text-gray-400 leading-none font-normal mb-2 whitespace-nowrap">
+                                Average response time (ms)
+
+                            </h5>
+                        </div>
+
+                    </div>
+                    <!-- Chart Period Selector -->
+                    <div>
+                        <button id="dropdownDefaultButton" type="button"
+                            class="w-full sm:w-auto px-3 py-2 inline-flex items-center justify-center text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-green-500 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 whitespace-nowrap">
+                            Last 7 days
+
+                        </button>
+
+                    </div>
+                </div>
+
+                <!-- Chart Container -->
+                <div id="chart-container" class="w-full h-full"
+                    hx-get="{% url 'monitor:response_time_chart' monitor.slug %}"
+                    hx-trigger="load retry-soon delay:5s, every 30m" hx-target="#labels-chart" hx-swap="innerHTML">
+                    {% include 'dashboard/monitor/partials/charts.html' %}
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class=" flex grid w-full max-w-lg gap-2 mt-4">
+            <ul id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist"
+                class="bg-gray-100 rounded-lg px-2 flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+                <li class="me-0 sm:me-2 py-2" role="presentation">
+                    <button id="history-tab" data-tabs-target="#history" type="button" role="tab" aria-selected="false"
+                        class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg" aria-current="page">Uptime History
+                    </button>
+                </li>
+                <li class="me-0 sm:me-2 py-2" role="presentation">
+                    <button id="incidents-tab" data-tabs-target="#incidents" type="button" role="tab"
+                        aria-controls="incidents" aria-selected="false"
+                        class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg">
+                        Recent Incidents
+                    </button>
+                </li>
+
+            </ul>
+        </div>
+
+
+        <div class="grid grid-cols-1 my-4 xl:gap-4">
+
+            <div id="default-tab-content">
+                <div id="history" role="tabpanel" aria-labelledby="history-tab"
+                    class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                    <div class="items-center justify-between lg:flex">
+                        <div class="mb-4 lg:mb-0">
+                            <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">Uptime History (Last 5
+                                days)
+                            </h3>
+                        </div>
+                    </div>
+
+                    <!-- Uptime History List -->
+                    <div class="space-y-4" hx-get="{% url 'monitor:uptime_history' monitor.slug %}"
+                        hx-trigger="load, retry-soon delay:5s, every 30s" hx-target="this" hx-swap="innerHTML">
+                        {% include 'dashboard/monitor/partials/uptime_history.html' %}
+
+                    </div>
+                </div>
+                <div class=" hidden p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6
+                        dark:bg-gray-800" id="incidents" role="tabpanel" aria-labelledby="incidents-tab">
+                    <div class="items-center justify-between lg:flex">
+                        <div class="mb-4 lg:mb-0">
+                            <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">Recent Incidents</h3>
+                        </div>
+                    </div>
+
+                    <!-- Recent Incidents List -->
+                    <div class="space-y-4" hx-get="{% url 'monitor:recent_incidents' monitor.slug %}"
+                        hx-trigger="load, retry-soon delay:5s, every 30s" hx-target="#recent-incidents"
+                        hx-swap="innerHTML">
+                        <div id="recent-incidents">
+                            {% include 'dashboard/monitor/partials/recent_incidents.html' %}
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div
+            class="mb-8 p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+            <!-- Title -->
+            <h3 class="text-xl font-bold mb-6">Monitor Health Score</h3>
+
+            <!-- Content Container -->
+            <div hx-get="{% url 'monitor:monitor_health_score' monitor.slug %}"
+                hx-trigger="load, retry-soon delay:3s, every 45s" hx-target="#monitor-health-score" hx-swap="innerHTML">
+                {% include 'dashboard/monitor/partials/monitor_health_score.html' %}
+            </div>
+        </div>
+
+
+    </div>
+</div>
+</div>
+
+{% endblock content %}
