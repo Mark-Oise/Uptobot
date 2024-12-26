@@ -107,8 +107,8 @@
                         </div>
                         <div class="text-2xl font-bold text-gray-900 dark:text-white"
                             hx-get="{% url 'monitor:uptime_metric' monitor.slug %}"
-                            hx-trigger="load, retry-soon delay:5s, every 45s" hx-target="#uptime-metric"
-                            hx-swap="innerHTML">
+                            hx-trigger="load, retry-soon delay:5s, every 45s" hx-target="this"
+                            hx-select="#uptime-metric" hx-swap="innerHTML">
                             {% include 'dashboard/monitor/partials/uptime_metric.html' %}
                         </div>
 
@@ -172,8 +172,8 @@
                         </div>
                         <div class="text-2xl font-bold text-gray-900 dark:text-white"
                             hx-get="{% url 'monitor:ssl_status_metric' monitor.slug %}"
-                            hx-trigger="load, retry-soon delay:5s, every 30s" hx-target="#ssl-status-metric"
-                            hx-swap="innerHTML">
+                            hx-trigger="load, retry-soon delay:5s, every 30s" hx-target="this"
+                            hx-select="#ssl-status-metric" hx-swap="innerHTML">
                             {% include 'dashboard/monitor/partials/ssl_status_metric.html' %}
                         </div>
 
@@ -353,12 +353,7 @@
                     Recent Incidents
                 </button>
             </li>
-            <li class="me-0 sm:me-2 py-2" role="presentation">
-                <button id="metrics-tab" data-tabs-target="#metrics" type="button" role="tab" aria-selected="false"
-                    class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-white dark:hover:bg-gray-800 dark:hover:text-white">
-                    Performance Metrics
-                </button>
-            </li>
+
         </ul>
     </div>
 
@@ -377,47 +372,14 @@
                 </div>
 
                 <!-- Uptime History List -->
-                <div class="space-y-4">
-                    {% with history=monitor.get_daily_uptime_history %}
-                    {% for day in history %}
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
-                        <div class="flex items-center gap-2">
-                            {% if day.uptime is None %}
-                            <div class="w-3 h-3 bg-gray-500 rounded-full"></div>
-                            {% elif day.uptime >= 99.99 %}
-                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                            {% elif day.uptime >= 95 %}
-                            <div class="w-3 h-3 bg-orange-500 rounded-full"></div>
-                            {% else %}
-                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                            {% endif %}
-                            <span class="text-gray-900 dark:text-white">{{ day.date|date:"Y-m-d" }}</span>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <div class="w-64 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                                {% if day.uptime is not None %}
-                                <div class="bg-gray-800 h-2.5 rounded-full"
-                                    style="width: {{ day.uptime|floatformat:2 }}%">
-                                </div>
-                                {% else %}
-                                <div class="bg-gray-400 h-2.5 rounded-full" style="width: 100%"></div>
-                                {% endif %}
-                            </div>
-                            <span class="text-gray-900 dark:text-white w-16 text-right">
-                                {% if day.uptime is not None %}
-                                {{ day.uptime|floatformat:2 }}%
-                                {% else %}
-                                N/A
-                                {% endif %}
-                            </span>
-                        </div>
-                    </div>
-                    {% endfor %}
-                    {% endwith %}
+                <div class="space-y-4" hx-get="{% url 'monitor:uptime_history' monitor.slug %}"
+                    hx-trigger="load, retry-soon delay:5s, every 30s" hx-target="uptime-history" hx-swap="innerHTML">
+                    {% include 'dashboard/monitor/partials/uptime_history.html' %}
+
                 </div>
             </div>
-            <div class="hidden p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800"
-                id="incidents" role="tabpanel" aria-labelledby="incidents-tab">
+            <div class=" hidden p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6
+                    dark:bg-gray-800" id="incidents" role="tabpanel" aria-labelledby="incidents-tab">
                 <div class="items-center justify-between lg:flex">
                     <div class="mb-4 lg:mb-0">
                         <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">Recent Incidents</h3>
@@ -425,161 +387,17 @@
                 </div>
 
                 <!-- Recent Incidents List -->
-                <div class="space-y-4">
-                    {% if recent_incidents %}
-                    {% for log in recent_incidents %}
-                    <div class="flex items-start gap-2">
-                        <svg class="w-5 h-5 {% if log.status == 'error' %}text-red-400{% elif log.status == 'warning' %}text-yellow-400{% else %}text-gray-400{% endif %} mt-1"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                        </svg>
-                        <div>
-                            <h4 class="text-base font-semibold text-gray-900 dark:text-white">
-                                {{ log.checked_at|date:"Y-m-d H:i" }}
-                            </h4>
-                            {% if log.response_time %}
-                            <p class="text-sm text-gray-600 dark:text-gray-400">
-                                Response Time: {{ log.response_time|floatformat:0 }}ms
-                            </p>
-                            {% endif %}
-                            <p class="text-sm text-gray-600 dark:text-gray-400">
-                                {% if log.status_code %}
-                                Status Code: {{ log.status_code }}
-                                {% endif %}
-                                {% if log.error_message %}
-                                - {{ log.error_message }}
-                                {% endif %}
-                            </p>
-                        </div>
+                <div class="space-y-4" hx-get="{% url 'monitor:recent_incidents' monitor.slug %}"
+                    hx-trigger="load, retry-soon delay:5s, every 30s" hx-target="recent-incidents" hx-swap="innerHTML">
+                    <div id="recent-incidents">
+                        {% include 'dashboard/monitor/partials/recent_incidents.html' %}
                     </div>
-                    {% endfor %}
-                    {% else %}
-                    <div class="flex items-center p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
-                        role="alert">
-                        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                        </svg>
-                        <span class="sr-only">Info</span>
-                        <div>
-                            <span class="font-medium">Great news!</span> No recent incidents have been recorded for
-                            this
-                            monitor.
-                        </div>
-                    </div>
-                    {% endif %}
                 </div>
 
 
 
             </div>
-            <div class="hidden p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800"
-                id="metrics" role="tabpanel" aria-labelledby="metrics-tab">
-                <div class="items-center justify-between lg:flex">
-                    <div class="mb-4 lg:mb-0">
-                        <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">Metrics</h3>
-                    </div>
 
-
-                </div>
-                <div class="grid grid-cols-2 gap-6">
-                    <!-- Server Response -->
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0">
-                            <svg class="w-6 h-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor">
-                                <rect x="2" y="4" width="20" height="16" rx="2" stroke-width="2" />
-                                <path d="M6 8h12" stroke-width="2" />
-                                <path d="M6 12h12" stroke-width="2" />
-                                <path d="M6 16h8" stroke-width="2" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Server Response</p>
-                            <p class="text-xl font-semibold text-gray-900 dark:text-white">187ms</p>
-                        </div>
-                    </div>
-                    <!-- Page Load Time -->
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0">
-                            <svg class="w-6 h-6 text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor">
-                                <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-width="2" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Page Load Time</p>
-                            <p class="text-xl font-semibold text-gray-900 dark:text-white">1.2s</p>
-                        </div>
-                    </div>
-
-                    <!-- SSL Certificate -->
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0">
-                            <svg class="w-6 h-6 {% if monitor.ssl_expiry_date and monitor.ssl_expiry_date > now %}text-green-500{% else %}text-red-500{% endif %}"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path
-                                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                                    stroke-width="2" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">SSL Certificate</p>
-                            {% if monitor.ssl_expiry_date %}
-                            {% if monitor.ssl_expiry_date > now %}
-                            <p class="text-xl font-semibold text-gray-900 dark:text-white">
-                                Valid
-                            </p>
-                            <p class="text-sm text-gray-600">
-                                Expires: {{ monitor.ssl_expiry_date|date:"Y-m-d" }}
-                            </p>
-                            {% if monitor.ssl_issuer %}
-                            <p class="text-xs text-gray-500">
-                                Issued by: {{ monitor.ssl_issuer }}
-                            </p>
-                            {% endif %}
-                            {% else %}
-                            <p class="text-xl font-semibold text-red-600">
-                                Expired
-                            </p>
-                            <p class="text-sm text-red-500">
-                                Expired on {{ monitor.ssl_expiry_date|date:"Y-m-d" }}
-                            </p>
-                            {% endif %}
-                            {% else %}
-                            <p class="text-xl font-semibold text-gray-900 dark:text-white">
-                                Not Available
-                            </p>
-                            {% if monitor.url|slice:":5" != 'https' %}
-                            <p class="text-sm text-gray-500">Not an HTTPS site</p>
-                            {% else %}
-                            <p class="text-sm text-gray-500">Unable to fetch SSL information</p>
-                            {% endif %}
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <!-- DNS Issues -->
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0">
-                            <svg class="w-6 h-6 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor">
-                                <circle cx="12" cy="12" r="10" stroke-width="2" />
-                                <path d="M15 9l-6 6m0-6l6 6" stroke-width="2" />
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">DNS Issues</p>
-                            <p class="text-xl font-semibold text-gray-900 dark:text-white">None detected</p>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
 
         </div>
     </div>
@@ -590,60 +408,9 @@
         <h3 class="text-xl font-bold mb-6">Monitor Health Score</h3>
 
         <!-- Content Container -->
-        <div class="flex flex-col space-y-4">
-            <!-- Score Row -->
-            <div class="flex items-center justify-center">
-                <!-- Circle with Arrow Icon -->
-                <div class="inline-flex items-center">
-                    <div class="w-24 h-24 rounded-full flex items-center justify-center">
-                        {% with health_score=monitor.get_health_score %}
-                        {% if health_score < 50 %} <svg class="w-18 h-18 text-red-500 dark:text-red-500"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="56" height="56"
-                            viewBox="0 0 24 24" fill="none">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                            </svg>
-                            {% else %}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="lucide {% if health_score >= 90 %}text-green-500{% elif health_score >= 75 %}text-blue-500{% else %}text-yellow-500{% endif %}">
-                                <circle cx="12" cy="12" r="10" />
-                                {% if health_score >= 75 %}
-                                <path d="m16 12-4-4-4 4" />
-                                <path d="M12 16V8" />
-                                {% else %}
-                                <path d="M8 12h8" />
-                                {% endif %}
-                            </svg>
-                            {% endif %}
-                            {% endwith %}
-                    </div>
-                </div>
-
-                <!-- Score Text Container -->
-                <div class="flex flex-col">
-                    {% with health_score=monitor.get_health_score health_status=monitor.get_health_status %}
-                    <span class="text-2xl font-bold">{{ health_score|floatformat:"0" }}/100</span>
-                    <span class="text-gray-600 text-sm">{{ health_status.0 }}</span>
-                    {% endwith %}
-                </div>
-            </div>
-
-            <!-- Description -->
-            <div class="text-center text-gray-600">
-                {% with health_score=monitor.get_health_score %}
-                {% if health_score >= 90 %}
-                Your website is performing excellently! Keep up the great work!
-                {% elif health_score >= 75 %}
-                Your website is performing well with room for minor improvements.
-                {% elif health_score >= 50 %}
-                Your website needs attention in some areas to improve performance.
-                {% else %}
-                Your website requires immediate attention to address performance issues.
-                {% endif %}
-                {% endwith %}
-            </div>
+        <div hx-get="{% url 'monitor:monitor_health_score' monitor.slug %}"
+            hx-trigger="load, retry-soon delay:3s, every 45s" hx-target="#monitor-health-score" hx-swap="innerHTML">
+            {% include 'dashboard/monitor/partials/monitor_health_score.html' %}
         </div>
     </div>
 

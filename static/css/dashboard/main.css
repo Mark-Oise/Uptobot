@@ -29,16 +29,3 @@
      /* green-600 */
      color: white;
  }
-
-
- .htmx-indicator {
-     display: none;
- }
-
- .htmx-request .htmx-indicator {
-     display: block;
- }
-
- .htmx-request.htmx-indicator {
-     display: block;
- }

@@ -126,4 +126,57 @@ def ssl_status_metric(request, slug):
     return response
 
 
+def monitor_health_score(request, slug):
+    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
+    health_score = monitor.get_health_score()
+    health_status = monitor.get_health_status() if health_score is not None else None
     
+    context = {
+        'monitor': monitor,
+        'health_score': health_score,
+        'health_status': health_status,
+        'has_data': health_score is not None
+    }
+    
+    response = render(request, 'dashboard/monitor/partials/monitor_health_score.html', context)
+    
+    if health_score is None:
+        # If health score isn't ready, tell HTMX to retry in 5 seconds
+        response['HX-Trigger'] = 'retry-soon'
+        response['HX-Retries'] = '3'  # Optional: limit number of retries
+    
+    return response
+
+
+def uptime_history(request, slug):
+    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)  # Add user check
+    uptime_history = monitor.get_daily_uptime_history()
+    
+    response = render(request, 'dashboard/monitor/partials/uptime_history.html', {
+        'monitor': monitor,
+        'uptime_history': uptime_history,
+        
+    })
+    
+    if not uptime_history:
+        # If no history data, tell HTMX to retry
+        response['HX-Trigger'] = 'retry-soon'
+        response['HX-Retries'] = '3'
+    
+    return response
+
+
+def recent_incidents(request, slug):
+    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
+    incidents = monitor.get_recent_incidents()
+
+    response = render(request, 'dashboard/monitor/partials/recent_incidents.html', {
+        'monitor': monitor,
+        'incidents': incidents,
+    })
+    
+    if not incidents:
+        response['HX-Trigger'] = 'retry-soon'
+        response['HX-Retries'] = '3'
+    
+    return response

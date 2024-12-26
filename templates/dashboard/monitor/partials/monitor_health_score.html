@@ -1,0 +1,54 @@
+<!-- Content Container -->
+<div class="flex flex-col space-y-4">
+    <!-- Score Row -->
+    <div class="flex items-center justify-center">
+        <!-- Circle with Arrow Icon -->
+        <div class="inline-flex items-center">
+            <div class="w-24 h-24 rounded-full flex items-center justify-center">
+                {% with health_score=monitor.get_health_score %}
+                {% if health_score < 50 %} <svg class="w-18 h-18 text-red-500 dark:text-red-500" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                    {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide {% if health_score >= 90 %}text-green-500{% elif health_score >= 75 %}text-blue-500{% else %}text-yellow-500{% endif %}">
+                        <circle cx="12" cy="12" r="10" />
+                        {% if health_score >= 75 %}
+                        <path d="m16 12-4-4-4 4" />
+                        <path d="M12 16V8" />
+                        {% else %}
+                        <path d="M8 12h8" />
+                        {% endif %}
+                    </svg>
+                    {% endif %}
+                    {% endwith %}
+            </div>
+        </div>
+
+        <!-- Score Text Container -->
+        <div class="flex flex-col">
+            {% with health_score=monitor.get_health_score health_status=monitor.get_health_status %}
+            <span class="text-2xl font-bold">{{ health_score|floatformat:"0" }}/100</span>
+            <span class="text-gray-600 text-sm">{{ health_status.0 }}</span>
+            {% endwith %}
+        </div>
+    </div>
+
+    <!-- Description -->
+    <div class="text-center text-gray-600">
+        {% with health_score=monitor.get_health_score %}
+        {% if health_score >= 90 %}
+        Your website is performing excellently! Keep up the great work!
+        {% elif health_score >= 75 %}
+        Your website is performing well with room for minor improvements.
+        {% elif health_score >= 50 %}
+        Your website needs attention in some areas to improve performance.
+        {% else %}
+        Your website requires immediate attention to address performance issues.
+        {% endif %}
+        {% endwith %}
+    </div>
+</div>
