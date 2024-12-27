@@ -2,17 +2,16 @@
  * Handles the interval selection functionality for monitor configuration
  * This code manages both button and range slider inputs for selecting monitoring intervals
  */
-document.addEventListener('DOMContentLoaded', function () {
+function initializeForms() {
     // Get references to DOM elements
-    const intervalButtons = document.querySelectorAll('.interval-button'); // Interval selection buttons
-    const rangeInput = document.getElementById('interval-range-input'); // Range slider input
-    const currentValueLabel = document.getElementById('current-value'); // Label showing current interval value
-    const validIntervals = [5, 10, 15, 30, 60]; // Valid interval values in minutes
+    const intervalButtons = document.querySelectorAll('.interval-button');
+    const rangeInput = document.getElementById('interval-range-input');
+    const currentValueLabel = document.getElementById('current-value');
+    const validIntervals = [5, 10, 15, 30, 60];
 
-    /**
-     * Updates the visual state of interval buttons based on selected interval
-     * @param {number} activeInterval - The currently selected interval value
-     */
+    // Only proceed if we have the necessary elements on the page
+    if (!intervalButtons.length || !rangeInput || !currentValueLabel) return;
+
     function setActiveButton(activeInterval) {
         intervalButtons.forEach(btn => {
             const interval = btn.getAttribute('data-interval');
@@ -31,8 +30,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize with 5 minute interval selected
     setActiveButton(5);
 
-    // Add click handlers to interval buttons
+    // Remove existing event listeners (to prevent duplicates during re-initialization)
     intervalButtons.forEach(button => {
+        button.replaceWith(button.cloneNode(true));
+    });
+
+    // Re-select buttons after cloning
+    document.querySelectorAll('.interval-button').forEach(button => {
         button.addEventListener('click', function () {
             const interval = parseInt(this.getAttribute('data-interval'), 10);
             rangeInput.value = interval;
@@ -44,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Handle range slider input changes
     rangeInput.addEventListener('input', function () {
         let interval = parseInt(this.value, 10);
-        // Snap to nearest valid interval
         interval = validIntervals.reduce((prev, curr) =>
             Math.abs(curr - interval) < Math.abs(prev - interval) ? curr : prev
         );
@@ -59,27 +62,43 @@ document.addEventListener('DOMContentLoaded', function () {
     const thresholdValue = document.getElementById('threshold_value');
     const thresholdMessage = document.getElementById('threshold_message');
 
-    function updateThresholdUI(isCustom) {
-        thresholdRange.disabled = !isCustom;
-        thresholdMessage.textContent = isCustom
-            ? `Custom threshold: ${thresholdRange.value} seconds`
-            : 'Using default threshold (60 seconds)';
-        thresholdValue.textContent = `${thresholdRange.value}s`;
-    }
-
-    thresholdToggle.addEventListener('change', function () {
-        updateThresholdUI(this.checked);
-        if (!this.checked) {
-            thresholdRange.value = 60;
-            thresholdValue.textContent = '60s';
+    if (thresholdToggle && thresholdRange && thresholdValue && thresholdMessage) {
+        function updateThresholdUI(isCustom) {
+            thresholdRange.disabled = !isCustom;
+            thresholdMessage.textContent = isCustom
+                ? `Custom threshold: ${thresholdRange.value} seconds`
+                : 'Using default threshold (60 seconds)';
+            thresholdValue.textContent = `${thresholdRange.value}s`;
         }
-    });
 
-    thresholdRange.addEventListener('input', function () {
-        thresholdValue.textContent = `${this.value}s`;
-        thresholdMessage.textContent = `Custom threshold: ${this.value} seconds`;
-    });
+        // Remove existing event listeners
+        thresholdToggle.replaceWith(thresholdToggle.cloneNode(true));
+        thresholdRange.replaceWith(thresholdRange.cloneNode(true));
 
-    // Initialize with default state
-    updateThresholdUI(thresholdToggle.checked);
-});
+        // Re-select elements after cloning
+        const newThresholdToggle = document.getElementById('custom_threshold_toggle');
+        const newThresholdRange = document.getElementById('alert_threshold_range');
+
+        newThresholdToggle.addEventListener('change', function () {
+            updateThresholdUI(this.checked);
+            if (!this.checked) {
+                newThresholdRange.value = 60;
+                thresholdValue.textContent = '60s';
+            }
+        });
+
+        newThresholdRange.addEventListener('input', function () {
+            thresholdValue.textContent = `${this.value}s`;
+            thresholdMessage.textContent = `Custom threshold: ${this.value} seconds`;
+        });
+
+        // Initialize with default state
+        updateThresholdUI(newThresholdToggle.checked);
+    }
+}
+
+// Initialize on DOM load
+document.addEventListener('DOMContentLoaded', initializeForms);
+
+// Make the initialization function available globally
+window.initializeForms = initializeForms;

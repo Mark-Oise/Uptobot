@@ -13,25 +13,12 @@
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
     <link rel="stylesheet" href="{% static 'css/dashboard/tabs.css' %}">
     {% endcompress %}
-
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
-
-
-
-    {% compress js %}
     <script src="{% static 'js/dashboard/htmx.js' %}"></script>
-    {% endcompress %}
-
-    <!-- Load other libraries -->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
-    <!-- Load our JavaScript files -->
-
     <script src="{% static 'js/dashboard/tabs.js' %}"></script>
     <script src="{% static 'js/dashboard/sidebar.js' %}"></script>
     <script src="https://unpkg.com/htmx-ext-ws@2.0.1/ws.js"></script>
-
-
 </head>
 
 <body class="flex flex-col bg-gray-100 dark:bg-gray-900" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
@@ -46,7 +33,13 @@
     <script src="{% static 'js/dashboard/forms.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
 
-
+    <script>
+        htmx.onLoad(function (content) {
+            initializeTabs();
+            initFlowbite();
+            initializeForms();
+        });
+    </script>
 
 </body>
 

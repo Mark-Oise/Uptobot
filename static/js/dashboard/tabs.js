@@ -1,28 +1,34 @@
-// Move the initialization logic into a named function
-window.initializeTabs = function () {
+document.addEventListener('DOMContentLoaded', function () {
+    // Get all tab buttons
     const tabButtons = document.querySelectorAll('[role="tab"]');
-    const tabPanels = document.querySelectorAll('[role="tabpanel"]');
 
-    // Set initial state
+    // Set initial active tab (first tab)
     if (tabButtons.length > 0) {
         tabButtons[0].setAttribute('aria-selected', 'true');
-        tabPanels[0].classList.remove('hidden');
+        const firstTabTarget = document.querySelector(tabButtons[0].getAttribute('data-tabs-target'));
+        if (firstTabTarget) {
+            firstTabTarget.classList.remove('hidden');
+        }
     }
 
+    // Add click event listeners to all tab buttons
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // Deactivate all tabs
-            tabButtons.forEach(btn => {
-                btn.setAttribute('aria-selected', 'false');
-            });
-            tabPanels.forEach(panel => {
-                panel.classList.add('hidden');
+            // Remove active state from all tabs
+            tabButtons.forEach(tab => {
+                tab.setAttribute('aria-selected', 'false');
+                const target = document.querySelector(tab.getAttribute('data-tabs-target'));
+                if (target) {
+                    target.classList.add('hidden');
+                }
             });
 
-            // Activate clicked tab
+            // Set active state for clicked tab
             button.setAttribute('aria-selected', 'true');
-            const targetId = button.getAttribute('data-tabs-target').substring(1);
-            document.getElementById(targetId).classList.remove('hidden');
+            const target = document.querySelector(button.getAttribute('data-tabs-target'));
+            if (target) {
+                target.classList.remove('hidden');
+            }
         });
     });
-};
+});
