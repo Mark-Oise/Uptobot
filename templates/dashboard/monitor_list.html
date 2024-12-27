@@ -1,9 +1,11 @@
 {% extends 'dashboard/base.html' %}
 {% block content %}
 
-<div class="px-6 pt-4 pb-8" id="monitor-listing">
-    {% include 'dashboard/monitor_list_items.html' %}
+<div id="monitor-list-container">
+    <div class="px-6 pt-4 pb-8" id="monitor-listing">
+        {% include 'dashboard/monitor_list_items.html' %}
+    </div>
+    {% include 'components/modals/add_monitor.html' %}
 </div>
-{% include 'components/modals/add_monitor.html' %}
 
 {% endblock content %}
