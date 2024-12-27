@@ -174,7 +174,7 @@ def recent_incidents(request, slug):
         'monitor': monitor,
         'recent_incidents': incidents, 
     })
-    if incidents:
+    if not incidents:
         response['HX-Trigger'] = 'retry-soon'
         response['HX-Retries'] = '3'
     

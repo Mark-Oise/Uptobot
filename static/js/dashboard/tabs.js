@@ -1,4 +1,5 @@
-document.addEventListener('DOMContentLoaded', function () {
+// Define the initialization function globally
+function initializeTabs() {
     // Get all tab buttons
     const tabButtons = document.querySelectorAll('[role="tab"]');
 
@@ -31,4 +32,5 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
-});
+}
+
