@@ -18,6 +18,7 @@
     <script src="{% static 'js/dashboard/tabs.js' %}"></script>
     <script src="{% static 'js/dashboard/sidebar.js' %}"></script>
     <script src="https://unpkg.com/htmx-ext-ws@2.0.1/ws.js"></script>
+<<<<<<< HEAD
     <script src="{% static 'js/dashboard/forms.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 
@@ -27,6 +28,9 @@
             initializeForms();
         });
     </script>
+=======
+    
+>>>>>>> 5af30a2dac2470193049658edb670aa1c3633d29
 </head>
 
 <body class="flex flex-col bg-gray-100 dark:bg-gray-900" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
@@ -38,6 +42,20 @@
             {% endblock content %}
         </main>
     </div>
+<<<<<<< HEAD
+=======
+    <script src="{% static 'js/dashboard/forms.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+<script>
+        htmx.onLoad(function (content) {
+            initializeTabs();
+            initFlowbite();
+            initializeForms();
+        });
+    </script>
+    
+
+>>>>>>> 5af30a2dac2470193049658edb670aa1c3633d29
 </body>
 
 </html>
