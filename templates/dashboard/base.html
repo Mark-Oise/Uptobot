@@ -19,6 +19,13 @@
     <script src="{% static 'js/dashboard/tabs.js' %}"></script>
     <script src="{% static 'js/dashboard/sidebar.js' %}"></script>
     <script src="https://unpkg.com/htmx-ext-ws@2.0.1/ws.js"></script>
+    <script>
+        htmx.onLoad(function (content) {
+            initializeTabs();
+            initFlowbite();
+            initializeForms();
+        });
+    </script>
 </head>
 
 <body class="flex flex-col bg-gray-100 dark:bg-gray-900" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
@@ -33,13 +40,7 @@
     <script src="{% static 'js/dashboard/forms.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
 
-    <script>
-        htmx.onLoad(function (content) {
-            initializeTabs();
-            initFlowbite();
-            initializeForms();
-        });
-    </script>
+    
 
 </body>
 
