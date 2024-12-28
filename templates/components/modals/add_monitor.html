@@ -61,11 +61,11 @@
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Interval</label>
                         <div class="flex mb-4 items-center rounded-b dark:border-gray-600">
                             <button type="button" data-interval="5"
-                                class="interval-button rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:focus:ring-gray-700">
+                                class="interval-button rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600  dark:text-gray-400 dark:focus:ring-gray-700">
                                 5m
                             </button>
                             <button type="button" data-interval="10"
-                                class="interval-button ml-2 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:focus:ring-gray-700">
+                                class="interval-button ml-2 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:text-gray-400 dark:focus:ring-gray-700">
                                 10m
                             </button>
                             <button type="button" data-interval="15"
@@ -113,7 +113,7 @@
                             <p class="text-sm text-gray-800 dark:text-gray-300">Using default threshold (60 seconds)</p>
                         </div>
 
-                        <div class="relative mt-2 mb-4">
+                        <div id="threshold_range_container" class="relative mt-2 mb-4">
                             <label for="alert_threshold_range" class="sr-only">Alert threshold range</label>
                             <input id="alert_threshold_range" name="alert_threshold" type="range" min="5" max="60"
                                 value="60" step="5"
@@ -147,3 +147,6 @@
         </div>
     </div>
 </div>
+
+<!-- Add a hidden input for the default value -->
+<input type="hidden" name="alert_threshold" value="60">

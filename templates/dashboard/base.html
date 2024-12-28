@@ -1,5 +1,5 @@
-{% load compress %}
 {% load static %}
+{% load compress %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,22 +10,33 @@
     <title>Uptobot</title>
 
 
+    {% compress css %}
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
-    <link rel="stylesheet" href="{% static 'css/dashboard/tabs.css' %}">
+    {% endcompress %}
+
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
-    <script src="{% static 'js/dashboard/htmx.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/dashboard/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard/tabs.css' %}">
+
+    <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+
+
+
+    <!-- Load other libraries -->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <!-- Load our JavaScript files -->
+    <script src="{% static 'js/dashboard/charts.js' %}"></script>
     <script src="{% static 'js/dashboard/tabs.js' %}"></script>
     <script src="{% static 'js/dashboard/sidebar.js' %}"></script>
-    <script src="https://unpkg.com/htmx-ext-ws@2.0.1/ws.js"></script>
-    <script src="{% static 'js/dashboard/forms.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+
 
 
     <script>
         htmx.onLoad(function (content) {
             initFlowbite();
             initializeForms();
+
         });
     </script>
 </head>
@@ -40,6 +51,12 @@
         </main>
     </div>
 
+    {% compress js %}
+    <script src="{% static 'js/dashboard/forms.js' %}"></script>
+    {% endcompress %}
+
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 </body>
 
 </html>
