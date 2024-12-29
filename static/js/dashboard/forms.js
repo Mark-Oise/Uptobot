@@ -2,16 +2,11 @@ function initializeForms() {
     // Config values
     const validIntervals = [5, 10, 15, 30, 60];
     const defaultInterval = 5;
-    const defaultThreshold = 60;
 
     // Get DOM elements
     const intervalButtons = document.querySelectorAll('.interval-button');
     const rangeInput = document.getElementById('interval-range-input');
     const currentValueLabel = document.getElementById('current-value');
-    const thresholdToggle = document.getElementById('custom_threshold_toggle');
-    const thresholdRange = document.getElementById('alert_threshold_range');
-    const thresholdValue = document.getElementById('threshold_value');
-    const thresholdMessage = document.getElementById('threshold_message');
 
     // Set active interval button style
     function setActiveButton(activeInterval) {
@@ -49,15 +44,6 @@ function initializeForms() {
         return closest;
     }
 
-    // Update threshold display
-    function updateThresholdUI(isCustom) {
-        thresholdRange.disabled = !isCustom;
-        thresholdValue.textContent = thresholdRange.value + 's';
-        thresholdMessage.textContent = isCustom
-            ? 'Custom threshold: ' + thresholdRange.value + ' seconds'
-            : 'Using default threshold (' + defaultThreshold + ' seconds)';
-    }
-
     // Set initial interval
     updateInterval(defaultInterval);
 
@@ -73,20 +59,6 @@ function initializeForms() {
         const interval = snapToValidInterval(parseInt(e.target.value, 10));
         updateInterval(interval);
     });
-
-    thresholdToggle.addEventListener('change', function (e) {
-        updateThresholdUI(e.target.checked);
-        if (!e.target.checked) {
-            thresholdRange.value = defaultThreshold;
-        }
-    });
-
-    thresholdRange.addEventListener('input', function () {
-        updateThresholdUI(true);
-    });
-
-    // Initialize threshold UI
-    updateThresholdUI(thresholdToggle.checked);
 }
 
 // Initialize on DOMContentLoaded
