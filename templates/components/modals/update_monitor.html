@@ -95,37 +95,6 @@
                     </div>
 
                     <div class="sm:col-span-2">
-                        <div class="flex justify-between items-center">
-                            <label for="alert_threshold" class="text-sm font-medium text-gray-900 dark:text-white">
-                                Alerts threshold (seconds)
-                            </label>
-                            <label class="inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="custom_threshold_toggle" class="sr-only peer">
-                                <span class="mr-2 ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Custom
-                                    threshold</span>
-                                <div
-                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600">
-                                </div>
-                            </label>
-                        </div>
-
-                        <div id="threshold_message" class="mt-2 mb-4">
-                            <p class="text-sm text-gray-800 dark:text-gray-300">Using default threshold (60 seconds)</p>
-                        </div>
-
-                        <div class="relative mt-2 mb-4">
-                            <label for="alert_threshold_range" class="sr-only">Alert threshold range</label>
-                            <input id="alert_threshold_range" name="alert_threshold" type="range" min="5" max="60"
-                                value="60" step="5"
-                                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
-                            <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">5s</span>
-                            <span id="threshold_value"
-                                class="text-sm text-gray-500 dark:text-gray-400 absolute start-1/2 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">60s</span>
-                            <span class="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">60s</span>
-                        </div>
-                    </div>
-
-                    <div class="sm:col-span-2">
                         <label for="description"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                         <textarea id="description" name="description" rows="4"
