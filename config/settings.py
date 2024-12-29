@@ -66,7 +66,6 @@ THIRD_PARTY_APPS = [
 
 PROJECT_APPS = [
     'apps.accounts',
-    'apps.dashboard',
     'apps.monitor',
     'apps.notifications',
     'apps.alerts',
