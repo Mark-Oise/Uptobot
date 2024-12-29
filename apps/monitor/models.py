@@ -81,6 +81,9 @@ class Monitor(models.Model):
         ordering = ['-created_at']
         verbose_name = 'Monitor'
         verbose_name_plural = 'Monitors'
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'url'])
+        ]
         indexes = [
             models.Index(fields=['slug']),
         ]
