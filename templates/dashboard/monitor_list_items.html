@@ -36,8 +36,8 @@
                     <a href="#" class="text-lg font-bold text-gray-900 dark:text-white leading-none">
                         {{ monitor.name }}
                     </a>
-                    <p hx-get="{% url 'monitor:monitor_detail' monitor.pk %}" hx-target="#monitor-container"
-                        hx-push-url="true" hx-trigger="click" hx-swap="innerHTML transition:true"
+                    <p hx-get="{% url 'monitor:monitor_detail' monitor.slug %}" hx-target="#main-container"
+            hx-select="#monitor-detail" hx-push-url="true" hx-swap="innerHTML transition:true show:window:top"
                         class="mt-1 inline-flex items-center text-sm font-medium text-gray-600 hover:underline dark:text-gray-400 leading-none">
                         {{ monitor.url }}
                         <svg class="w-3 h-3 ml-1 rtl:rotate-[270deg]" aria-hidden="true"
