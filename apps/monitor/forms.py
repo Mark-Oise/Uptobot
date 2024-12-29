@@ -42,12 +42,6 @@ class UpdateMonitorForm(forms.ModelForm):
     """
     Form for updating an existing Monitor instance.
     """
-    alert_threshold = forms.IntegerField(
-        min_value=5,
-        max_value=60,
-        required=True,
-        widget=forms.NumberInput(attrs={'type': 'hidden'})
-    )
 
     class Meta:
         model = Monitor
@@ -55,7 +49,6 @@ class UpdateMonitorForm(forms.ModelForm):
             'name',
             'interval',
             'url',
-            'alert_threshold',
             'description',
         ]
 
