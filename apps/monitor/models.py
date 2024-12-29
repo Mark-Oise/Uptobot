@@ -4,9 +4,7 @@ from django.utils import timezone
 from datetime import timedelta
 import ssl
 import socket
-import OpenSSL.SSL
 from datetime import datetime
-import OpenSSL.crypto
 from urllib.parse import urlparse
 import requests
 from django.utils.text import slugify
