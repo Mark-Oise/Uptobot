@@ -82,7 +82,7 @@ class Monitor(models.Model):
         verbose_name = 'Monitor'
         verbose_name_plural = 'Monitors'
         constraints = [
-            models.UniqueConstraint(fields=['user', 'url'])
+            models.UniqueConstraint(fields=['user', 'url'], name='unique_user_url')
         ]
         indexes = [
             models.Index(fields=['slug']),
