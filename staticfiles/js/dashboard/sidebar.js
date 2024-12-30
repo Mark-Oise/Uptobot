@@ -1,10 +1,11 @@
-
-document.addEventListener('DOMContentLoaded', function () {
+// Initialize Sidebar functionality
+function initSidebar() {
     const sidebar = document.getElementById('logo-sidebar');
     const collapseBtn = document.getElementById('sidebar-collapse-btn');
     const sidebarTexts = document.querySelectorAll('.sidebar-text');
     const mainContent = document.getElementById('main-content');
     const tooltipElements = document.querySelectorAll('[role="tooltip"]');
+
     // Function to set sidebar state in localStorage
     function setSidebarState(collapsed) {
         localStorage.setItem('sidebarCollapsed', collapsed);
@@ -48,12 +49,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const initialState = getSidebarState();
     updateSidebarUI(initialState);
 
+    // Add click event listener
     collapseBtn.addEventListener('click', function () {
         const newState = !getSidebarState();
         setSidebarState(newState);
         updateSidebarUI(newState);
     });
-});
+}
+
+// Call the initialization function when DOM is loaded
+document.addEventListener('DOMContentLoaded', initSidebar);
 
 
 
