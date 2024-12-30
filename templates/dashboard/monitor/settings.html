@@ -5,9 +5,9 @@
 
 
 
-    <div class=" flex grid w-full max-w-lg gap-2 mt-4">
+    <div class="flex grid w-full max-w-lg gap-2 mt-4">
         <ul id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist"
-            class="grid grid-cols-2 text-sm font-medium text-center text-gray-500 shadow md:rounded-lg md:grid-cols-4 dark:divide-gray-600 dark:text-gray-400"
+            class="grid grid-cols-3 text-sm font-medium text-center text-gray-500 shadow md:rounded-lg dark:divide-gray-600 dark:text-gray-400"
             role="tablist">
             <li class="w-full" role="presentation">
                 <button id="history-tab" data-tabs-target="#history" type="button" role="tab" aria-controls="history"
@@ -47,29 +47,11 @@
                     Security
                 </button>
             </li>
-            <li class="w-full" role="presentation">
-                <button id="billing-tab" aria-selected="false"
-                    class="inline-block p-4 w-full border border-gray-200 dark:border-gray-500 md:rounded-r-lg flex items-center justify-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
-                        </path>
-                    </svg>
-                    Integration
-                </button>
-            </li>
+
         </ul>
 
     </div>
-    <style>
-        /* Style for active tab */
-        button[role="tab"].active {
-            background-color: rgb(22 163 74);
-            /* green-600 */
-            color: white;
-        }
-    </style>
+
 
     <div class="grid grid-cols-1 my-4 xl:gap-4">
 
@@ -112,106 +94,120 @@
                     </form>
                 </div>
 
-                <!-- Language & Time Section -->
-                <div
-                    class="p-4 mt-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-                    <h3 class="mb-4 text-xl font-semibold dark:text-white">Language &amp; Time</h3>
-                    <div class="mb-4">
-                        <label for="settings-language"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select language</label>
-                        <select id="settings-language" name="countries"
-                            class="bg-gray-50 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <option>English (US)</option>
-                            <option>Italiano</option>
-                            <option>Français (France)</option>
-                            <option>正體字</option>
-                            <option>Español (España)</option>
-                            <option>Deutsch</option>
-                            <option>Português (Brasil)</option>
-                        </select>
-                    </div>
-                    <div class="mb-6">
-                        <label for="settings-timezone"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Time Zone</label>
-                        <select id="settings-timezone" name="countries"
-                            class="bg-gray-50 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <option>GMT+0 Greenwich Mean Time (GMT)</option>
-                            <option>GMT+1 Central European Time (CET)</option>
-                            <option>GMT+2 Eastern European Time (EET)</option>
-                            <option>GMT+3 Moscow Time (MSK)</option>
-                            <option>GMT+5 Pakistan Standard Time (PKT)</option>
-                            <option>GMT+8 China Standard Time (CST)</option>
-                            <option>GMT+10 Eastern Australia Standard Time (AEST)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <button
-                            class="text-white bg-green-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Save
-                            all</button>
-                    </div>
-                </div>
+
+
             </div>
             <div id="notifications" role="tabpanel" aria-labelledby="notifications-tab"
                 class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800 xl:mb-0">
                 <div class="flow-root">
                     <h3 class="text-xl font-semibold dark:text-white">Alerts &amp; Notifications</h3>
 
-                    <div class="divide-y divide-gray-200 dark:divide-gray-700">
-                        <!-- Item 1 -->
-                        <div class="flex items-center justify-between py-4">
-                            <div class="flex flex-col flex-grow">
-                                <div class="text-lg font-semibold text-gray-900 dark:text-white">Email Alerts
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="alert_settings_form" value="1">
+
+                        <div class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <!-- Email Alerts -->
+                            <div class="flex items-center justify-between py-4">
+                                <div class="flex flex-col flex-grow">
+                                    <div class="text-lg font-semibold text-gray-900 dark:text-white">Email Alerts</div>
+                                    <div class="text-base font-normal text-gray-500 dark:text-gray-400">Receive
+                                        notifications via email</div>
                                 </div>
-                                <div class="text-base font-normal text-gray-500 dark:text-gray-400">Receive
-                                    notifications via email</div>
+                                <label for="receive-email-alerts" class="relative flex items-center cursor-pointer">
+                                    <input type="checkbox" name="email_alerts_enabled" id="receive-email-alerts"
+                                        class="sr-only peer">
+                                    <div
+                                        class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600">
+                                    </div>
+                                </label>
                             </div>
-                            <label for="company-news" class="relative flex items-center cursor-pointer">
-                                <input type="checkbox" id="company-news" class="sr-only">
-                                <span
-                                    class="h-6 bg-gray-200 border border-gray-200 rounded-full w-11 toggle-bg dark:bg-gray-700 dark:border-gray-600"></span>
-                            </label>
-                        </div>
-                        <!-- Item 2 -->
-                        <div class="flex items-center justify-between py-4">
-                            <div class="flex flex-col flex-grow">
-                                <div class="text-lg font-semibold text-gray-900 dark:text-white">SMS Alerts</div>
-                                <div class="text-base font-normal text-gray-500 dark:text-gray-400">Receive
-                                    notifications via SMS</div>
+
+                            <!-- SMS Alerts -->
+                            <div class="flex items-center justify-between py-4">
+                                <div class="flex flex-col flex-grow">
+                                    <div class="text-lg font-semibold text-gray-900 dark:text-white">SMS Alerts</div>
+                                    <div class="text-base font-normal text-gray-500 dark:text-gray-400">Receive
+                                        notifications via SMS</div>
+                                </div>
+                                <label for="account-activity" class="relative flex items-center cursor-pointer">
+                                    <input type="checkbox" name="sms_alerts_enabled" id="account-activity"
+                                        class="sr-only peer" disabled>
+                                    <span
+                                        class="h-6 bg-gray-200 border border-gray-200 rounded-full w-11 toggle-bg dark:bg-gray-700 dark:border-gray-600"></span>
+                                </label>
                             </div>
-                            <label for="account-activity" class="relative flex items-center cursor-pointer">
-                                <input type="checkbox" id="account-activity" class="sr-only" checked="">
-                                <span
-                                    class="h-6 bg-gray-200 border border-gray-200 rounded-full w-11 toggle-bg dark:bg-gray-700 dark:border-gray-600"></span>
-                            </label>
                         </div>
 
-                    </div>
+                        <div class="items-center justify-between py-4">
+                            <label for="alert_frequency"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Alert Frequency
+                            </label>
+                            <select id="alert_frequency" name="alert_frequency"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500">
+                                {% for value, label in form.fields.alert_frequency.choices %}
+                                <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-                    <form class="flex flex-col pt-4">
-                        <label for="countries"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an
-                            option</label>
-                        <select id="countries"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option selected>Choose a country</option>
-                            <option value="US">United States</option>
-                            <option value="CA">Canada</option>
-                            <option value="FR">France</option>
-                            <option value="DE">Germany</option>
-                        </select>
+                        <div class="items-center justify-between py-4">
+                            <label class="block mb-4 text-sm font-medium text-gray-900 dark:text-white">Silent
+                                Hours</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="silent_hours_start"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Start time:
+                                    </label>
+                                    <div class="relative">
+                                        <div
+                                            class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd"
+                                                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <input type="time" name="silent_hours_start" id="silent_hours_start"
+                                            class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                                            required />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="silent_hours_end"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        End time:
+                                    </label>
+                                    <div class="relative">
+                                        <div
+                                            class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd"
+                                                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <input type="time" name="silent_hours_end" id="silent_hours_end"
+                                            class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                                            required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <button type="submit"
+                                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                Save all
+                            </button>
+                        </div>
                     </form>
-
-                    <label for="helper-text" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-                        email</label>
-                    <input type="email" id="helper-text" aria-describedby="helper-text-explanation"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="example@email.com">
-
-                    <div class="mt-6">
-                        <button
-                            class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Save
-                            all</button>
-                    </div>
                 </div>
             </div>
 
@@ -219,6 +215,35 @@
 
             <div class="hidden p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800"
                 id="security" role="tabpanel" aria-labelledby="security-tab">
+
+                {% if user.socialaccount_set.all %}
+                <!-- Google Account Section -->
+                <div class="text-center py-4">
+                    <svg class="w-12 h-12 mx-auto text-gray-400 mb-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                            fill="#4285F4" />
+                        <path
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                            fill="#34A853" />
+                        <path
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                            fill="#FBBC05" />
+                        <path
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                            fill="#EA4335" />
+                    </svg>
+                    <h3 class="mb-4 text-xl font-semibold dark:text-white">Google Account Connected</h3>
+                    <p class="text-gray-500 dark:text-gray-400 mb-4">
+                        You're signed in using your Google account. Password management is handled through Google.
+                    </p>
+                    <a href="https://myaccount.google.com/security" target="_blank"
+                        class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Manage Google Account Security
+                    </a>
+                </div>
+                {% else %}
+                <!-- Password Management Section -->
                 <h3 class="mb-4 text-xl font-semibold dark:text-white">Password information</h3>
                 <form action="#">
                     <div class="grid grid-cols-6 gap-6">
@@ -305,6 +330,7 @@
                         </div>
                     </div>
                 </form>
+                {% endif %}
             </div>
 
         </div>
