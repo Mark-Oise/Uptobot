@@ -241,13 +241,26 @@
                 {% else %}
                 <!-- Password Management Section -->
                 <h3 class="mb-4 text-xl font-semibold dark:text-white">Password information</h3>
-                <form action="#">
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="password_change_form" value="1">
+
+                    {% if password_form.errors %}
+                    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                        {% for field, errors in password_form.errors.items %}
+                            {% for error in errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
                     <div class="grid grid-cols-6 gap-6">
                         <div class="col-span-6 sm:col-span-3">
-                            <label for="current-password"
+                            <label for="old_password"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Current
                                 password</label>
-                            <input type="text" name="current-password" id="current-password"
+                            <input type="text" name="old_password" id="old_password"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="••••••••" required="">
                         </div>
@@ -256,7 +269,7 @@
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New
                                 password</label>
                             <input data-popover-target="popover-password" data-popover-placement="bottom"
-                                type="password" id="password"
+                                type="password" id="new_password1" name="new_password1"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="••••••••" required="">
                             <div data-popover="" id="popover-password" role="tooltip"
@@ -272,7 +285,7 @@
                                         <div class="h-1 bg-gray-200 dark:bg-gray-600"></div>
                                         <div class="h-1 bg-gray-200 dark:bg-gray-600"></div>
                                     </div>
-                                    <p>It’s better to have:</p>
+                                    <p>It's better to have:</p>
                                     <ul>
                                         <li class="flex items-center mb-1">
                                             <svg class="w-4 h-4 mr-2 text-green-400 dark:text-green-500"
@@ -312,16 +325,16 @@
                             </div>
                         </div>
                         <div class="col-span-6 sm:col-span-3">
-                            <label for="confirm-password"
+                            <label for="new_password2"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm
                                 password</label>
-                            <input type="text" name="confirm-password" id="confirm-password"
+                            <input type="password" name="new_password2" id="new_password2"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="••••••••" required="">
                         </div>
                         <div class="col-span-6 sm:col-full">
                             <button
-                                class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                                class="text-white bg-green-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                                 type="submit">Save all</button>
                         </div>
                     </div>
