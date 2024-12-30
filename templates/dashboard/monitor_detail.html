@@ -3,8 +3,7 @@
 <div class="px-6 pt-4 pb-8" id="monitor-detail">
     <div hx-ext="head-support">
         <div class="flex justify-between items-center mb-4">
-            <button type="button" hx-get="{% url 'monitor:monitor_list' %}" hx-target="#main-container"
-                hx-select="#monitor-list-container" hx-push-url="true" hx-trigger="click"
+            <button type="button" hx-get="{% url 'monitor:monitor_list' %}" hx-target="#main-content" hx-select="#main-container" hx-push-url="true" hx-trigger="click"
                 hx-swap="innerHTML transition:true"
                 class="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30">
                 <svg class="w-6 h-6 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
