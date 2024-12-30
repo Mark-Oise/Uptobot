@@ -72,9 +72,7 @@ def monitor_detail(request, slug):
 
 
 
-@login_required
-def settings(request):
-    return render(request, 'dashboard/monitor/settings.html')
+
 
 
 

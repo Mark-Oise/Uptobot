@@ -1,7 +1,7 @@
 from django import forms
 from .models import User, UserAlertSettings
 
-class UserUpdateForm(forms.ModelForm):
+class UserAccountUpdateForm(forms.ModelForm):
     email = forms.EmailField()
 
     class Meta:
