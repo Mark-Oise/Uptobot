@@ -18,11 +18,8 @@
                     <ol class="inline-flex items-center mb-3 sm:mb-0">
                         <li>
                             <div class="flex items-center">
-                                <button
+                                <a href="{% url 'monitor:monitor_list' %}"
                                     class="inline-flex items-center px-3 py-2 text-sm font-normal text-center bg-white text-gray-900 hover:bg-white rounded-lg focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white dark:focus:ring-gray-700">
-
-
-
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" class="lucide lucide-bot me-2">
@@ -34,17 +31,14 @@
                                         <path d="M9 13v2" />
                                     </svg>
                                     Uptobot
-                                </button>
-
+                                </a>
                             </div>
                         </li>
                         <span class="mx-2 text-gray-400">/</span>
+                        {% if request.resolver_match.url_name == 'monitor_list' %}
                         <li aria-current="page">
                             <div class="flex items-center">
-                                <button
-                                    class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white dark:focus:ring-gray-700">
-
-
+                                <span class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:text-white">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" class="lucide lucide-globe me-2">
@@ -52,12 +46,49 @@
                                         <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
                                         <path d="M2 12h20" />
                                     </svg>
-
                                     Monitors
-                                </button>
-
+                                </span>
                             </div>
                         </li>
+                        {% elif request.resolver_match.url_name == 'settings' %}
+                        <li aria-current="page">
+                            <div class="flex items-center">
+                                <span class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-settings me-2">
+                                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                    Settings
+                                </span>
+                            </div>
+                        </li>
+                        {% elif request.resolver_match.url_name == 'monitor_detail' %}
+                        <li>
+                            <div class="flex items-center">
+                                <a href="{% url 'monitor:monitor_list' %}"
+                                    class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white dark:focus:ring-gray-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-globe me-2">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                                        <path d="M2 12h20" />
+                                    </svg>
+                                    Monitors
+                                </a>
+                            </div>
+                        </li>
+                        <span class="mx-2 text-gray-400">/</span>
+                        <li aria-current="page">
+                            <div class="flex items-center">
+                                <span class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:text-white">
+                                    <span class="truncate max-w-[200px]">{{ monitor.slug }}</span>
+                                </span>
+                            </div>
+                        </li>
+                        {% endif %}
                     </ol>
                 </nav>
 
@@ -128,7 +159,7 @@
                     </div>
                     <ul class="py-1 font-light text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
                         <li>
-                            <a hx-get="{% url 'monitor:settings' %}" hx-target="#main-container" hx-push-url="true"
+                            <a hx-get="{% url 'accounts:settings' %}" hx-target="#main-container" hx-push-url="true"
                                 hx-trigger="click" hx-swap="innerHTML transition:true show:window:top"
                                 class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Account
                                 settings</a>
