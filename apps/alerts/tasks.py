@@ -3,7 +3,10 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.utils import timezone
 from django.template.loader import render_to_string
-from .models import AlertDelivery
+from .models import AlertDelivery, BatchedAlert
+from datetime import timedelta
+from django.db.models import Count
+from collections import defaultdict
 
 @shared_task(
     bind=True,
@@ -76,3 +79,58 @@ View Monitor: {settings.BASE_URL}{monitor.get_absolute_url()}
             delivery.status = 'failed'
             delivery.save()
             return f"Failed to send alert after {delivery.retry_count} retries: {str(e)}"
+
+
+@shared_task
+def process_batched_alerts():
+    """
+    Periodic task to process and send batched alerts
+    Runs every 15 minutes
+    """
+    now = timezone.now()
+    
+    # Get all unsent batched alerts
+    batched_alerts = BatchedAlert.objects.filter(
+        sent=False
+    ).select_related('user').prefetch_related('alerts', 'user__useralertsettings')
+
+    for batch in batched_alerts:
+        settings = batch.user.useralertsettings
+        
+        # Check if it's time to send based on frequency
+        if settings.alert_frequency == 'daily':
+            if (now - settings.last_alert_sent) < timedelta(days=1):
+                continue
+        elif settings.alert_frequency == 'weekly':
+            if (now - settings.last_alert_sent) < timedelta(weeks=1):
+                continue
+                
+        # Group alerts by monitor
+        alerts_by_monitor = defaultdict(list)
+        for alert in batch.alerts.select_related('monitor').order_by('created_at'):
+            alerts_by_monitor[alert.monitor].append(alert)
+            
+        # Prepare digest email content
+        subject = f"Monitor Alert Digest for {batch.user.username}"
+        message = "Monitor Alert Summary\n\n"
+        
+        for monitor, alerts in alerts_by_monitor.items():
+            message += f"\n{monitor.name} ({monitor.url}):\n"
+            for alert in alerts:
+                message += f"- [{alert.get_severity_display()}] {alert.created_at.strftime('%Y-%m-%d %H:%M')}: {alert.message}\n"
+            message += f"View Monitor: {settings.BASE_URL}{monitor.get_absolute_url()}\n"
+        
+        # Send digest email
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[batch.user.email],
+            fail_silently=False,
+        )
+        
+        # Update batch and settings
+        batch.sent = True
+        batch.save()
+        settings.last_alert_sent = now
+        settings.save()

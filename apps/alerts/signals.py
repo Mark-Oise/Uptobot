@@ -6,6 +6,7 @@ from apps.monitor.models import Monitor, MonitorLog
 from .models import Alert, AlertDelivery
 from .tasks import send_alert_email
 from apps.accounts.models import UserAlertSettings
+from apps.alerts.models import BatchedAlert
 
 
 @receiver(post_save, sender=MonitorLog)
@@ -92,7 +93,6 @@ def handle_alert_delivery(sender, instance, created, **kwargs):
     if not created:
         return
     
-    # Get the user's alert settings
     user = instance.monitor.user
     alert_settings = UserAlertSettings.objects.get(user=user)
 
@@ -100,14 +100,20 @@ def handle_alert_delivery(sender, instance, created, **kwargs):
     if not alert_settings.can_receive_alerts():
         return
 
-    delivery = AlertDelivery.objects.create(
-        alert=instance,
-        recipient=instance.monitor.user.email,
-        status='pending'
-    )
-
-    # Update the last_alert_sent timestamp
-    alert_settings.last_alert_sent = timezone.now()
-    alert_settings.save()
-
-    send_alert_email.delay(delivery.id)
+    if alert_settings.alert_frequency == 'immediate':
+        # Create immediate delivery
+        delivery = AlertDelivery.objects.create(
+            alert=instance,
+            recipient=user.email,
+            status='pending'
+        )
+        alert_settings.last_alert_sent = timezone.now()
+        alert_settings.save()
+        send_alert_email.delay(delivery.id)
+    else:
+        # Add to batch
+        batched_alert, _ = BatchedAlert.objects.get_or_create(
+            user=user,
+            sent=False
+        )
+        batched_alert.alerts.add(instance)

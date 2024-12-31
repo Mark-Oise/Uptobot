@@ -15,4 +15,12 @@ app.conf.beat_schedule = {
         'task': 'apps.monitor.tasks.schedule_monitor_checks',
         'schedule': crontab(minute='*/1'),  # Run every minute
     },
+    'process-batched-alerts': {
+        'task': 'apps.alerts.tasks.process_batched_alerts',
+        'schedule': 900.0,  # 15 minutes in seconds
+    },
+    'send-alert-email': {
+        'task': 'apps.alerts.tasks.send_alert_email',
+        'schedule': 60.0,  # Run every minute
+    },
 }
