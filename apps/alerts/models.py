@@ -6,12 +6,8 @@ class Alert(models.Model):
     ALERT_TYPES = [
         ('monitor_down', 'Monitor Down'),
         ('monitor_up', 'Monitor Up'),
-        ('availability', 'Availability Issue'),
-        ('response_time', 'Response Time Threshold'),
-        ('latency_spike', 'Latency Spike'),
         ('ssl_expiring_soon', 'SSL Certificate Expiring Soon'),
         ('ssl_expired', 'SSL Certificate Expired'),
-        ('ssl_invalid', 'SSL Certificate Invalid'),
     ]
 
     SEVERITY_LEVELS = [

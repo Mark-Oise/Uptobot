@@ -4,6 +4,8 @@ from django.conf import settings
 from django.core.validators import EmailValidator
 from .managers import CustomUserManager
 from uuid import uuid4
+from django.utils import timezone
+from datetime import timedelta
 
 # Create your models here.
 
@@ -38,10 +40,29 @@ class UserAlertSettings(models.Model):
     )
     silent_hours_start = models.TimeField(null=True, blank=True)
     silent_hours_end = models.TimeField(null=True, blank=True)
+    last_alert_sent = models.DateTimeField(null=True, blank=True)
 
-    def toggle_email_alerts(self):
-        self.email_alerts_enabled = not self.email_alerts_enabled
-        self.save()
+    def can_receive_alerts(self):
+        if not self.email_alerts_enabled:
+            return False
+        
+        # Check if the current time is within the silent hours
+        now = timezone.now()
+        if self.silent_hours_start and self.silent_hours_end:
+            current_time = now.time()
+            if self.silent_hours_start <= current_time <= self.silent_hours_end:
+                return False
+
+        # Check frequency
+        if self.last_alert_sent:
+            if self.alert_frequency == 'immediate':
+                return True
+            elif self.alert_frequency == 'daily':
+                return (now - self.last_alert_sent) >= timedelta(days=1)
+            elif self.alert_frequency == 'weekly':
+                return (now - self.last_alert_sent) >= timedelta(weeks=1)
+        return True
+            
 
     def __str__(self):
         return f"{self.user.username}'s Alert settings"
