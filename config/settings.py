@@ -133,7 +133,7 @@ if ENVIRONMENT == 'development':
 else:
     import dj_database_url
     DATABASES = {
-        'default': dj_database_url(env('DATABASE_URL', default='postgresql://'))
+        'default': dj_database_url.parse(env('DATABASE_URL', default='postgresql://'))
     }
 
 # Password validation
@@ -237,12 +237,9 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
 
 # Celery settings
-if ENVIRONMENT == 'development':
-    CELERY_BROKER_URL = 'redis://localhost:6379/0'
-    CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-else:
-    CELERY_BROKER_URL = env('REDIS_URL', default='redis://localhost:6379/0')
-    CELERY_RESULT_BACKEND = env('REDIS_URL', default='redis://localhost:6379/0')
+
+CELERY_BROKER_URL = env('REDIS_URL', default='redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = env('REDIS_URL', default='redis://localhost:6379/0')
 
 
 CELERY_ACCEPT_CONTENT = ['json']
