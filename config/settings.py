@@ -237,8 +237,14 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
 
 # Celery settings
-CELERY_BROKER_URL = env('REDIS_URL', default='redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = env('REDIS_URL', default='redis://localhost:6379/0')
+if ENVIRONMENT == 'development':
+    CELERY_BROKER_URL = 'redis://localhost:6379/0'
+    CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+else:
+    CELERY_BROKER_URL = env('REDIS_URL', default='redis://localhost:6379/0')
+    CELERY_RESULT_BACKEND = env('REDIS_URL', default='redis://localhost:6379/0')
+
+
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
