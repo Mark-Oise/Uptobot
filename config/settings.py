@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import environ
+import dj_database_url
 
 # Initialize environment variables
 env = environ.Env()
@@ -30,6 +31,7 @@ SECRET_KEY = "django-insecure-00&)_vw^7=2apu$t(a5wk1@d_0d%m5msfr@5g+6*0sw((jkcq3
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    '16.171.26.87',
     'watchtower-ydwj.onrender.com',
     'localhost',  # For local development
     '127.0.0.1'  # For local development
@@ -37,7 +39,9 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = ['https://watchtower-ydwj.onrender.com']
 
-DJANGO_ENV = env('DJANGO_ENV', default='development')
+ENVIRONMENT = env('ENVIRONMENT', default='development')
+
+
 SITE_ID = 1
 
 # Application definition
@@ -117,12 +121,20 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
+
+if ENVIRONMENT == 'development':
+    DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+else:
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.parse(env('DATABASE_URL', default='postgresql://'))
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
