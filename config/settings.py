@@ -133,7 +133,7 @@ if ENVIRONMENT == 'development':
 else:
     import dj_database_url
     DATABASES = {
-        'default': dj_database_url.parse(env('DATABASE_URL', default='postgresql://'))
+        'default': dj_database_url(env('DATABASE_URL', default='postgresql://'))
     }
 
 # Password validation
