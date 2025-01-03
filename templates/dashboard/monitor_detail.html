@@ -81,7 +81,7 @@
 
                         <!-- Availability Indicator -->
                         <div hx-get="{% url 'monitor:availability_indicator' monitor.slug %}"
-                            hx-trigger="load, retry-soon, delay:3s, every 30s" hx-target="this" hx-swap="innerHTML">
+                            hx-trigger="retry-soon, every 30s" hx-target="this" hx-swap="innerHTML">
                             {% include 'dashboard/monitor/partials/availability_indicator.html' %}
                         </div>
                     </div>
@@ -102,8 +102,8 @@
                             </div>
                             <div class="text-2xl font-bold text-gray-900 dark:text-white"
                                 hx-get="{% url 'monitor:uptime_metric' monitor.slug %}"
-                                hx-trigger="load, retry-soon,delay:3s, every 45s" hx-target="this"
-                                hx-select="#uptime-metric" hx-swap="innerHTML">
+                                hx-trigger="retry-soon, every 30s" hx-target="this" hx-select="#uptime-metric"
+                                hx-swap="innerHTML">
                                 {% include 'dashboard/monitor/partials/uptime_metric.html' %}
                             </div>
 
@@ -124,7 +124,7 @@
                             </div>
                             <div class="text-2xl font-bold text-gray-900 dark:text-white"
                                 hx-get="{% url 'monitor:response_time_metric' monitor.slug %}"
-                                hx-trigger="load, retry-soon, delay:3s, every 45s" hx-target="#response-time-metric"
+                                hx-trigger="retry-soon, every 30s" hx-target="#response-time-metric"
                                 hx-swap="innerHTML">
                                 {% include 'dashboard/monitor/partials/response_time_metric.html' %}
                             </div>
@@ -145,8 +145,7 @@
                             </div>
                             <div class="text-2xl font-bold text-gray-900 dark:text-white"
                                 hx-get="{% url 'monitor:last_checked_metric' monitor.slug %}"
-                                hx-trigger="load, retry-soon delay:3s, every 30s" hx-target="#last-checked-metric"
-                                hx-swap="innerHTML">
+                                hx-trigger="retry-soon, every 30s" hx-target="#last-checked-metric" hx-swap="innerHTML">
                                 {% include 'dashboard/monitor/partials/last_checked_metric.html' %}
                             </div>
                             <div class="text-sm text-gray-500 dark:text-gray-400">Frequency: Every
@@ -167,8 +166,8 @@
                             </div>
                             <div class="text-2xl font-bold text-gray-900 dark:text-white"
                                 hx-get="{% url 'monitor:ssl_status_metric' monitor.slug %}"
-                                hx-trigger="load, retry-soon, delay:3s, every 30s" hx-target="this"
-                                hx-select="#ssl-status-metric" hx-swap="innerHTML">
+                                hx-trigger="retry-soon, every 30s" hx-target="this" hx-select="#ssl-status-metric"
+                                hx-swap="innerHTML">
                                 {% include 'dashboard/monitor/partials/ssl_status_metric.html' %}
                             </div>
 
@@ -207,8 +206,8 @@
 
                 <!-- Chart Container -->
                 <div id="chart-container" class="w-full h-full"
-                    hx-get="{% url 'monitor:response_time_chart' monitor.slug %}"
-                    hx-trigger="retry-soon, delay:3s, every 30m" hx-target="#labels-chart" hx-swap="innerHTML">
+                    hx-get="{% url 'monitor:response_time_chart' monitor.slug %}" hx-trigger="retry-soon, every 30m"
+                    hx-target="#labels-chart" hx-swap="innerHTML">
                     {% include 'dashboard/monitor/partials/charts.html' %}
                 </div>
             </div>
@@ -251,7 +250,7 @@
 
                     <!-- Uptime History List -->
                     <div class="space-y-4" hx-get="{% url 'monitor:uptime_history' monitor.slug %}"
-                        hx-trigger="load, retry-soon, delay:3s, every 30s" hx-target="this" hx-swap="innerHTML">
+                        hx-trigger="retry-soon, every 30s" hx-target="this" hx-swap="innerHTML">
                         {% include 'dashboard/monitor/partials/uptime_history.html' %}
 
                     </div>
@@ -286,9 +285,8 @@
             <h3 class="text-xl font-bold mb-6">Monitor Health Score</h3>
 
             <!-- Content Container -->
-            <div hx-get="{% url 'monitor:monitor_health_score' monitor.slug %}"
-                hx-trigger="load, retry-soon, delay:3s, every 45s" hx-target="#monitor-health-score"
-                hx-swap="innerHTML">
+            <div hx-get="{% url 'monitor:monitor_health_score' monitor.slug %}" hx-trigger="retry-soon, every 30s"
+                hx-target="#monitor-health-score" hx-swap="innerHTML">
                 {% include 'dashboard/monitor/partials/monitor_health_score.html' %}
             </div>
         </div>

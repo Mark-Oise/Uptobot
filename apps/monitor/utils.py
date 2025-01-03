@@ -66,9 +66,9 @@ def uptime_metric(request, slug):
     })
     
     if uptime is None:
-        # If uptime isn't ready, tell HTMX to retry in 5 seconds
+        # If uptime isn't ready, retry every 500ms, up to 3 times
         response['HX-Trigger'] = 'retry-soon'
-        response['HX-Retries'] = '3'  # Optional: limit number of retries
+        response['HX-Retry-After'] = '500' 
     
     return response
 
@@ -87,6 +87,7 @@ def response_time_metric(request, slug):
         # If response time isn't ready, tell HTMX to retry in 5 seconds
         response['HX-Trigger'] = 'retry-soon'
         response['HX-Retries'] = '3'  # Optional: limit number of retries
+      
     
     return response 
 
@@ -106,6 +107,7 @@ def last_checked_metric(request, slug):
         response['HX-Trigger'] = 'retry-soon'
         response['HX-Retries'] = '3'  # Optional: limit number of retries
     
+    
     return response 
 
 
@@ -122,6 +124,7 @@ def ssl_status_metric(request, slug):
         # If ssl status isn't ready, tell HTMX to retry in 5 seconds
         response['HX-Trigger'] = 'retry-soon'
         response['HX-Retries'] = '3'  # Optional: limit number of retries
+      
     
     return response
 
@@ -145,6 +148,7 @@ def monitor_health_score(request, slug):
         response['HX-Trigger'] = 'retry-soon'
         response['HX-Retries'] = '3'  # Optional: limit number of retries
     
+    
     return response
 
 
@@ -162,6 +166,7 @@ def uptime_history(request, slug):
         # If no history data, tell HTMX to retry
         response['HX-Trigger'] = 'retry-soon'
         response['HX-Retries'] = '3'
+       
     
     return response
 
@@ -176,7 +181,8 @@ def recent_incidents(request, slug):
     })
     if not incidents:
         response['HX-Trigger'] = 'retry-soon'
-        response['HX-Retries'] = '3'
+        response['HX-Retries'] = '3'  # Optional: limit number of retries
+      
     
     return response
 
@@ -214,6 +220,7 @@ def availability_indicator(request, slug):
 
     if monitor.availability == 'unknown':
         response['HX-Trigger'] = 'retry-soon'
-        response['HX-Retries'] = '3'
+        response['HX-Retries'] = '3' 
+        
     
     return response
