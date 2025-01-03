@@ -23,5 +23,5 @@ urlpatterns = [
     path('monitor/<slug:slug>/uptime-history/', utils.uptime_history, name='uptime_history'),
     path('monitor/<slug:slug>/recent-incidents/', utils.recent_incidents, name='recent_incidents'),
     path('monitor/<slug:slug>/chart/', utils.response_time_chart, name='response_time_chart'),
-   
+    path('monitor/<slug:slug>/availability/', utils.availability_indicator, name='availability_indicator'),
 ]

@@ -202,3 +202,18 @@ def response_time_chart(request, slug):
     response['HX-Retries'] = '3'
 
     return response
+
+
+@login_required
+def availability_indicator(request, slug):
+    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
+    
+    response = render(request, 'dashboard/monitor/partials/availability_indicator.html', {
+        'monitor': monitor,
+    })
+
+    if monitor.availability == 'unknown':
+        response['HX-Trigger'] = 'retry-soon'
+        response['HX-Retries'] = '3'
+    
+    return response
