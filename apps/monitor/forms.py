@@ -19,11 +19,17 @@ class AddMonitorForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        url = cleaned_data.get('url')
+        url = cleaned_data.get('url', '').strip()
         interval = cleaned_data.get('interval')
 
-        if not url:
+        if url:
+            # Remove http:// or https:// if present
+            if url.startswith(('http://', 'https://')):
+                url = url.replace('http://', '').replace('https://', '')
+            cleaned_data['url'] = f'https://{url}'
+        else:
             self.add_error('url', 'URL is required.')
+
         if not interval or interval < 5 or interval > 60:
             self.add_error('interval', 'Interval must be between 5 and 60 minutes.')
         

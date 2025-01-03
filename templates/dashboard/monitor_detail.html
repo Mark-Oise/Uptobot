@@ -81,7 +81,8 @@
 
                         <!-- Availability Indicator -->
                         <div hx-get="{% url 'monitor:availability_indicator' monitor.slug %}"
-                            hx-trigger="retry-soon, every 30s" hx-target="this" hx-swap="innerHTML">
+                            hx-trigger="load, retry-soon, every 30s" hx-target="#availability-indicator"
+                            hx-swap="outerHTML">
                             {% include 'dashboard/monitor/partials/availability_indicator.html' %}
                         </div>
                     </div>
