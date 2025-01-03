@@ -31,6 +31,7 @@ SECRET_KEY = "django-insecure-00&)_vw^7=2apu$t(a5wk1@d_0d%m5msfr@5g+6*0sw((jkcq3
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    'uptobot.xyz',
     '16.171.26.87',
     'watchtower-ydwj.onrender.com',
     'localhost',  # For local development
