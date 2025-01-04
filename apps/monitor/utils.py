@@ -43,95 +43,36 @@ def delete_monitor(request, slug):
 def monitor_metrics(request, slug):
     monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
     
-    context = {
-        'monitor': monitor,  # Add the monitor object to the context
-        'uptime': monitor.get_uptime_percentage(),
-        'avg_response_time': monitor.get_average_response_time(),
-        'last_checked': monitor.last_checked,
-        'ssl_status': monitor.get_ssl_certificate_info(),
-    }
-    
-    return render(request, 'dashboard/monitor/partials/monitor_metrics.html', context)
-    
-
-
-@login_required
-def uptime_metric(request, slug):
-    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
+    # Get all metrics
     uptime = monitor.get_uptime_percentage()
+    avg_response_time = monitor.get_average_response_time()
+    last_checked = monitor.last_checked
+    ssl_status = monitor.get_ssl_certificate_info()
+    availability = monitor.availability 
     
-    response = render(request, 'dashboard/monitor/partials/uptime_metric.html', {
+    # Check if all data is ready
+    all_ready = all([uptime is not None, 
+                    avg_response_time is not None,
+                    last_checked is not None,
+                    ssl_status is not None,
+                    availability != 'unknown']) 
+    
+    response = render(request, 'dashboard/monitor/partials/monitor_metrics.html', {
         'monitor': monitor,
         'uptime': uptime,
-    })
-    
-    if uptime is None:
-        # Add proper retry headers
-        response['HX-Trigger'] = 'retry-soon'
-        response['HX-Retries'] = '3'  # Limit number of retries
-        response['HX-Retry-After'] = '500'  # Wait 500ms between retries
-    
-    return response
-    return response
-
-
-@login_required
-def response_time_metric(request, slug):
-    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
-    avg_time = monitor.get_average_response_time()
-
-    response = render(request, 'dashboard/monitor/partials/response_time_metric.html', {
-        'monitor': monitor,
-        'avg_time': avg_time,
-    })
-
-    if avg_time is None:
-        # If response time isn't ready, tell HTMX to retry in 5 seconds
-        response['HX-Trigger'] = 'retry-soon'
-        response['HX-Retries'] = '3'  # Limit number of retries
-        response['HX-Retry-After'] = '500'  # Wait 500ms between retries
-      
-    
-    return response 
-
-
-@login_required
-def last_checked_metric(request, slug):
-    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
-    last_checked = monitor.last_checked
-
-    response = render(request, 'dashboard/monitor/partials/last_checked_metric.html', {
-        'monitor': monitor,
+        'avg_response_time': avg_response_time,
         'last_checked': last_checked,
-    })
-
-    if last_checked is None:
-        # If last checked isn't ready, tell HTMX to retry in 5 seconds
-        response['HX-Trigger'] = 'retry-soon'
-        response['HX-Retries'] = '3'  # Limit number of retries
-        response['HX-Retry-After'] = '500'  # Wait 500ms between retries
-    
-    
-    return response 
-
-
-def ssl_status_metric(request, slug):
-    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
-    ssl_status = monitor.get_ssl_certificate_info()
-    
-    response = render(request, 'dashboard/monitor/partials/ssl_status_metric.html', {
-        'monitor': monitor,
         'ssl_status': ssl_status,
     })
-
-    if ssl_status is None:
-        # If ssl status isn't ready, tell HTMX to retry in 5 seconds
+    
+    if not all_ready:
         response['HX-Trigger'] = 'retry-soon'
-        response['HX-Retries'] = '3'  # Limit number of retries
-        response['HX-Retry-After'] = '500'  # Wait 500ms between retries
-      
+        response['HX-Retries'] = '10'  # Allow more retries since we're checking all metrics
+        response['HX-Retry-After'] = '2000'  # Wait 2 seconds between retries
     
     return response
+    
+
 
 
 def monitor_health_score(request, slug):
@@ -216,17 +157,4 @@ def response_time_chart(request, slug):
     return response
 
 
-@login_required
-def availability_indicator(request, slug):
-    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
-    
-    response = render(request, 'dashboard/monitor/partials/availability_indicator.html', {
-        'monitor': monitor,
-    })
 
-    if monitor.availability == 'unknown':
-        response['HX-Trigger'] = 'retry-soon'
-        response['HX-Retries'] = '3' 
-        
-    
-    return response
