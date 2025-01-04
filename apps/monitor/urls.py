@@ -13,11 +13,10 @@ urlpatterns = [
     path('delete/<slug:slug>/', utils.delete_monitor, name='delete_monitor'),
     path('search/', utils.search_monitors, name='search_monitors'),
     path('metrics/<slug:slug>/', utils.monitor_metrics, name='monitor_metrics'),
+    path('monitor/<slug:slug>/tab-content/', utils.monitor_tab_content, name='monitor_tab_content'),
 
     # HTMX Fragments for metric updates
     path('monitor/<slug:slug>/health_score/', utils.monitor_health_score, name='monitor_health_score'),
-    path('monitor/<slug:slug>/uptime-history/', utils.uptime_history, name='uptime_history'),
-    path('monitor/<slug:slug>/recent-incidents/', utils.recent_incidents, name='recent_incidents'),
     path('monitor/<slug:slug>/chart/', utils.response_time_chart, name='response_time_chart'),
    
 ]

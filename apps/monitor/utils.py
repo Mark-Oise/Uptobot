@@ -68,7 +68,7 @@ def monitor_metrics(request, slug):
     if not all_ready:
         response['HX-Trigger'] = 'retry-soon'
         response['HX-Retries'] = '10'  # Allow more retries since we're checking all metrics
-        response['HX-Retry-After'] = '2000'  # Wait 2 seconds between retries
+        response['HX-Retry-After'] = '500'  # Wait 2 seconds between retries
     
     return response
     
@@ -99,39 +99,33 @@ def monitor_health_score(request, slug):
     return response
 
 
-def uptime_history(request, slug):
-    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)  # Add user check
-    uptime_history = monitor.get_daily_uptime_history()
+def monitor_tab_content(request, slug):
+    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
     
-    response = render(request, 'dashboard/monitor/partials/uptime_history.html', {
+    # Get both uptime history and recent incidents
+    uptime_history = monitor.get_daily_uptime_history()
+    incidents = monitor.logs.exclude(status='success').order_by('-checked_at')[:5]
+    
+    response = render(request, 'dashboard/monitor/partials/tab_content.html', {
         'monitor': monitor,
         'uptime_history': uptime_history,
-        
+        'recent_incidents': incidents,
     })
     
-    if not uptime_history:
-        # If no history data, tell HTMX to retry
+    # If either data set is missing, trigger a retry
+    if not uptime_history and not incidents:
         response['HX-Trigger'] = 'retry-soon'
         response['HX-Retries'] = '3'
-       
+        response['HX-Retry-After'] = '2000'  # Wait 2 seconds between retries
     
     return response
 
 
-def recent_incidents(request, slug):
-    monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
-    incidents = monitor.logs.exclude(status='success').order_by('-checked_at')[:5]
 
-    response = render(request, 'dashboard/monitor/partials/recent_incidents.html', {
-        'monitor': monitor,
-        'recent_incidents': incidents, 
-    })
-    if not incidents:
-        response['HX-Trigger'] = 'retry-soon'
-        response['HX-Retries'] = '3'  # Optional: limit number of retries
-      
-    
-    return response
+
+
+
+
 
 
 @login_required
