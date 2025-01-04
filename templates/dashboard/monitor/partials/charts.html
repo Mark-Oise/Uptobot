@@ -1,4 +1,6 @@
-<div id="labels-chart">
+<div id="labels-chart" hx-get="{% url 'monitor:response_time_chart' monitor.slug %}"
+    hx-trigger="load, chart-loading from:body delay:500ms, every 5m" hx-target="this"
+    hx-swap="innerHTML transition:true">
 </div>
 <script>
     const options = {

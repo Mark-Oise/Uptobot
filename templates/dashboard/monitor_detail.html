@@ -49,8 +49,9 @@
 
         <div class="grid gap-4 md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
             <!-- Main widget -->
-            <div hx-get="{% url 'monitor:monitor_metrics' monitor.slug %}" hx-trigger="load, every 30s" hx-target="this"
-                hx-swap="innerHTML"
+            <div hx-get="{% url 'monitor:monitor_metrics' monitor.slug %}"
+                hx-trigger="load, metrics-loading from:body delay:500ms, every 30s" hx-target="this"
+                hx-swap="innerHTML transition:true"
                 class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm lg:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
                 {% include 'dashboard/monitor/partials/monitor_metrics.html' %}
             </div>
@@ -79,9 +80,7 @@
                 </div>
 
                 <!-- Chart Container -->
-                <div id="chart-container" class="w-full h-full"
-                    hx-get="{% url 'monitor:response_time_chart' monitor.slug %}" hx-trigger="load, every 30s"
-                    hx-target="#labels-chart" hx-swap="outerHTML">
+                <div id="chart-container" class="w-full h-full">
                     {% include 'dashboard/monitor/partials/charts.html' %}
                 </div>
             </div>
@@ -111,7 +110,8 @@
 
         <div class="grid grid-cols-1 my-4 xl:gap-4">
             <div id="default-tab-content" hx-get="{% url 'monitor:monitor_tab_content' monitor.slug %}"
-                hx-trigger="load, every 30s" hx-target="this" hx-swap="innerHTML">
+                hx-trigger="load, tab-content-loading from:body delay:500ms, every 30s" hx-target="this"
+                hx-swap="innerHTML transition:true">
                 {% include 'dashboard/monitor/partials/tab_content.html' %}
             </div>
         </div>
@@ -122,8 +122,9 @@
             <h3 class="text-xl font-bold mb-6">Monitor Health Score</h3>
 
             <!-- Content Container -->
-            <div hx-get="{% url 'monitor:monitor_health_score' monitor.slug %}" hx-trigger="retry-soon, every 30s"
-                hx-target="#monitor-health-score" hx-swap="innerHTML">
+            <div id="monitor-health-score" hx-get="{% url 'monitor:monitor_health_score' monitor.slug %}"
+                hx-trigger="load, health-score-loading from:body delay:500ms, every 30s" hx-target="this"
+                hx-swap="innerHTML transition:true">
                 {% include 'dashboard/monitor/partials/monitor_health_score.html' %}
             </div>
         </div>
