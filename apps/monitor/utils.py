@@ -66,10 +66,12 @@ def uptime_metric(request, slug):
     })
     
     if uptime is None:
-        # If uptime isn't ready, retry every 500ms, up to 3 times
+        # Add proper retry headers
         response['HX-Trigger'] = 'retry-soon'
-        response['HX-Retry-After'] = '500' 
+        response['HX-Retries'] = '3'  # Limit number of retries
+        response['HX-Retry-After'] = '500'  # Wait 500ms between retries
     
+    return response
     return response
 
 
@@ -86,7 +88,8 @@ def response_time_metric(request, slug):
     if avg_time is None:
         # If response time isn't ready, tell HTMX to retry in 5 seconds
         response['HX-Trigger'] = 'retry-soon'
-        response['HX-Retries'] = '3'  # Optional: limit number of retries
+        response['HX-Retries'] = '3'  # Limit number of retries
+        response['HX-Retry-After'] = '500'  # Wait 500ms between retries
       
     
     return response 
@@ -105,7 +108,8 @@ def last_checked_metric(request, slug):
     if last_checked is None:
         # If last checked isn't ready, tell HTMX to retry in 5 seconds
         response['HX-Trigger'] = 'retry-soon'
-        response['HX-Retries'] = '3'  # Optional: limit number of retries
+        response['HX-Retries'] = '3'  # Limit number of retries
+        response['HX-Retry-After'] = '500'  # Wait 500ms between retries
     
     
     return response 
@@ -123,7 +127,8 @@ def ssl_status_metric(request, slug):
     if ssl_status is None:
         # If ssl status isn't ready, tell HTMX to retry in 5 seconds
         response['HX-Trigger'] = 'retry-soon'
-        response['HX-Retries'] = '3'  # Optional: limit number of retries
+        response['HX-Retries'] = '3'  # Limit number of retries
+        response['HX-Retry-After'] = '500'  # Wait 500ms between retries
       
     
     return response
@@ -146,7 +151,8 @@ def monitor_health_score(request, slug):
     if health_score is None:
         # If health score isn't ready, tell HTMX to retry in 5 seconds
         response['HX-Trigger'] = 'retry-soon'
-        response['HX-Retries'] = '3'  # Optional: limit number of retries
+        response['HX-Retries'] = '3'  # Limit number of retries
+        response['HX-Retry-After'] = '500'  # Wait 500ms between retries
     
     
     return response
