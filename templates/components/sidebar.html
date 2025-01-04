@@ -24,7 +24,7 @@
                     <div class="tooltip-arrow" data-popper-arrow></div>
                 </div>
             </li>
-            <li>
+            <!-- <li>
                 <a href="#"
                     class="flex items-center p-2 text-green-400 rounded-lg dark:text-white hover:bg-green-100 dark:hover:bg-green-700 group"
                     data-tooltip-target="tooltip-reports" data-tooltip-placement="right">
@@ -63,14 +63,14 @@
                     Reports
                     <div class="tooltip-arrow" data-popper-arrow></div>
                 </div>
-            </li>
+            </li> -->
 
         </ul>
-        <div class="mb-8 absolute bottom-0 left-0 hidden px-3 pb-4 lg:flex dark:bg-gray-800 w-full">
+        <div class="mb-8 absolute bottom-0 left-0 px-3 pb-4 lg:flex dark:bg-gray-800 w-full">
             <ul class="space-y-2 font-medium w-full">
                 <li class="w-full">
-                    <a hx-get="{% url 'accounts:settings' %}" hx-target="#main-content" hx-select="#main-container" hx-push-url="true" 
-                        hx-trigger="click" hx-swap="innerHTML transition:true show:window:top"
+                    <a hx-get="{% url 'accounts:settings' %}" hx-target="#main-content" hx-select="#main-container"
+                        hx-push-url="true" hx-trigger="click" hx-swap="innerHTML transition:true show:window:top"
                         class="flex items-center p-2 text-green-400 rounded-lg dark:text-white hover:bg-green-100 dark:hover:bg-green-700 group w-full"
                         data-tooltip-target="tooltip-settings" data-tooltip-placement="right">
 
