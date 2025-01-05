@@ -109,7 +109,6 @@ def monitor_tab_content(request, slug):
 def response_time_chart(request, slug):
     monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
     
-    # Get initial chart data (7 days by default)
     response_time_data = monitor.get_response_time_data(period='7d')
     
     context = {
@@ -123,7 +122,7 @@ def response_time_chart(request, slug):
     
     response = render(request, 'dashboard/monitor/partials/charts.html', context)
     
-    # Check if we have any data points
+    # Trigger reload if no data available
     if not response_time_data:
         response['HX-Trigger'] = 'chart-loading'
     

@@ -1,8 +1,15 @@
 
-const options = {
-    xaxis: {
-        show: true,
-        categories: {{ chart_data.dates | safe }},
+// Clean up any existing chart instance
+if (window.currentChart) {
+    window.currentChart.destroy();
+}
+
+// Create new chart
+if (document.getElementById("labels-chart") && typeof ApexCharts !== 'undefined') {
+    window.currentChart = new ApexCharts(document.getElementById("labels-chart"), {
+        xaxis: {
+            show: true,
+            categories: {{ chart_data.dates | safe }},
 labels: {
     show: true,
         style: {
@@ -12,11 +19,11 @@ labels: {
 },
 axisBorder: {
     show: false,
-            },
+                },
 axisTicks: {
     show: false,
+                },
             },
-        },
 yaxis: {
     show: true,
         labels: {
@@ -27,13 +34,11 @@ yaxis: {
         },
     }
 },
-series: [
-    {
-        name: "Response time (ms)",
-        data: {{ chart_data.data | safe }},
+series: [{
+    name: "Response time (ms)",
+    data: {{ chart_data.data | safe }},
     color: "#1A56DB",
-            },
-],
+            }],
     chart: {
     sparkline: {
         enabled: false
@@ -44,16 +49,16 @@ series: [
                 fontFamily: "Inter, sans-serif",
                     dropShadow: {
         enabled: false,
-            },
+                },
     toolbar: {
         show: false,
-            },
+                },
 },
 tooltip: {
     enabled: true,
         x: {
         show: true,
-            },
+                },
 },
 fill: {
     type: "gradient",
@@ -62,23 +67,20 @@ fill: {
             opacityTo: 0,
                 shade: "#1C64F2",
                     gradientToColors: ["#1C64F2"],
-            },
+                },
 },
 dataLabels: {
     enabled: false,
-        },
+            },
 stroke: {
     width: 6,
-        },
+            },
 legend: {
     show: false
 },
 grid: {
     show: false,
-        },
+            },
+        });
+window.currentChart.render();
     }
-
-if (document.getElementById("labels-chart") && typeof ApexCharts !== 'undefined') {
-    const chart = new ApexCharts(document.getElementById("labels-chart"), options);
-    chart.render();
-}
