@@ -99,12 +99,6 @@ def monitor_tab_content(request, slug):
 
 
 
-
-
-
-
-
-
 @login_required
 def response_time_chart(request, slug):
     monitor = get_object_or_404(Monitor, slug=slug, user=request.user)

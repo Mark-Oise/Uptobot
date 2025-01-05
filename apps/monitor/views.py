@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from apps.notifications.models import Notification
 
 # Create your views here.
 
@@ -48,6 +49,17 @@ def monitor_list(request):
 def monitor_detail(request, slug):
     monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
     
+    if request.method == 'POST':
+        form = UpdateMonitorForm(request.POST, instance=monitor)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Monitor updated successfully')
+            return redirect(reverse('monitor:monitor_detail', kwargs={'slug': monitor.slug}))
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = UpdateMonitorForm(instance=monitor)
+    
     # Get initial chart data (7 days by default)
     response_time_data = monitor.get_response_time_data(period='7d')
     chart_data = {
@@ -58,7 +70,7 @@ def monitor_detail(request, slug):
     
     context = {
         'monitor': monitor,
-        'form': UpdateMonitorForm(instance=monitor),
+        'form': form,
         'recent_incidents': monitor.logs.exclude(status='success').order_by('-checked_at')[:5],
         'health_score': monitor.get_health_score(),
         'health_status': monitor.get_health_status(),

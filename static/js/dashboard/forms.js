@@ -8,6 +8,10 @@ function initializeForms() {
     const rangeInput = document.getElementById('interval-range-input');
     const currentValueLabel = document.getElementById('current-value');
 
+    // Set initial interval based on the range input's value (which comes from the monitor)
+    const initialInterval = parseInt(rangeInput.value) || defaultInterval;
+    updateInterval(initialInterval);
+
     // Set active interval button style
     function setActiveButton(activeInterval) {
         intervalButtons.forEach(function (btn) {
@@ -43,9 +47,6 @@ function initializeForms() {
         }
         return closest;
     }
-
-    // Set initial interval
-    updateInterval(defaultInterval);
 
     // Add event listeners
     intervalButtons.forEach(function (button) {

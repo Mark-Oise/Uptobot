@@ -22,7 +22,7 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <form method="post" action="{% url 'monitor:monitor_detail' monitor.pk %}">
+            <form method="post" action="{% url 'monitor:monitor_detail' monitor.slug %}">
                 {% csrf_token %}
 
                 <!-- Add error messages -->
@@ -84,8 +84,8 @@
 
                         <div class="relative mb-6">
                             <label for="interval-range-input" class="sr-only">Interval range</label>
-                            <input id="interval-range-input" name="interval" type="range" min="5" max="60" value="5"
-                                step="5"
+                            <input id="interval-range-input" name="interval" type="range" min="5" max="60"
+                                value="{{ monitor.interval }}" step="5"
                                 class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
                             <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">5m</span>
                             <span id="current-value"
