@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-00&)_vw^7=2apu$t(a5wk1@d_0d%m5msfr@5g+6*0sw((jkcq3"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'uptobot.xyz',
