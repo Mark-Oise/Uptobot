@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import environ
 import dj_database_url
+import os
 
 # Initialize environment variables
 env = environ.Env()
@@ -177,14 +178,20 @@ USE_TZ = True
 
 
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",  # for project-level static files
+STATICFILES_DIR = [
+    os.path.join(BASE_DIR, "static"),  # for project-level static files
 ]
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 COMPRESS_ROOT = BASE_DIR / 'static'
 
