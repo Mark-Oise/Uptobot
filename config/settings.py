@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-00&)_vw^7=2apu$t(a5wk1@d_0d%m5msfr@5g+6*0sw((jkcq3"
+SECRET_KEY = env('DJANGO_SECRET_KEY', default='django-insecure-00&)_vw^7=2apu$t(a5wk1@d_0d%m5msfr@5g+6*0sw((jkcq3')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -191,7 +191,7 @@ STATICFILES_DIR = [
     os.path.join(BASE_DIR, "static"),  # for project-level static files
 ]
 
-X_FRAME_OPTIONS = 'SAMEORIGIN'
+X_FRAME_OPTIONS = 'DENY'
 
 COMPRESS_ROOT = BASE_DIR / 'static'
 
@@ -256,6 +256,15 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
+
+
+# Security Settings
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 
 
