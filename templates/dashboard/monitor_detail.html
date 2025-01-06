@@ -3,8 +3,8 @@
 <div class="px-6 pt-4 pb-8" id="monitor-detail">
     <div hx-ext="head-support">
         <div class="flex justify-between items-center mb-4">
-            <button type="button" hx-get="{% url 'monitor:monitor_list' %}" hx-target="#main-content"
-                hx-select="#main-container" hx-push-url="true" hx-trigger="click" hx-swap="innerHTML transition:true"
+            <button type="button" hx-get="{% url 'monitor:monitor_list' %}" hx-target="#body" hx-push-url="true"
+                hx-trigger="click" hx-swap="innerHTML transition:true"
                 class="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30">
                 <svg class="w-6 h-6 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                     fill="none" viewBox="0 0 24 24">
@@ -47,12 +47,12 @@
 
 
 
-        <div class="grid gap-4 md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
+        <div class="grid gap-4 md:grid-cols-2">
             <!-- Main widget -->
             <div hx-get="{% url 'monitor:monitor_metrics' monitor.slug %}"
                 hx-trigger="load, metrics-loading from:body delay:500ms, every 30s" hx-target="this"
                 hx-swap="innerHTML transition:true"
-                class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm lg:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
                 {% include 'dashboard/monitor/partials/monitor_metrics.html' %}
             </div>
             <!--Tabs widget -->

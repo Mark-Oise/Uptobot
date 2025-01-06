@@ -36,8 +36,7 @@
                     <a href="#" class="text-lg font-bold text-gray-900 dark:text-white leading-none">
                         {{ monitor.name }}
                     </a>
-                    <p hx-get="{% url 'monitor:monitor_detail' monitor.slug %}" hx-target="#main-container"
-                        hx-select="#monitor-detail" hx-push-url="true"
+                    <p hx-get="{% url 'monitor:monitor_detail' monitor.slug %}" hx-target="#body" hx-push-url="true"
                         hx-swap="innerHTML transition:true show:window:top"
                         class="mt-1 inline-flex items-center text-sm font-medium text-gray-600 hover:underline dark:text-gray-400 leading-none">
                         {{ monitor.url }}
@@ -134,8 +133,8 @@
                 </div>
             </li>
         </ul>
-        <button type="button" hx-get="{% url 'monitor:monitor_detail' monitor.slug %}" hx-target="#main-content"
-            hx-select="#main-container" hx-push-url="true" hx-swap="innerHTML transition:true show:window:top"
+        <button type="button" hx-get="{% url 'monitor:monitor_detail' monitor.slug %}" hx-target="#body"
+            hx-push-url="true" hx-swap="innerHTML transition:true show:window:top"
             class="mt-2 w-full py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-white bg-gray-700 hover:bg-gray-800 focus:outline-none rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
             <div class="flex items-center justify-center">
                 <svg class="me-2 h-3 w-3 dark:text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"

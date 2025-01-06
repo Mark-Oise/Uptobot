@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function () {
     const sidebar = document.getElementById('logo-sidebar');
     const collapseBtn = document.getElementById('sidebar-collapse-btn');
