@@ -39,7 +39,9 @@ ALLOWED_HOSTS = [
     '127.0.0.1'  # For local development
 ]
 
-CSRF_TRUSTED_ORIGINS = ['https://watchtower-ydwj.onrender.com']
+CSRF_TRUSTED_ORIGINS = [
+    'https://watchtower-ydwj.onrender.com',
+]
 
 ENVIRONMENT = env('ENVIRONMENT', default='development')
 
@@ -178,7 +180,7 @@ USE_TZ = True
 
 
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
@@ -194,6 +196,7 @@ STATICFILES_FINDERS = (
 )
 
 MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / 'media' 
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
