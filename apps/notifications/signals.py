@@ -10,7 +10,7 @@ from asgiref.sync import async_to_sync
 
 @receiver(post_save, sender=MonitorLog)
 def create_notification_from_monitor_log(sender, instance, created, **kwargs):
-    """Create notifications based on MonitorLog events with rate limiting"""
+    """Create notifications based on MonitorLog events"""
     if not created:
         return
 
@@ -42,51 +42,9 @@ def create_notification_from_monitor_log(sender, instance, created, **kwargs):
             message=f"{monitor.name} is back online"
         )
 
-    # Availability Alert - Max once per 24 hours
-    if (monitor.get_uptime_percentage(days=1) < 90 and
-        not Notification.objects.filter(
-            monitor=monitor,
-            notification_type='availability',
-            created_at__gte=timezone.now() - timedelta(hours=24)
-        ).exists()):
-        create_notification(
-            monitor=monitor,
-            notification_type='availability',
-            severity='warning',
-            message=f"{monitor.name} availability has dropped below 90%"
-        )
-
-    # Response Time and Latency Alerts - Max once per hour
-    if instance.status == 'success' and instance.response_time:
-        last_performance_alert = Notification.objects.filter(
-            monitor=monitor,
-            notification_type__in=['response_time', 'latency_spike'],
-            created_at__gte=timezone.now() - timedelta(hours=1)
-        ).exists()
-        
-        if not last_performance_alert:
-            # Significant response time issues only
-            if instance.response_time > 5000:  # Increased threshold to 5 seconds
-                create_notification(
-                    monitor=monitor,
-                    notification_type='response_time',
-                    severity='warning',
-                    message=f"{monitor.name} response time is critical: {instance.response_time}ms"
-                )
-            
-            # More significant latency spikes only
-            avg_response_time = monitor.get_average_response_time(days=1)
-            if avg_response_time and instance.response_time > (avg_response_time * 5):  # Increased multiplier
-                create_notification(
-                    monitor=monitor,
-                    notification_type='latency_spike',
-                    severity='warning',
-                    message=f"{monitor.name} is experiencing severe latency issues"
-                )
-
 @receiver(post_save, sender=Monitor)
 def handle_ssl_certificate_notifications(sender, instance, **kwargs):
-    """Handle SSL certificate-related notifications with reduced frequency"""
+    """Handle SSL certificate-related notifications"""
     if not instance.url.startswith('https'):
         return
 
@@ -142,23 +100,6 @@ def create_notification(monitor, notification_type, severity, message):
         notification_type=notification_type,
         severity=severity,
         monitor=monitor
-    )
-    
-    # Send WebSocket notification
-    channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send)(
-        f"notifications_{monitor.user.public_id}",
-        {
-            "type": "notification_message",
-            "notification": {
-                "id": notification.id,
-                "title": notification.title,
-                "message": notification.message,
-                "severity": notification.severity,
-                "created_at": notification.created_at.isoformat(),
-                "url": notification.get_absolute_url() if hasattr(notification, 'get_absolute_url') else "#"
-            }
-        }
     )
     
     return notification
