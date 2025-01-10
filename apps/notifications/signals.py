@@ -15,32 +15,52 @@ def create_notification_from_monitor_log(sender, instance, created, **kwargs):
         return
 
     monitor = instance.monitor
+    last_24h = timezone.now() - timedelta(hours=24)
     
     # Monitor Down Alert - Only notify on first failure after threshold is reached
     if (instance.status in ['failure', 'error'] and 
         monitor.consecutive_failures == monitor.alert_threshold):
-        create_notification(
+        # Check if we already sent a down notification recently
+        recent_down_notification = Notification.objects.filter(
             monitor=monitor,
             notification_type='monitor_down',
-            severity='critical',
-            message=f"{monitor.name} is down. {instance.error_message or ''}"
-        )
+            created_at__gte=last_24h
+        ).exists()
+        
+        if not recent_down_notification:
+            create_notification(
+                monitor=monitor,
+                notification_type='monitor_down',
+                severity='critical',
+                message=f"{monitor.name} is down. {instance.error_message or ''}"
+            )
 
-    # Monitor Up Alert (Recovery) - Only notify if there was a previous down notification
+    # Monitor Up Alert (Recovery) - Only if there was a previous down notification
     elif (instance.status == 'success' and 
           monitor.consecutive_failures == 0 and 
-          monitor.availability == 'online' and
-          Notification.objects.filter(
-              monitor=monitor,
-              notification_type='monitor_down',
-              created_at__gte=timezone.now() - timedelta(hours=24)
-          ).exists()):
-        create_notification(
+          monitor.availability == 'online'):
+        
+        # Check for recent down notification that hasn't been "recovered"
+        recent_down = Notification.objects.filter(
+            monitor=monitor,
+            notification_type='monitor_down',
+            created_at__gte=last_24h
+        ).exists()
+        
+        # Check if we already sent a recovery notification for this incident
+        recent_recovery = Notification.objects.filter(
             monitor=monitor,
             notification_type='monitor_up',
-            severity='info',
-            message=f"{monitor.name} is back online"
-        )
+            created_at__gte=last_24h
+        ).exists()
+        
+        if recent_down and not recent_recovery:
+            create_notification(
+                monitor=monitor,
+                notification_type='monitor_up',
+                severity='info',
+                message=f"{monitor.name} is back online"
+            )
 
 @receiver(post_save, sender=Monitor)
 def handle_ssl_certificate_notifications(sender, instance, **kwargs):
