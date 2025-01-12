@@ -43,18 +43,23 @@ def delete_monitor(request, slug):
 @login_required
 def monitor_metrics(request, slug):
     monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
+
+    uptime = monitor.get_uptime_percentage()
+    avg_response_time = monitor.get_average_response_time()
+    last_checked = monitor.last_checked
+    ssl_status = monitor.get_ssl_certificate_info()
     
     response = render(request, 'dashboard/monitor/partials/monitor_metrics.html', {
         'monitor': monitor,
-        'uptime': monitor.get_uptime_percentage(),
-        'avg_response_time': monitor.get_average_response_time(),
-        'last_checked': monitor.last_checked,
-        'ssl_status': monitor.get_ssl_certificate_info(),
+        'uptime': uptime,
+        'avg_response_time': avg_response_time,
+        'last_checked': last_checked,
+        'ssl_status': ssl_status,
         
        
     })
     
-    if monitor.get_uptime_percentage() is None or monitor.get_average_response_time() is None:
+    if uptime is None or avg_response_time is None:
         response['HX-Trigger'] = 'metrics-loading'
     
     return response
@@ -65,11 +70,14 @@ def monitor_metrics(request, slug):
 @login_required
 def monitor_health_score(request, slug):
     monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
+
+    health_score = monitor.get_health_score()
+    health_status = monitor.get_health_status()
         
     response = render(request, 'dashboard/monitor/partials/monitor_health_score.html', {
         'monitor': monitor,
-        'health_score': monitor.get_health_score(),
-        'health_status': monitor.get_health_status(),
+        'health_score': health_score,
+        'health_status': health_status,
     })
 
     # Check if underlying metrics that determine health score are ready
@@ -84,15 +92,18 @@ def monitor_health_score(request, slug):
 
 def monitor_tab_content(request, slug):
     monitor = get_object_or_404(Monitor, slug=slug, user=request.user)
+
+    uptime_history = monitor.get_daily_uptime_history()
+    recent_incidents = monitor.logs.exclude(status='success').order_by('-checked_at')[:5]
     
     response = render(request, 'dashboard/monitor/partials/tab_content.html', {
         'monitor': monitor,
-        'uptime_history': monitor.get_daily_uptime_history(),
-        'recent_incidents': monitor.logs.exclude(status='success').order_by('-checked_at')[:5],
+        'uptime_history': uptime_history,
+        'recent_incidents': recent_incidents,
     })
     
     
-    if monitor.get_uptime_percentage() is None:
+    if uptime_history is None:
         response['HX-Trigger'] = 'tab-content-loading'
     
     return response
