@@ -33,7 +33,11 @@ def mark_as_read(request, notification_id):
     notification = get_object_or_404(Notification, id=notification_id, user=request.user)
     notification.mark_as_read()
     
-    # Return response with HX-Redirect header
+    # If request is from the list page (has HX-Target header), don't redirect
+    if request.headers.get('HX-Target'):
+        return redirect('notifications:list')
+    
+    # Otherwise, redirect to the notification's URL
     response = HttpResponse()
     response['HX-Redirect'] = notification.get_absolute_url()
     return response
