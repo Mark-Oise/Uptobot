@@ -1,4 +1,4 @@
-<a href="{{ notification.get_absolute_url }}"
+<a hx-post="{% url 'notifications:mark_as_read' notification.id %}" hx-trigger="click" hx-swap="none"
     class="flex px-4 py-3 border-b hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600">
     <div class="flex-shrink-0 mt-1">
         {% if notification.severity == 'critical' %}

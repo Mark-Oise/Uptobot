@@ -3,51 +3,43 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 import json
-
+from django.core.paginator import Paginator
 from .models import Notification
+from django.shortcuts import redirect
+
+
 
 @login_required
-def notification_list(request):
-    """HTMX endpoint to fetch notifications dropdown content"""
+def full_notification_list(request):
+    """View for the full notifications page"""
     notifications = (Notification.objects
                     .filter(user=request.user, is_read=False)
                     .select_related('monitor')
-                    .order_by('-created_at')[:5])
+                    .order_by('-created_at'))
     
-    context = {
-        'notifications': notifications,
-        'notification_count': notifications.count(),
-    }
+    # Paginate notifications
     
-    return render(request, 'components/notification_list.html', context)
-
-
-
-
-
-# @login_required
-# def mark_as_read(request, pk):
-#     """Mark notification as read and return updated count"""
-#     notification = get_object_or_404(Notification, pk=pk, user=request.user)
-#     notification.mark_as_read()
+    paginator = Paginator(notifications, 6)  # Show 10 notifications per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     
-#     # Get new count for the badge
-#     unread_count = Notification.get_unread_count(request.user)
+    return render(request, 'notifications/list.html', {
+        'notifications': page_obj
+    })
+
+
+def mark_as_read(request, notification_id):
+    """View for marking a notification as read"""
+    notification = get_object_or_404(Notification, id=notification_id, user=request.user)
+    notification.mark_as_read()
     
-#     response = HttpResponse(status=200)
-#     response['HX-Trigger'] = json.dumps({
-#         'updateNotificationCount': unread_count
-#     })
-#     return response
+    # Return response with HX-Redirect header
+    response = HttpResponse()
+    response['HX-Redirect'] = notification.get_absolute_url()
+    return response
 
 
-
-
-
-# @login_required
-# def notification_count(request):
-#     """Return the current number of unread notifications"""
-#     unread_count = Notification.get_unread_count(request.user)
-#     return HttpResponse(unread_count if unread_count > 0 else '')
-
-
+def mark_all_as_read(request):
+    """View for marking all notifications as read"""
+    Notification.mark_all_as_read(request.user)
+    return redirect('notifications:list')
