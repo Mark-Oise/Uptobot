@@ -135,12 +135,11 @@
                                 placeholder="Search monitors..." />
                         </div>
                     </form>
-                    <div id="notification-controls">
+                    <div id="notification-controls" hx-ext="ws" ws-connect="/ws/notifications/">
                         <div class="flex-shrink-0 flex items-center space-x-4">
                             <button type="button" data-dropdown-toggle="notification-dropdown"
                                 class="relative p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700">
                                 <span class="sr-only">View notifications</span>
-
                                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -151,7 +150,6 @@
                                     class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-gray-200 rounded-full -top-2 -end-2 dark:border-gray-900 {% if not notification_count %}hidden{% endif %}">
                                     {{ notification_count }}
                                 </div>
-
                             </button>
                             <button type="button"
                                 class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -170,7 +168,9 @@
                                 {% endif %}
                             </button>
                         </div>
-                        {% include 'components/notification_list.html' %}
+                        <div id="notification-list">
+                            {% include 'components/notification_list.html' %}
+                        </div>
                     </div>
 
                 </div>

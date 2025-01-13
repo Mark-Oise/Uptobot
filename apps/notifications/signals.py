@@ -6,6 +6,8 @@ from apps.monitor.models import Monitor, MonitorLog
 from .models import Notification
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from django.template.loader import render_to_string
+
 
 
 @receiver(post_save, sender=MonitorLog)
@@ -17,17 +19,32 @@ def create_notification_from_monitor_log(sender, instance, created, **kwargs):
     monitor = instance.monitor
     last_24h = timezone.now() - timedelta(hours=24)
     
-    # Monitor Down Alert - Only notify on first failure after threshold is reached
+    # Monitor Down Alert
     if (instance.status in ['failure', 'error'] and 
         monitor.consecutive_failures == monitor.alert_threshold):
-        # Check if we already sent a down notification recently
+        
+        # Check if monitor was previously marked as recovered
+        last_up_notification = Notification.objects.filter(
+            monitor=monitor,
+            notification_type='monitor_up'
+        ).order_by('-created_at').first()
+        
+        # Check for recent down notification
         recent_down_notification = Notification.objects.filter(
             monitor=monitor,
             notification_type='monitor_down',
             created_at__gte=last_24h
         ).exists()
         
-        if not recent_down_notification:
+        # Only send if either:
+        # 1. This is a new incident (had an up notification after last down)
+        # 2. It's been 24 hours since last down notification
+        if (last_up_notification and last_up_notification.created_at > 
+            Notification.objects.filter(
+                monitor=monitor,
+                notification_type='monitor_down'
+            ).order_by('-created_at').first().created_at) or not recent_down_notification:
+            
             create_notification(
                 monitor=monitor,
                 notification_type='monitor_down',
@@ -35,32 +52,33 @@ def create_notification_from_monitor_log(sender, instance, created, **kwargs):
                 message=f"{monitor.name} is down. {instance.error_message or ''}"
             )
 
-    # Monitor Up Alert (Recovery) - Only if there was a previous down notification
+    # Monitor Up Alert (Recovery)
     elif (instance.status == 'success' and 
           monitor.consecutive_failures == 0 and 
           monitor.availability == 'online'):
         
-        # Check for recent down notification that hasn't been "recovered"
-        recent_down = Notification.objects.filter(
+        # Find the most recent down notification
+        last_down = Notification.objects.filter(
             monitor=monitor,
-            notification_type='monitor_down',
-            created_at__gte=last_24h
-        ).exists()
+            notification_type='monitor_down'
+        ).order_by('-created_at').first()
         
-        # Check if we already sent a recovery notification for this incident
-        recent_recovery = Notification.objects.filter(
-            monitor=monitor,
-            notification_type='monitor_up',
-            created_at__gte=last_24h
-        ).exists()
-        
-        if recent_down and not recent_recovery:
-            create_notification(
+        # Find if we already sent a recovery notification for this incident
+        if last_down:
+            recovery_after_down = Notification.objects.filter(
                 monitor=monitor,
                 notification_type='monitor_up',
-                severity='info',
-                message=f"{monitor.name} is back online"
-            )
+                created_at__gt=last_down.created_at
+            ).exists()
+            
+            # Only send recovery if we haven't already for this incident
+            if not recovery_after_down:
+                create_notification(
+                    monitor=monitor,
+                    notification_type='monitor_up',
+                    severity='info',
+                    message=f"{monitor.name} is back online"
+                )
 
 @receiver(post_save, sender=Monitor)
 def handle_ssl_certificate_notifications(sender, instance, **kwargs):
@@ -112,7 +130,6 @@ def handle_ssl_certificate_notifications(sender, instance, **kwargs):
 
 def create_notification(monitor, notification_type, severity, message):
     """Helper function to create notifications and send via WebSocket"""
-    # Create the notification
     notification = Notification.objects.create(
         user=monitor.user,
         title=f"{notification_type.replace('_', ' ').title()}: {monitor.name}",
@@ -120,6 +137,31 @@ def create_notification(monitor, notification_type, severity, message):
         notification_type=notification_type,
         severity=severity,
         monitor=monitor
+    )
+    
+    notification_count = Notification.objects.filter(user=monitor.user, is_read=False).count()
+    
+    # Format the HTML for HTMX WebSocket
+    notification_html = render_to_string(
+        'components/notifications/notification_items.html',
+        {'notification': notification}
+    )
+    
+    # Send WebSocket message
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        f"notifications_{monitor.user.id}",
+        {
+            "type": "notification_message",
+            "notification": f"""
+                <div id="notification-count" hx-swap-oob="true">
+                    {notification_count}
+                </div>
+                <div id="notifications-container" hx-swap-oob="beforeend">
+                    {notification_html}
+                </div>
+            """
+        }
     )
     
     return notification
