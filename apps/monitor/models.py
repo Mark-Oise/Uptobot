@@ -18,6 +18,7 @@ from django.urls import reverse
 class Monitor(models.Model):
     # Interval choices in minutes
     INTERVAL_CHOICES = [
+        (1, '1 minute'),
         (5, '5 minutes'),
         (10, '10 minutes'),
         (15, '15 minutes'),

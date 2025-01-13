@@ -32,6 +32,7 @@ class UserAlertSettings(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email_alerts_enabled = models.BooleanField(default=True)
     sms_alerts_enabled = models.BooleanField(default=False)
+    slack_alerts_enabled = models.BooleanField(default=False)
     
     alert_frequency = models.CharField(
         max_length=10,

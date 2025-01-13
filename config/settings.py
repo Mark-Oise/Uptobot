@@ -79,6 +79,7 @@ PROJECT_APPS = [
     'apps.monitor',
     'apps.notifications',
     'apps.alerts',
+    'apps.subscriptions',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
