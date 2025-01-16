@@ -44,7 +44,7 @@ def check_http(monitor):
         with requests.Session() as session:
             # Measure only the actual request time
             start_time = timezone.now()
-            response = session.get(
+            response = session.head(
                 monitor.url, 
                 timeout=10,
                 verify=True,
