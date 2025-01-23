@@ -42,19 +42,35 @@ def check_http(monitor):
     try:
         # Use requests.Session() for connection pooling
         with requests.Session() as session:
-            # Measure only the actual request time
+            # More complete browser-like headers
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.5',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Connection': 'keep-alive',
+                'Upgrade-Insecure-Requests': '1',
+                'Sec-Fetch-Dest': 'document',
+                'Sec-Fetch-Mode': 'navigate',
+                'Sec-Fetch-Site': 'none',
+                'Sec-Fetch-User': '?1',
+                'Cache-Control': 'max-age=0'
+            }
+            
+            # Try GET request first as it's more reliable
             start_time = timezone.now()
-            response = session.head(
-                monitor.url, 
+            response = session.get(
+                monitor.url,
                 timeout=10,
                 verify=True,
                 allow_redirects=True,
+                headers=headers,
                 stream=True
             )
             end_time = timezone.now()
             
             response_time = (end_time - start_time).total_seconds() * 1000
-            status = 'success' if 200 <= response.status_code < 300 else 'failure'
+            status = 'success' if 200 <= response.status_code < 400 else 'failure'  # Accept 3xx as success
 
             # Update SSL info if it's an HTTPS URL and hasn't been checked in the last 24 hours
             if (monitor.url.startswith('https') and 

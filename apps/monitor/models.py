@@ -348,6 +348,11 @@ class Monitor(models.Model):
     def get_absolute_url(self):
         return reverse('monitor:detail', kwargs={'slug': self.slug})
 
+    @property
+    def has_failed_checks(self):
+        """Returns True if the monitor has failed checks, indicating an unreachable URL"""
+        return self.logs.filter(status='failure').exists()
+
 
 
 class MonitorLog(models.Model):

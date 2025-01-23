@@ -55,11 +55,10 @@ def monitor_metrics(request, slug):
         'avg_response_time': avg_response_time,
         'last_checked': last_checked,
         'ssl_status': ssl_status,
-        
-       
     })
     
-    if uptime is None or avg_response_time is None:
+    # Only trigger reload if there's no data AND no failed checks
+    if (uptime is None or avg_response_time is None) and not monitor.has_failed_checks:
         response['HX-Trigger'] = 'metrics-loading'
     
     return response
@@ -80,11 +79,9 @@ def monitor_health_score(request, slug):
         'health_status': health_status,
     })
 
-    # Check if underlying metrics that determine health score are ready
-    # trigger a reload of the health score section via HTMX Triggers. This ensures the UI
-    # updates once the underlying metrics are ready to calculate an accurate 
-    # health score.
-    if monitor.get_uptime_percentage() is None or monitor.get_average_response_time() is None:
+    # Only trigger reload if no data AND no failed checks
+    if (monitor.get_uptime_percentage() is None or 
+        monitor.get_average_response_time() is None) and not monitor.has_failed_checks:
         response['HX-Trigger'] = 'health-score-loading'
     
     return response
@@ -102,8 +99,8 @@ def monitor_tab_content(request, slug):
         'recent_incidents': recent_incidents,
     })
     
-    
-    if uptime_history is None:
+    # Only trigger reload if no data AND no failed checks
+    if uptime_history is None and not monitor.has_failed_checks:
         response['HX-Trigger'] = 'tab-content-loading'
     
     return response
@@ -127,8 +124,8 @@ def response_time_chart(request, slug):
     
     response = render(request, 'dashboard/monitor/partials/charts.html', context)
     
-    # Trigger reload if no data available
-    if not response_time_data:
+    # Only trigger reload if no data AND no failed checks
+    if not response_time_data and not monitor.has_failed_checks:
         response['HX-Trigger'] = 'chart-loading'
     
     return response
