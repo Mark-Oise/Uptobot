@@ -254,3 +254,15 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
+
+
+
+
+# Email Settings
+# EMAIL_HOST = 'smtp.sendgrid.net'
+# EMAIL_HOST_USER = 'apikey'  # This is literally the string 'apikey'
+# EMAIL_HOST_PASSWORD = env('SENDGRID_API_KEY')  # Your SendGrid API key
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'markisworldwide@gmail.com'
+BASE_URL = 'https://uptobot.xyz'
