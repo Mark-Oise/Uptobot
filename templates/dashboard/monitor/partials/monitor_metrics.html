@@ -33,11 +33,11 @@
 
 </div>
 <ul class="grid grid-cols-2 sm:grid-cols-2 gap-4 mt-6">
-    <li class="p-4 bg-gray-100 rounded-lg dark:bg-gray-800">
+    <li class="p-4 bg-gray-100 rounded-lg dark:bg-gray-700">
         <div class="flex flex-col">
             <div class="flex items-center justify-between mb-1">
-                <svg class="w-6 h-6 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-gray-500 dark:text-gray-300" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 12h4l3-9 4 18 3-9h4" />
                 </svg>
@@ -72,11 +72,11 @@
         </div>
     </li>
 
-    <li class="p-4 bg-gray-100 rounded-lg dark:bg-gray-800">
+    <li class="p-4 bg-gray-100 rounded-lg dark:bg-gray-700">
         <div class="flex flex-col">
             <div class="flex items-center justify-between mb-1">
-                <svg class="w-6 h-6 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-gray-500 dark:text-gray-300" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
@@ -111,11 +111,11 @@
         </div>
     </li>
 
-    <li class="p-4 bg-gray-100 rounded-lg dark:bg-gray-800">
+    <li class="p-4 bg-gray-100 rounded-lg dark:bg-gray-700">
         <div class="flex flex-col">
             <div class="flex items-center justify-between mb-1">
-                <svg class="w-6 h-6 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-gray-500 dark:text-gray-300" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
@@ -155,11 +155,11 @@
         </div>
     </li>
 
-    <li class="p-4 bg-gray-100 rounded-lg dark:bg-gray-800">
+    <li class="p-4 bg-gray-100 rounded-lg dark:bg-gray-700">
         <div class="flex flex-col">
             <div class="flex items-center justify-between mb-1">
-                <svg class="w-6 h-6 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                    height="24" fill="none" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-gray-500 dark:text-gray-300" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9.5 11H5a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h4.5M7 11V7a3 3 0 0 1 6 0v1.5m2.5 5.5v1.5l1 1m3.5-1a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" />
                 </svg>
@@ -169,9 +169,9 @@
                 <div id="ssl-status-metric">
                     <div>
                         {% if monitor.url|slice:":5" != 'https' %}
-                        <span class="text-gray-500 dark:text-gray-400">Not HTTPS</span>
+                        <span class="text-gray-500 dark:text-white">Not HTTPS</span>
                         {% elif monitor.has_failed_checks %}
-                        <span class="text-gray-500 dark:text-gray-400">N/A</span>
+                        <span class="text-gray-500 dark:text-white">N/A</span>
                         {% elif monitor.ssl_expiry_date %}
                         {% now "Y-m-d H:i:s" as current_time %}
                         {% if monitor.ssl_expiry_date|date:"Y-m-d H:i:s" > current_time %}

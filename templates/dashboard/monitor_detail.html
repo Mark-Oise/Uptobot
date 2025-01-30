@@ -29,7 +29,7 @@
             {% include 'components/modals/update_monitor.html' %}
 
             <button type="button" data-modal-target="deleteModal" data-modal-toggle="deleteModal"
-                class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center dark:bg-red-700 dark:hover:bg-red-800 dark:focus:ring-red-800">
 
                 <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                     fill="none" viewBox="0 0 24 24">
@@ -52,12 +52,12 @@
         <div hx-get="{% url 'monitor:monitor_metrics' monitor.slug %}"
             hx-trigger="load, metrics-loading from:body delay:500ms, every 30s" hx-target="this"
             hx-swap="innerHTML transition:true"
-            class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+            class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-900">
             {% include 'dashboard/monitor/partials/monitor_metrics.html' %}
         </div>
         <!--Tabs widget -->
         <div
-            class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+            class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-900">
             <div class="flex flex-col sm:flex-row justify-between mb-5">
                 <div class="grid gap-4 mb-4 sm:mb-0">
                     <div>
@@ -90,7 +90,7 @@
 
     <div class=" flex grid w-full max-w-lg gap-2 mt-4">
         <ul id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist"
-            class="bg-gray-100 rounded-lg px-2 flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+            class="bg-gray-100 dark:bg-gray-700 rounded-lg px-2 flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
             <li class="me-0 sm:me-2 py-2" role="presentation">
                 <button id="uptime-tab" data-tabs-target="#uptime" type="button" role="tab" aria-selected="false"
                     class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg" aria-current="page">Uptime History
@@ -117,9 +117,9 @@
     </div>
 
     <div
-        class="mb-8 p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+        class="mb-8 p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-900">
         <!-- Title -->
-        <h3 class="text-xl font-bold mb-6">Monitor Health Score</h3>
+        <h3 class="text-xl font-bold mb-6 dark:text-white">Monitor Health Score</h3>
 
         <!-- Content Container -->
         <div id="monitor-health-score" hx-get="{% url 'monitor:monitor_health_score' monitor.slug %}"
