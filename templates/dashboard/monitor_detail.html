@@ -5,7 +5,7 @@
     <div class="flex justify-between items-center mb-4">
         <button type="button" hx-get="{% url 'monitor:monitor_list' %}" hx-target="#body" hx-push-url="true"
             hx-trigger="click" hx-swap="innerHTML transition:true"
-            class="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30">
+            class="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:bg-gray-900 dark:hover:bg-[#050708]/30">
             <svg class="w-6 h-6 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                 fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -16,7 +16,7 @@
 
         <div class="flex gap-2">
             <button type="button" data-modal-target="updateMonitorModal" data-modal-toggle="updateMonitorModal"
-                class="text-blue-700 border border-gray-800 hover:bg-green-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+                class="text-blue-700 border border-gray-800 hover:bg-green-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:focus:ring-green-800 dark:hover:bg-green-500">
 
                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                     width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -62,7 +62,7 @@
                 <div class="grid gap-4 mb-4 sm:mb-0">
                     <div>
                         <h5
-                            class="inline-flex font-semibold text-lg items-center text-gray-800 dark:text-gray-400 leading-none font-normal mb-2 whitespace-nowrap">
+                            class="inline-flex font-semibold text-lg items-center text-gray-800 dark:text-gray-300 leading-none font-normal mb-2 whitespace-nowrap">
                             Average response time (ms)
 
                         </h5>
@@ -90,7 +90,7 @@
 
     <div class=" flex grid w-full max-w-lg gap-2 mt-4">
         <ul id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist"
-            class="bg-gray-100 dark:bg-gray-700 rounded-lg px-2 flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+            class="rounded-lg px-2 flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
             <li class="me-0 sm:me-2 py-2" role="presentation">
                 <button id="uptime-tab" data-tabs-target="#uptime" type="button" role="tab" aria-selected="false"
                     class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg" aria-current="page">Uptime History

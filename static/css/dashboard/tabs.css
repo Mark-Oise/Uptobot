@@ -4,3 +4,8 @@
     /* bg-green-600 */
     color: white;
   }
+
+  /* Style for active tab in dark mode */
+  .dark button[role="tab"][aria-selected="true"] {
+    color: white;
+  }

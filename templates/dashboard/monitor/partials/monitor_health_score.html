@@ -6,7 +6,7 @@
         <div class="inline-flex items-center">
             <div class="w-24 h-24 rounded-full flex items-center justify-center">
                 {% if monitor.has_failed_checks %}
-                <svg class="w-18 h-18 text-gray-500 dark:text-gray-500" aria-hidden="true"
+                <svg class="w-18 h-18 text-gray-500 dark:text-gray-300" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -53,8 +53,8 @@
         <!-- Score Text Container -->
         <div class="flex flex-col">
             {% if monitor.has_failed_checks %}
-            <span class="text-2xl font-bold text-gray-500 dark:text-gray-400">N/A</span>
-            <span class="text-gray-600 text-sm">Unable to check</span>
+            <span class="text-2xl font-bold text-gray-500 dark:text-gray-300">N/A</span>
+            <span class="text-gray-600 dark:text-gray-300 text-sm">Unable to check</span>
             {% else %}
             {% with health_score=monitor.get_health_score health_status=monitor.get_health_status %}
             {% if health_score is not None %}
@@ -70,7 +70,7 @@
     </div>
 
     <!-- Description -->
-    <div class="text-center text-gray-600">
+    <div class="text-center text-gray-600 dark:text-gray-300">
         {% if monitor.has_failed_checks %}
         Unable to calculate health score. Please check your URL configuration.
         {% else %}
