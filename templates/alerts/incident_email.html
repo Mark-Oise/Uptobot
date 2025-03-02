@@ -9,8 +9,27 @@
         <div
             class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-2xl xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                <!-- Alert Icon -->
+                <!-- Alert Icon - Conditionally styled based on alert type -->
                 <div class="flex justify-center">
+                    {% if alert_type == 'Monitor Up' %}
+                    <div class="bg-green-100 rounded-full p-4 w-20 h-20 flex items-center justify-center">
+                        <svg class="w-10 h-10 text-green-500" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    {% elif alert_type == 'SSL Certificate Expiring Soon' or alert_severity == 'warning' %}
+                    <div class="bg-yellow-100 rounded-full p-4 w-20 h-20 flex items-center justify-center">
+                        <svg class="w-10 h-10 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    {% else %}
                     <div class="bg-red-100 rounded-full p-4 w-20 h-20 flex items-center justify-center">
                         <svg class="w-10 h-10 text-red-500" fill="currentColor" viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
@@ -19,55 +38,108 @@
                                 clip-rule="evenodd"></path>
                         </svg>
                     </div>
+                    {% endif %}
                 </div>
 
-                <!-- Alert Title -->
-                <h1 class="text-2xl font-bold text-center text-red-600">Downtime Alert</h1>
+                <!-- Alert Title - Conditionally styled based on alert type -->
+                {% if alert_type == 'Monitor Up' %}
+                <h1 class="text-2xl font-bold text-center text-green-600">{{ alert_type }}</h1>
+                <p class="text-center text-gray-700 dark:text-gray-300">Your service is back online</p>
+                {% elif alert_type == 'SSL Certificate Expiring Soon' or alert_severity == 'warning' %}
+                <h1 class="text-2xl font-bold text-center text-yellow-600">{{ alert_type }}</h1>
+                <p class="text-center text-gray-700 dark:text-gray-300">Action required for your monitored service</p>
+                {% else %}
+                <h1 class="text-2xl font-bold text-center text-red-600">{{ alert_type }}</h1>
                 <p class="text-center text-gray-700 dark:text-gray-300">We've detected an issue with your monitored
                     service</p>
+                {% endif %}
 
-                <!-- Service Status Box -->
-                <div class="border-l-4 border-red-500 bg-red-100 p-4 rounded-md">
+                <!-- Service Status Box - Conditionally styled based on alert type -->
+                {% if alert_type == 'Monitor Up' %}
+                <div class="border-l-4 border-green-500 bg-green-100 p-4 rounded-md">
                     <div class="flex justify-between items-center mb-2">
-                        <h2 class="text-lg font-semibold text-gray-800">production-api.example.com</h2>
-                        <span class="bg-red-200 text-red-800 px-2 py-1 rounded text-sm font-medium">DOWN</span>
+                        <h2 class="text-lg font-semibold text-gray-800">{{ monitor_name }}</h2>
+                        <span class="bg-green-200 text-green-800 px-2 py-1 rounded text-sm font-medium">ONLINE</span>
                     </div>
-                    <p class="text-gray-700 mb-4">Your service is currently experiencing downtime since June 7, 2023 at
-                        14:32 UTC</p>
-
-                    <!-- Error Details Box -->
-                    <div class="bg-white rounded-md p-4 mb-2">
-                        <h3 class="text-gray-600 uppercase text-sm font-medium mb-2">ERROR DETAILS</h3>
-                        <p class="text-red-600 font-medium mb-4">Connection refused: The server is not responding to
-                            requests</p>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <p class="text-sm text-gray-500">Response Code</p>
-                                <p class="font-medium">503</p>
+                    <p class="text-gray-700 mb-4">Your service is back online as of {{ alert_time }}</p>
+                    {% elif alert_type == 'SSL Certificate Expiring Soon' or alert_severity == 'warning' %}
+                    <div class="border-l-4 border-yellow-500 bg-yellow-100 p-4 rounded-md">
+                        <div class="flex justify-between items-center mb-2">
+                            <h2 class="text-lg font-semibold text-gray-800">{{ monitor_name }}</h2>
+                            <span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded text-sm font-medium">
+                                {{ alert_severity|upper }}</span>
+                        </div>
+                        <p class="text-gray-700 mb-4">Action required for your service as of {{ alert_time }}</p>
+                        {% else %}
+                        <div class="border-l-4 border-red-500 bg-red-100 p-4 rounded-md">
+                            <div class="flex justify-between items-center mb-2">
+                                <h2 class="text-lg font-semibold text-gray-800">{{ monitor_name }}</h2>
+                                <span class="bg-red-200 text-red-800 px-2 py-1 rounded text-sm font-medium">DOWN</span>
                             </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Response Time</p>
-                                <p class="font-medium">30.00s</p>
+                            <p class="text-gray-700 mb-4">Your service is currently experiencing downtime since
+                                {{ alert_time }}</p>
+                            {% endif %}
+
+                            <!-- Details Box -->
+                            <div class="bg-white rounded-md p-4 mb-2">
+                                <h3 class="text-gray-600 uppercase text-sm font-medium mb-2">
+                                    {% if alert_type == 'Monitor Up' %}
+                                    RECOVERY DETAILS
+                                    {% elif alert_type == 'SSL Certificate Expiring Soon' or alert_type == 'SSL
+                                    Certificate Expired' %}
+                                    SSL CERTIFICATE DETAILS
+                                    {% else %}
+                                    ERROR DETAILS
+                                    {% endif %}
+                                </h3>
+
+                                {% if alert_type == 'Monitor Up' %}
+                                <p class="text-green-600 font-medium mb-4">{{ alert_message }}</p>
+                                {% elif alert_type == 'SSL Certificate Expiring Soon' or alert_severity == 'warning' %}
+                                <p class="text-yellow-600 font-medium mb-4">{{ alert_message }}</p>
+                                {% else %}
+                                <p class="text-red-600 font-medium mb-4">{{ alert_message }}</p>
+                                {% endif %}
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-sm text-gray-500">Response Code</p>
+                                        <p class="font-medium">{{ response_code }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Response Time</p>
+                                        <p class="font-medium">{{ response_time }}</p>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+
+                        <!-- Action Button - Conditionally styled based on alert type -->
+                        <div class="flex justify-center">
+                            {% if alert_type == 'Monitor Up' %}
+                            <a href="{{ monitor_details_url }}"
+                                class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-6 rounded-md">View
+                                Monitor Details</a>
+                            {% elif alert_type == 'SSL Certificate Expiring Soon' or alert_severity == 'warning' %}
+                            <a href="{{ monitor_details_url }}"
+                                class="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-2 px-6 rounded-md">View
+                                Certificate Details</a>
+                            {% else %}
+                            <a href="{{ monitor_details_url }}"
+                                class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-6 rounded-md">View
+                                Incident Details</a>
+                            {% endif %}
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="pt-6 mt-6 border-t border-gray-200 text-center text-gray-500 text-sm">
+                            <p class="mb-2">This is an automated alert from Uptobot.</p>
+                            <p class="mb-2">You're receiving this email because you've set up alerts for this service.
+                            </p>
+                            <p>© 2025 Uptobot. All rights reserved.</p>
                         </div>
                     </div>
                 </div>
-
-                <!-- Action Button -->
-                <div class="flex justify-center">
-                    <a href="#" class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-6 rounded-md">View
-                        Incident Details</a>
-                </div>
-
-                <!-- Footer -->
-                <div class="pt-6 mt-6 border-t border-gray-200 text-center text-gray-500 text-sm">
-                    <p class="mb-2">This is an automated alert from Uptobot.</p>
-                    <p class="mb-2">You're receiving this email because you've set up alerts for this service.</p>
-                    <p>© 2025 Uptobot. All rights reserved.</p>
-                </div>
             </div>
-        </div>
-    </div>
 </section>
 {% endblock content %}
