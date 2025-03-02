@@ -346,7 +346,7 @@ class Monitor(models.Model):
                 return slug
 
     def get_absolute_url(self):
-        return reverse('monitor:detail', kwargs={'slug': self.slug})
+        return reverse('monitor:monitor_detail', kwargs={'slug': self.slug})
 
     @property
     def has_failed_checks(self):

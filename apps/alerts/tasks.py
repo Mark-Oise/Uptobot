@@ -30,6 +30,9 @@ def send_alert_email(self, delivery_id):
         # Prepare email content with improved readability
         subject = f"[{alert.get_severity_display()}] {alert.get_alert_type_display()}: {monitor.name}"
         
+        # Use direct URL construction instead of reverse to avoid NoReverseMatch errors
+        monitor_url = f"{settings.BASE_URL}/monitors/{monitor.slug}/"
+        
         # Simplified but clear email message
         message = f"""
 MONITOR ALERT: {monitor.name}
@@ -42,7 +45,7 @@ Time: {alert.created_at.strftime('%Y-%m-%d %H:%M')}
 Message:
 {alert.message}
 
-View Monitor Details: {settings.BASE_URL}{monitor.get_absolute_url()}
+View Monitor Details: {monitor_url}
         """
 
         # Send email
@@ -114,7 +117,10 @@ def process_batched_alerts():
             message += "-" * 50 + "\n"
             for alert in alerts:
                 message += f"- [{alert.get_severity_display()}] {alert.created_at.strftime('%Y-%m-%d %H:%M')}: {alert.message}\n"
-            message += f"\nView Monitor: {settings.BASE_URL}{monitor.get_absolute_url()}\n"
+            
+            # Use slug instead of ID in URL construction
+            monitor_url = f"{settings.BASE_URL}/monitors/{monitor.slug}/"
+            message += f"\nView Monitor: {monitor_url}\n"
         
         # Send digest email
         send_mail(

@@ -259,10 +259,16 @@ CELERY_TIMEZONE = TIME_ZONE
 
 
 # Email Settings
-# EMAIL_HOST = 'smtp.sendgrid.net'
-# EMAIL_HOST_USER = 'apikey'  # This is literally the string 'apikey'
-# EMAIL_HOST_PASSWORD = env('SENDGRID_API_KEY')  # Your SendGrid API key
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'markisworldwide@gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.resend.com'
+EMAIL_HOST_USER = 'resend'
+EMAIL_HOST_PASSWORD = env('RESEND_API_KEY')
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = 'support@uptobot.xyz'
 BASE_URL = 'https://uptobot.xyz'
+
+# Fix for SSL certificate verification issues
+import certifi
+os.environ['SSL_CERT_FILE'] = certifi.where()
