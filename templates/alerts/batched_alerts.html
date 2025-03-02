@@ -19,94 +19,61 @@
                         </svg>
                     </div>
                     <h1 class="text-2xl font-bold text-blue-600">Uptime Summary Report</h1>
-                    <p class="text-gray-600 mt-1">Performance overview for June 1-7, 2023</p>
+                    <p class="text-gray-600 mt-1">Performance overview for {{ report_period }}</p>
                 </div>
 
                 <!-- Monitored Services Section -->
                 <div class="border border-gray-200 rounded-xl p-6">
                     <h2 class="text-lg font-medium mb-6">Monitored Services Status</h2>
 
-                    <!-- Service 1 -->
+                    {% for monitor in monitors %}
                     <div class="bg-white rounded-lg p-5 mb-4 shadow-sm">
                         <div class="flex justify-between items-center mb-4">
-                            <p class="font-medium text-gray-800">production-api.example.com</p>
+                            <p class="font-medium text-gray-800">{{ monitor.name }}</p>
                             <span
-                                class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">UP</span>
+                                class="inline-flex items-center {% if monitor.status == 'online' %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %} text-xs font-medium px-2.5 py-0.5 rounded-full">
+                                <span
+                                    class="w-2 h-2 mr-1 {% if monitor.status == 'online' %}bg-green-500{% else %}bg-red-500{% endif %} rounded-full"></span>
+                                {{ monitor.status|title }}
+                            </span>
                         </div>
                         <div class="grid grid-cols-3 gap-4">
                             <div>
                                 <p class="text-sm text-gray-500">Uptime</p>
-                                <p class="font-medium text-gray-800">99.7%</p>
+                                <p class="font-medium text-gray-800">{{ monitor.uptime|floatformat:1 }}%</p>
                             </div>
                             <div>
                                 <p class="text-sm text-gray-500">Avg Response</p>
-                                <p class="font-medium text-gray-800">186ms</p>
+                                <p class="font-medium text-gray-800">{{ monitor.avg_response|floatformat:0 }}ms</p>
                             </div>
                             <div>
                                 <p class="text-sm text-gray-500">Incidents</p>
-                                <p class="font-medium text-gray-800">1</p>
+                                <p class="font-medium text-gray-800">{{ monitor.incidents|length }}</p>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Service 2 -->
-                    <div class="bg-white rounded-lg p-5 mb-4 shadow-sm">
-                        <div class="flex justify-between items-center mb-4">
-                            <p class="font-medium text-gray-800">staging-api.example.com</p>
-                            <span
-                                class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">UP</span>
+                        {% if monitor.incidents %}
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <p class="text-sm font-medium text-gray-700 mb-2">Recent Incidents:</p>
+                            {% for incident in monitor.incidents %}
+                            <p class="text-sm text-gray-600 mb-1">
+                                [{{ incident.severity }}] {{ incident.timestamp|date:"M d, H:i" }} - {{ incident.message
+                                }}
+                            </p>
+                            {% endfor %}
                         </div>
-                        <div class="grid grid-cols-3 gap-4">
-                            <div>
-                                <p class="text-sm text-gray-500">Uptime</p>
-                                <p class="font-medium text-gray-800">100%</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Avg Response</p>
-                                <p class="font-medium text-gray-800">210ms</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Incidents</p>
-                                <p class="font-medium text-gray-800">0</p>
-                            </div>
-                        </div>
+                        {% endif %}
                     </div>
-
-                    <!-- Service 3 -->
-                    <div class="bg-white rounded-lg p-5 shadow-sm">
-                        <div class="flex justify-between items-center mb-4">
-                            <p class="font-medium text-gray-800">website.example.com</p>
-                            <span
-                                class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-medium">INTERMITTENT</span>
-                        </div>
-                        <div class="grid grid-cols-3 gap-4">
-                            <div>
-                                <p class="text-sm text-gray-500">Uptime</p>
-                                <p class="font-medium text-gray-800">98.3%</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Avg Response</p>
-                                <p class="font-medium text-gray-800">345ms</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Incidents</p>
-                                <p class="font-medium text-gray-800">3</p>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
 
-                <!-- Button -->
-                <div class="flex justify-center mt-8">
-                    <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2.5 px-8 rounded-md">View
-                        Full Report</a>
-                </div>
+
+
                 <!-- Footer -->
                 <div class="pt-6 mt-6 border-t border-gray-200 text-center text-gray-500 text-sm">
                     <p class="mb-2">This is an automated alert from Uptobot.</p>
-                    <p class="mb-2">You're receiving this email because you've set up alerts for this service.
-                    </p>
-                    <p>© 2025 Uptobot. All rights reserved.</p>
+                    <p class="mb-2">You're receiving this email because you've set up alerts for this service.</p>
+                    <p>© {% now "Y" %} Uptobot. All rights reserved.</p>
                 </div>
             </div>
         </div>

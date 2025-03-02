@@ -101,13 +101,13 @@ View Monitor Details: {monitor_url}
 
 @shared_task
 def process_batched_alerts():
-    """Periodic task to process and send batched alerts with basic grouping"""
+    """Periodic task to process and send batched alerts with HTML template"""
     now = timezone.now()
     
     # Get all unsent batched alerts
     batched_alerts = BatchedAlert.objects.filter(
         sent=False
-    ).select_related('user').prefetch_related('alerts', 'user__useralertsettings')
+    ).select_related('user').prefetch_related('alerts', 'alerts__monitor')
 
     for batch in batched_alerts:
         settings = batch.user.useralertsettings
@@ -120,32 +120,58 @@ def process_batched_alerts():
             if (now - settings.last_alert_sent) < timedelta(weeks=1):
                 continue
                 
-        # Group alerts by monitor for cleaner presentation
-        alerts_by_monitor = defaultdict(list)
+        # Group alerts by monitor and prepare monitor stats
+        monitors_data = {}
         for alert in batch.alerts.select_related('monitor').order_by('created_at'):
-            alerts_by_monitor[alert.monitor].append(alert)
-            
-        # Prepare digest email content
-        subject = f"Monitor Alert Digest for {batch.user.username}"
-        message = "Monitor Alert Summary\n\n"
+            monitor = alert.monitor
+            if monitor not in monitors_data:
+                monitors_data[monitor] = {
+                    'name': monitor.name,
+                    'url': monitor.url,
+                    'status': monitor.availability,
+                    'uptime': monitor.get_uptime_percentage(days=7),
+                    'avg_response': monitor.get_average_response_time(days=7),
+                    'incidents': [],
+                    'health_score': monitor.get_health_score(),
+                    'slug': monitor.slug
+                }
+            monitors_data[monitor]['incidents'].append({
+                'severity': alert.get_severity_display(),
+                'timestamp': alert.created_at,
+                'message': alert.message
+            })
+
+        # Prepare context for HTML template
+        context = {
+            'user': batch.user,
+            'monitors': monitors_data.values(),
+            'report_period': f"{(now - timedelta(days=7)).strftime('%B %d')}-{now.strftime('%d, %Y')}",
+            'base_url': settings.BASE_URL
+        }
         
-        for monitor, alerts in alerts_by_monitor.items():
-            message += f"\n{monitor.name} ({monitor.url}):\n"
-            message += "-" * 50 + "\n"
-            for alert in alerts:
-                message += f"- [{alert.get_severity_display()}] {alert.created_at.strftime('%Y-%m-%d %H:%M')}: {alert.message}\n"
-            
-            # Use slug instead of ID in URL construction
-            monitor_url = f"{settings.BASE_URL}/monitors/{monitor.slug}/"
-            message += f"\nView Monitor: {monitor_url}\n"
+        # Render HTML email
+        html_message = render_to_string('alerts/batched_alerts.html', context)
         
+        # Create plain text version as fallback
+        plain_message = "Monitor Alert Summary\n\n"
+        for monitor_data in monitors_data.values():
+            plain_message += f"\n{monitor_data['name']} ({monitor_data['url']})\n"
+            plain_message += f"Status: {monitor_data['status']}\n"
+            plain_message += f"Uptime: {monitor_data['uptime']}%\n"
+            plain_message += f"Average Response: {monitor_data['avg_response']}ms\n"
+            plain_message += "Incidents:\n"
+            for incident in monitor_data['incidents']:
+                plain_message += f"- [{incident['severity']}] {incident['timestamp'].strftime('%Y-%m-%d %H:%M')}: {incident['message']}\n"
+            plain_message += f"\nView Monitor: {settings.BASE_URL}/monitors/{monitor_data['slug']}/\n"
+
         # Send digest email
         send_mail(
-            subject=subject,
-            message=message,
+            subject=f"Your {'daily' if settings.alert_frequency == 'daily' else 'weekly'} alert digest is ready!",
+            message=plain_message,
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[batch.user.email],
             fail_silently=False,
+            html_message=html_message
         )
         
         # Update batch and settings
