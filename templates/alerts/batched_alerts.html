@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="bg-gray-50 dark:bg-gray-900 min-h-screen py-8">
+    <div class="flex flex-col items-center justify-center px-6 mx-auto">
+        <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+            Uptobot
+        </a>
+        <div
+            class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-2xl xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-8">
+                <!-- Header with icon -->
+                <div class="flex flex-col items-center text-center mb-8">
+                    <div class="bg-blue-50 p-3 rounded-full mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h1 class="text-2xl font-bold text-blue-600">Uptime Summary Report</h1>
+                    <p class="text-gray-600 mt-1">Performance overview for June 1-7, 2023</p>
+                </div>
+
+                <!-- Monitored Services Section -->
+                <div class="border border-gray-200 rounded-xl p-6">
+                    <h2 class="text-lg font-medium mb-6">Monitored Services Status</h2>
+
+                    <!-- Service 1 -->
+                    <div class="bg-white rounded-lg p-5 mb-4 shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <p class="font-medium text-gray-800">production-api.example.com</p>
+                            <span
+                                class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">UP</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-500">Uptime</p>
+                                <p class="font-medium text-gray-800">99.7%</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Avg Response</p>
+                                <p class="font-medium text-gray-800">186ms</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Incidents</p>
+                                <p class="font-medium text-gray-800">1</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service 2 -->
+                    <div class="bg-white rounded-lg p-5 mb-4 shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <p class="font-medium text-gray-800">staging-api.example.com</p>
+                            <span
+                                class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">UP</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-500">Uptime</p>
+                                <p class="font-medium text-gray-800">100%</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Avg Response</p>
+                                <p class="font-medium text-gray-800">210ms</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Incidents</p>
+                                <p class="font-medium text-gray-800">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service 3 -->
+                    <div class="bg-white rounded-lg p-5 shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <p class="font-medium text-gray-800">website.example.com</p>
+                            <span
+                                class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-medium">INTERMITTENT</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-500">Uptime</p>
+                                <p class="font-medium text-gray-800">98.3%</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Avg Response</p>
+                                <p class="font-medium text-gray-800">345ms</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Incidents</p>
+                                <p class="font-medium text-gray-800">3</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Button -->
+                <div class="flex justify-center mt-8">
+                    <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2.5 px-8 rounded-md">View
+                        Full Report</a>
+                </div>
+                <!-- Footer -->
+                <div class="pt-6 mt-6 border-t border-gray-200 text-center text-gray-500 text-sm">
+                    <p class="mb-2">This is an automated alert from Uptobot.</p>
+                    <p class="mb-2">You're receiving this email because you've set up alerts for this service.
+                    </p>
+                    <p>© 2025 Uptobot. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
