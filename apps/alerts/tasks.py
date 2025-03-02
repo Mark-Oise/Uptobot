@@ -13,11 +13,8 @@ from collections import defaultdict
     max_retries=3,
     default_retry_delay=300  # 5 minutes
 )
-
 def send_alert_email(self, delivery_id):
-    """
-    Task to send alert emails with retry mechanism
-    """
+    """Task to send alert emails with retry mechanism"""
     try:
         delivery = AlertDelivery.objects.select_related(
             'alert', 
@@ -30,21 +27,22 @@ def send_alert_email(self, delivery_id):
         alert = delivery.alert
         monitor = alert.monitor
 
-        # Prepare email content
+        # Prepare email content with improved readability
         subject = f"[{alert.get_severity_display()}] {alert.get_alert_type_display()}: {monitor.name}"
         
-        # Simple email message
+        # Simplified but clear email message
         message = f"""
-Monitor Alert: {monitor.name}
+MONITOR ALERT: {monitor.name}
+--------------------------------------------------
 URL: {monitor.url}
 Status: {alert.get_alert_type_display()}
 Severity: {alert.get_severity_display()}
-Time: {alert.created_at}
+Time: {alert.created_at.strftime('%Y-%m-%d %H:%M')}
 
 Message:
 {alert.message}
 
-View Monitor: {settings.BASE_URL}{monitor.get_absolute_url()}
+View Monitor Details: {settings.BASE_URL}{monitor.get_absolute_url()}
         """
 
         # Send email
@@ -83,10 +81,7 @@ View Monitor: {settings.BASE_URL}{monitor.get_absolute_url()}
 
 @shared_task
 def process_batched_alerts():
-    """
-    Periodic task to process and send batched alerts
-    Runs every 15 minutes
-    """
+    """Periodic task to process and send batched alerts with basic grouping"""
     now = timezone.now()
     
     # Get all unsent batched alerts
@@ -105,7 +100,7 @@ def process_batched_alerts():
             if (now - settings.last_alert_sent) < timedelta(weeks=1):
                 continue
                 
-        # Group alerts by monitor
+        # Group alerts by monitor for cleaner presentation
         alerts_by_monitor = defaultdict(list)
         for alert in batch.alerts.select_related('monitor').order_by('created_at'):
             alerts_by_monitor[alert.monitor].append(alert)
@@ -116,9 +111,10 @@ def process_batched_alerts():
         
         for monitor, alerts in alerts_by_monitor.items():
             message += f"\n{monitor.name} ({monitor.url}):\n"
+            message += "-" * 50 + "\n"
             for alert in alerts:
                 message += f"- [{alert.get_severity_display()}] {alert.created_at.strftime('%Y-%m-%d %H:%M')}: {alert.message}\n"
-            message += f"View Monitor: {settings.BASE_URL}{monitor.get_absolute_url()}\n"
+            message += f"\nView Monitor: {settings.BASE_URL}{monitor.get_absolute_url()}\n"
         
         # Send digest email
         send_mail(

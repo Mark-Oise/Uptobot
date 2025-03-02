@@ -129,8 +129,35 @@ def handle_ssl_certificate_notifications(sender, instance, **kwargs):
             )
 
 def create_notification(monitor, notification_type, severity, message):
-    """Helper function to create notifications and send via WebSocket"""
-    notification = Notification.objects.create(
+    """Helper function to create notifications with rate limiting"""
+    
+    # Always create critical notifications
+    if severity == 'critical':
+        return Notification.objects.create(
+            user=monitor.user,
+            title=f"{notification_type.replace('_', ' ').title()}: {monitor.name}",
+            message=message,
+            notification_type=notification_type,
+            severity=severity,
+            monitor=monitor
+        )
+    
+    # For non-critical notifications, apply rate limiting
+    last_hour = timezone.now() - timedelta(hours=1)
+    
+    # Check how many notifications this user has received in the last hour
+    recent_notifications_count = Notification.objects.filter(
+        user=monitor.user,
+        created_at__gte=last_hour
+    ).count()
+    
+    # Set a reasonable limit - 10 non-critical notifications per hour
+    if recent_notifications_count >= 10:
+        # Skip creating this notification to prevent fatigue
+        return None
+        
+    # Create the notification if we're under the rate limit
+    return Notification.objects.create(
         user=monitor.user,
         title=f"{notification_type.replace('_', ' ').title()}: {monitor.name}",
         message=message,
@@ -138,31 +165,4 @@ def create_notification(monitor, notification_type, severity, message):
         severity=severity,
         monitor=monitor
     )
-    
-    notification_count = Notification.objects.filter(user=monitor.user, is_read=False).count()
-    
-    # Format the HTML for HTMX WebSocket
-    notification_html = render_to_string(
-        'components/notifications/notification_items.html',
-        {'notification': notification}
-    )
-    
-    # Send WebSocket message
-    channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send)(
-        f"notifications_{monitor.user.id}",
-        {
-            "type": "notification_message",
-            "notification": f"""
-                <div id="notification-count" hx-swap-oob="true">
-                    {notification_count}
-                </div>
-                <div id="notifications-container" hx-swap-oob="beforeend">
-                    {notification_html}
-                </div>
-            """
-        }
-    )
-    
-    return notification
     
