@@ -1,46 +1,73 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends "base.html" %}
+
 {% block content %}
-<section class="max-w-2xl px-6 py-8 mx-auto bg-white dark:bg-gray-900">
-    <header>
-        <a href="#">
-            <img class="w-auto h-7 sm:h-8" src="https://merakiui.com/images/full-logo.svg" alt="">
+<section class="bg-gray-50 dark:bg-gray-900">
+    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+            Uptobot
         </a>
-    </header>
+        <div
+            class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-2xl xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <!-- Alert Icon -->
+                <div class="flex justify-center">
+                    <div class="bg-red-100 rounded-full p-4 w-20 h-20 flex items-center justify-center">
+                        <svg class="w-10 h-10 text-red-500" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                </div>
 
-    <main class="mt-8">
-        <h2 class="text-gray-700 dark:text-gray-200">Hi Olivia,</h2>
+                <!-- Alert Title -->
+                <h1 class="text-2xl font-bold text-center text-red-600">Downtime Alert</h1>
+                <p class="text-center text-gray-700 dark:text-gray-300">We've detected an issue with your monitored
+                    service</p>
 
-        <p class="mt-2 leading-loose text-gray-600 dark:text-gray-300">
-            We’re glad to have you onboard! You’re already on your way to
-            creating beautiful visual products.
-            Whether you’re here for your brand, for a cause, or just for fun —
-            welcome! If there’s anything you need, we’ll be here every step of the way.
-        </p>
+                <!-- Service Status Box -->
+                <div class="border-l-4 border-red-500 bg-red-100 p-4 rounded-md">
+                    <div class="flex justify-between items-center mb-2">
+                        <h2 class="text-lg font-semibold text-gray-800">production-api.example.com</h2>
+                        <span class="bg-red-200 text-red-800 px-2 py-1 rounded text-sm font-medium">DOWN</span>
+                    </div>
+                    <p class="text-gray-700 mb-4">Your service is currently experiencing downtime since June 7, 2023 at
+                        14:32 UTC</p>
 
-        <p class="mt-2 text-gray-600 dark:text-gray-300">
-            Thanks, <br>
-            Meraki UI team
-        </p>
+                    <!-- Error Details Box -->
+                    <div class="bg-white rounded-md p-4 mb-2">
+                        <h3 class="text-gray-600 uppercase text-sm font-medium mb-2">ERROR DETAILS</h3>
+                        <p class="text-red-600 font-medium mb-4">Connection refused: The server is not responding to
+                            requests</p>
 
-        <button
-            class="px-6 py-2 mt-8 text-sm font-medium tracking-wider text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
-            Login
-        </button>
-    </main>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-500">Response Code</p>
+                                <p class="font-medium">503</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Response Time</p>
+                                <p class="font-medium">30.00s</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- Action Button -->
+                <div class="flex justify-center">
+                    <a href="#" class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-6 rounded-md">View
+                        Incident Details</a>
+                </div>
 
-    <footer class="mt-8">
-        <p class="text-gray-500 dark:text-gray-400">
-            This email was sent to <a href="#" class="text-blue-600 hover:underline dark:text-blue-400"
-                target="_blank">contact@merakiui.com</a>.
-            If you'd rather not receive this kind of email, you can <a href="#"
-                class="text-blue-600 hover:underline dark:text-blue-400">unsubscribe</a> or <a href="#"
-                class="text-blue-600 hover:underline dark:text-blue-400">manage your email preferences</a>.
-        </p>
-
-        <p class="mt-3 text-gray-500 dark:text-gray-400">© {{ new Date().getFullYear() }} Meraki UI. All Rights
-            Reserved.</p>
-    </footer>
+                <!-- Footer -->
+                <div class="pt-6 mt-6 border-t border-gray-200 text-center text-gray-500 text-sm">
+                    <p class="mb-2">This is an automated alert from Uptobot.</p>
+                    <p class="mb-2">You're receiving this email because you've set up alerts for this service.</p>
+                    <p>© 2025 Uptobot. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
-{% endblock %}
+{% endblock content %}

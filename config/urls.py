@@ -25,6 +25,7 @@ urlpatterns = [
     path('settings/', include('apps.accounts.urls')),
     path('', include('apps.monitor.urls')),
     path('', include('apps.landing.urls')),
+    path('', include('apps.alerts.urls')),
     path('', include('apps.notifications.urls')),
     path('', include('apps.subscriptions.urls')),
     path('accounts/', include('allauth.urls')),
