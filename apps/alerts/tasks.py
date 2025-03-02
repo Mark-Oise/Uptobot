@@ -33,8 +33,24 @@ def send_alert_email(self, delivery_id):
         # Use direct URL construction instead of reverse to avoid NoReverseMatch errors
         monitor_url = f"{settings.BASE_URL}/monitors/{monitor.slug}/"
         
-        # Simplified but clear email message
-        message = f"""
+        # Create context for HTML template
+        context = {
+            'monitor_name': monitor.name,
+            'monitor_url': monitor.url,
+            'alert_type': alert.get_alert_type_display(),
+            'alert_severity': alert.get_severity_display(),
+            'alert_time': alert.created_at.strftime('%B %d, %Y at %H:%M UTC'),
+            'alert_message': alert.message,
+            'monitor_details_url': monitor_url,
+            'response_code': getattr(alert, 'response_code', 'N/A'),
+            'response_time': getattr(alert, 'response_time', 'N/A'),
+        }
+        
+        # Render HTML email
+        html_message = render_to_string('alerts/incident_email.html', context)
+        
+        # Plain text fallback
+        plain_message = f"""
 MONITOR ALERT: {monitor.name}
 --------------------------------------------------
 URL: {monitor.url}
@@ -48,13 +64,14 @@ Message:
 View Monitor Details: {monitor_url}
         """
 
-        # Send email
+        # Send email with HTML content
         send_mail(
             subject=subject,
-            message=message,
+            message=plain_message,
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[delivery.recipient],
             fail_silently=False,
+            html_message=html_message,
         )
 
         # Update delivery status
