@@ -58,7 +58,7 @@ def monitor_metrics(request, slug):
     })
     
     # Only trigger reload if there's no data AND no failed checks
-    if (uptime is None or avg_response_time is None) and not monitor.has_failed_checks:
+    if (uptime is None or avg_response_time is None):
         response['HX-Trigger'] = 'metrics-loading'
     
     return response
@@ -81,7 +81,7 @@ def monitor_health_score(request, slug):
 
     # Only trigger reload if no data AND no failed checks
     if (monitor.get_uptime_percentage() is None or 
-        monitor.get_average_response_time() is None) and not monitor.has_failed_checks:
+        monitor.get_average_response_time() is None):
         response['HX-Trigger'] = 'health-score-loading'
     
     return response
@@ -100,7 +100,7 @@ def monitor_tab_content(request, slug):
     })
     
     # Only trigger reload if no data AND no failed checks
-    if uptime_history is None and not monitor.has_failed_checks:
+    if uptime_history is None:
         response['HX-Trigger'] = 'tab-content-loading'
     
     return response

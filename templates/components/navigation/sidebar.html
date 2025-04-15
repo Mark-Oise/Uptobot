@@ -5,10 +5,8 @@
 
         <ul class="space-y-2 font-medium">
             <li>
-                <a hx-get="{% url 'monitor:monitor_list' %}" hx-target="#body" hx-push-url="true" hx-trigger="click"
-                    hx-swap="innerHTML transition:true show:window:top"
-                    class="flex items-center p-2 {% if request.resolver_match.url_name == 'monitor_list' %}bg-green-100 text-gray-900{% else %}text-green-400 dark:text-white{% endif %} rounded-lg hover:bg-green-100 dark:hover:bg-green-700 group"
-                    >
+                <a href="{% url 'monitor:monitor_list' %}"
+                    class="flex items-center p-2 {% if request.resolver_match.url_name == 'monitor_list' %}bg-green-100 text-gray-900{% else %}text-green-400 dark:text-white{% endif %} rounded-lg hover:bg-green-100 dark:hover:bg-green-700 group">
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -21,8 +19,7 @@
                 </a>
             </li>
             <li>
-                <a hx-get="{% url 'accounts:settings' %}" hx-target="#body" hx-push-url="true" hx-trigger="click"
-                    hx-swap="innerHTML transition:true show:window:top"
+                <a href="{% url 'accounts:settings' %}"
                     class="flex items-center p-2 {% if request.resolver_match.url_name == 'settings' %}bg-green-100 text-gray-900{% else %} text-green-400 dark:text-white {% endif %} rounded-lg  hover:bg-green-100 dark:hover:bg-green-700 group"
                     data-tooltip-target="tooltip-monitors" data-tooltip-placement="right">
 
@@ -36,8 +33,7 @@
                 </a>
             </li>
             <li>
-                <a hx-get="{% url 'subscriptions:subscription' %}" hx-target="#body" hx-push-url="true"
-                    hx-trigger="click" hx-swap="innerHTML transition:true show:window:top"
+                <a href="{% url 'subscriptions:subscription' %}"
                     class="flex items-center p-2 {% if request.resolver_match.url_name == 'subscription' %}bg-green-100 text-gray-900{% else %}text-green-400 dark:text-white{% endif %} rounded-lg hover:bg-green-100 dark:hover:bg-green-700 group"
                     data-tooltip-target="tooltip-monitors" data-tooltip-placement="right">
                     <svg class="w-6 h-6 {% if request.resolver_match.url_name == 'subscription' %}text-gray-900{% else %}text-green-400{% endif %} transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
