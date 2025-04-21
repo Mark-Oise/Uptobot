@@ -5,15 +5,17 @@
 <section class="bg-white dark:bg-gray-900">
     <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
         <h1
-            class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-            Never Miss a Beat</h1>
-        <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Keep your
-            websites running 24/7 with real-time monitoring and instant alerts. Your digital presence, always on guard.
+            class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-4xl dark:text-white">
+            Uptime alerts <span class="text-green-600">for builders who ship fast</span> and break things.</h1>
+        <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Get instant
+            Slack, Telegram, SMS, or Email alerts when your app, API or webhook goes down. Setup takes 60 seconds. No
+            code,
+            no bloat.
         </p>
-        <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+        <div class="flex flex-col mb-4 lg:mb-12 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
             <a href="{% url 'account_signup' %}"
                 class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 dark:focus:ring-green-900">
-                Start Monitoring
+                Start Monitoring Free
                 <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd"
@@ -21,29 +23,31 @@
                         clip-rule="evenodd"></path>
                 </svg>
             </a>
-            <a href="#"
-                class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                <svg class="mr-2 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z">
-                    </path>
-                </svg>
-                Watch video
-            </a>
-
         </div>
-        <img class="mx-auto mb-5 lg:mb-8 border border-gray-200 rounded-lg shadow-xl dark:border-gray-600 z-1 dark:hidden"
-            src="/media/screenshot.png" alt="dashboard overview">
-        <img class="mx-auto mb-5 lg:mb-8 border border-gray-200 rounded-lg shadow-xl dark:border-gray-600 hidden dark:block z-1"
-            src="{{ MEDIA_URL }}screenshot.png" alt="dashboard overview dark">
+        <div class="mb-8 flex justify-center items-center divide-x divide-gray-200">
+            <div class="flex items-center pl-5 text-sm text-gray-900 dark:text-white">
+                <svg class="mr-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"></path>
+                    <path fill-rule="evenodd"
+                        d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                        clip-rule="evenodd"></path>
+                </svg>
+                No Credit Card Required | Start with our free plan.
+            </div>
+        </div>
+        <div class="max-w-4xl mx-auto flex flex-col justify-center items-center lg:mb-8">
+            <img class="mx-auto mb-5 border border-gray-200 rounded-lg shadow-xl dark:border-gray-600 z-1 dark:hidden"
+                src="/media/screenshot.png" alt="dashboard overview">
+            <img class="mx-auto mb-5 lg:mb-8 border border-gray-200 rounded-lg shadow-xl dark:border-gray-600 hidden dark:block z-1"
+                src="{{ MEDIA_URL }}screenshot.png" alt="dashboard overview dark">
+        </div>
 
     </div>
 </section>
 <section class="bg-gray-50 dark:bg-gray-900">
     <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
         <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-16">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Features</h2>
+            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Why Uptobot?</h2>
         </div>
         <div class="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8 xl:gap-8 md:space-y-0">
             <div class="p-6 bg-white rounded shadow dark:bg-gray-800">
@@ -106,11 +110,150 @@
                 <p class="font-light text-gray-500 dark:text-gray-400">Get notified when your SSL certificates are about
                     to expire.</p>
             </div>
+            <div class="p-6 bg-white rounded shadow dark:bg-gray-800">
+                <div
+                    class="flex justify-center items-center mb-4 w-10 h-10 rounded bg-green-100 lg:h-12 lg:w-12 dark:bg-primary-900">
+
+                    <svg class="w-8 h-8 text-primary-600 lg:w-8 lg:h-8 dark:text-primary-300" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9.5 11H5a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h4.5M7 11V7a3 3 0 0 1 6 0v1.5m2.5 5.5v1.5l1 1m3.5-1a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" />
+                    </svg>
+
+
+                </div>
+                <h3 class="mb-2 text-xl font-bold dark:text-white">SSL Monitoring</h3>
+                <p class="font-light text-gray-500 dark:text-gray-400">Get notified when your SSL certificates are about
+                    to expire.</p>
+            </div>
+            <div class="p-6 bg-white rounded shadow dark:bg-gray-800">
+                <div
+                    class="flex justify-center items-center mb-4 w-10 h-10 rounded bg-green-100 lg:h-12 lg:w-12 dark:bg-primary-900">
+
+                    <svg class="w-8 h-8 text-primary-600 lg:w-8 lg:h-8 dark:text-primary-300" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9.5 11H5a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h4.5M7 11V7a3 3 0 0 1 6 0v1.5m2.5 5.5v1.5l1 1m3.5-1a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" />
+                    </svg>
+
+
+                </div>
+                <h3 class="mb-2 text-xl font-bold dark:text-white">SSL Monitoring</h3>
+                <p class="font-light text-gray-500 dark:text-gray-400">Get notified when your SSL certificates are about
+                    to expire.</p>
+            </div>
+
+        </div>
+        <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
+            <div class="mx-auto max-w-screen-sm text-center">
+                <h2 class="mb-4 text-4xl tracking-tight font-extrabold leading-tight text-gray-900 dark:text-white">
+                    Start Free monitoring
+                    in Under a
+                    Minute</h2>
+                <p class="mb-6 font-light text-gray-500 dark:text-gray-400 md:text-lg">No credit card,
+                    cancel
+                    anytime. Works
+                    with any stack.</p>
+                <a href="/accounts/signup/"
+                    class="mt-2 inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 dark:focus:ring-green-900">
+                    Start Monitoring For Free
+                    <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </a>
+            </div>
         </div>
     </div>
 </section>
 <section class="bg-white dark:bg-gray-900">
-    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-14 lg:px-6">
+    <div
+        class="items-center py-8 px-4 mx-auto max-w-screen-xl lg:grid xl:grid-cols-3 lg:gap-8 xl:gap-24 sm:py-16 lg:px-6">
+        <div class="mb-8 lg:mb-0">
+            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Get Alerted Your Way
+            </h2>
+            <p class="mb-4 text-gray-500 sm:text-xl dark:text-gray-400">Choose how you want to be notified when your
+                services experience downtime.</p>
+        </div>
+        <div class="col-span-2 space-y-8 md:grid md:grid-cols-2 md:gap-12 md:space-y-0">
+            <div class="shadow shadow-md border rounded-lg p-6 border-gray-100">
+                <div
+                    class="flex justify-center rounded-lg shadow items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-mail-icon lucide-mail w-5 h-5 text-green-600 lg:w-6 lg:h-6 dark:text-primary-300">
+                        <rect width="20" height="16" x="2" y="4" rx="2" />
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                </div>
+                <h3 class="mb-2 text-xl font-bold dark:text-white">Email Alerts</h3>
+                <p class="text-gray-500 dark:text-gray-400">Get instant email notifications when your services go down.
+                </p>
+            </div>
+            <div class="shadow rounded-lg p-6">
+                <div
+                    class="flex justify-center rounded-lg shadow items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-message-circle-warning-icon lucide-message-circle-warning w-5 h-5 text-green-600 lg:w-6 lg:h-6 dark:text-primary-300">
+                        <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+                        <path d="M12 8v4" />
+                        <path d="M12 16h.01" />
+                    </svg>
+
+                </div>
+                <h3 class="mb-2 text-xl font-bold dark:text-white">SMS Notifications</h3>
+                <p class="text-gray-500 dark:text-gray-400">Receive text messages directly to your phone for critical
+                    alerts.
+                </p>
+            </div>
+            <div class="shadow rounded-lg p-6">
+                <div
+                    class="flex justify-center rounded-lg shadow items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-send-horizontal-icon lucide-send-horizontal w-5 h-5 text-green-600 lg:w-6 lg:h-6 dark:text-primary-300">
+                        <path
+                            d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z" />
+                        <path d="M6 12h16" />
+                    </svg>
+                </div>
+                <h3 class="mb-2 text-xl font-bold dark:text-white">Telegram Alerts</h3>
+                <p class="text-gray-500 dark:text-gray-400">Connect your Telegram account for real-time monitoring
+                    updates.
+                </p>
+            </div>
+            <div class="shadow rounded-lg p-6">
+                <div
+                    class="flex justify-center rounded-lg shadow items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-slack-icon lucide-slack w-5 h-5 text-green-600 lg:w-6 lg:h-6 dark:text-primary-300">
+                        <rect width="3" height="8" x="13" y="2" rx="1.5" />
+                        <path d="M19 8.5V10h1.5A1.5 1.5 0 1 0 19 8.5" />
+                        <rect width="3" height="8" x="8" y="14" rx="1.5" />
+                        <path d="M5 15.5V14H3.5A1.5 1.5 0 1 0 5 15.5" />
+                        <rect width="8" height="3" x="14" y="13" rx="1.5" />
+                        <path d="M15.5 19H14v1.5a1.5 1.5 0 1 0 1.5-1.5" />
+                        <rect width="8" height="3" x="2" y="8" rx="1.5" />
+                        <path d="M8.5 5H10V3.5A1.5 1.5 0 1 0 8.5 5" />
+                    </svg>
+                </div>
+                <h3 class="mb-2 text-xl font-bold dark:text-white">Slack Integration</h3>
+                <p class="text-gray-500 dark:text-gray-400">Send alerts directly to your team's Slack channels.
+                </p>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+<section class="bg-gray-50 dark:bg-gray-900">
+    <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
         <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-12">
             <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Designed for business
                 teams like yours</h2>
@@ -179,11 +322,11 @@
             <!-- Pricing Card -->
             <div
                 class="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
-                <h3 class="mb-4 text-2xl font-semibold">Basic Plan</h3>
+                <h3 class="mb-4 text-2xl font-semibold">Builder Plan</h3>
                 <p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">Relevant for multiple users, extended
                     & premium support.</p>
                 <div class="flex justify-center items-baseline my-8">
-                    <span class="mr-2 text-5xl font-extrabold">$10</span>
+                    <span class="mr-2 text-5xl font-extrabold">$9</span>
                     <span class="text-gray-500 dark:text-gray-400">/month</span>
                 </div>
                 <!-- List -->
@@ -196,7 +339,7 @@
                                 d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span>Monitor up to 20 URLs</span>
+                        <span>Monitor up to 10 URLs</span>
                     </li>
                     <li class="flex items-center space-x-3">
                         <!-- Icon -->
@@ -241,7 +384,7 @@
                 <p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">Best for large scale uses and extended
                     redistribution rights.</p>
                 <div class="flex justify-center items-baseline my-8">
-                    <span class="mr-2 text-5xl font-extrabold">$30</span>
+                    <span class="mr-2 text-5xl font-extrabold">$29</span>
                     <span class="text-gray-500 dark:text-gray-400">/month</span>
                 </div>
                 <!-- List -->
@@ -295,4 +438,5 @@
         </div>
     </div>
 </section>
+
 {% endblock content %}
