@@ -1,7 +1,15 @@
 <aside id="logo-sidebar"
     class="fixed top-0 left-0 z-50 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
     aria-label="Sidebar">
-    <div class="h-full pt-20 px-4 py-8 overflow-y-auto bg-gray-900 dark:bg-gray-900">
+    <div class="h-full px-4 py-8 overflow-y-auto bg-gray-900 dark:bg-gray-900">
+        <div class="flex items-center justify-between ps-2.5 mb-5">
+            <a href="https://flowbite.com/" class="flex items-center">
+                <span
+                    class="self-center text-xl font-semibold whitespace-nowrap text-white dark:text-white">Uptobot</span>
+            </a>
+
+
+        </div>
 
         <ul class="space-y-2 font-medium">
             <li>
@@ -19,17 +27,17 @@
                 </a>
             </li>
             <li>
-                <a href="{% url 'accounts:settings' %}"
-                    class="flex items-center p-2 {% if request.resolver_match.url_name == 'settings' %}bg-green-100 text-gray-900{% else %} text-green-400 dark:text-white {% endif %} rounded-lg  hover:bg-green-100 dark:hover:bg-green-700 group"
+                <a href="{% url 'notifications:list' %}"
+                    class="flex items-center p-2 {% if request.resolver_match.url_name == 'list' %}bg-green-100 text-gray-900{% else %} text-green-400 dark:text-white {% endif %} rounded-lg  hover:bg-green-100 dark:hover:bg-green-700 group"
                     data-tooltip-target="tooltip-monitors" data-tooltip-placement="right">
-
-                    <svg class="w-6 h-6 {% if request.resolver_match.url_name == 'settings' %}text-gray-900{% else %} text-green-400 {% endif %} transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                        fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
-                            clip-rule="evenodd"></path>
+                    <svg class="w-6 h-6 {% if request.resolver_match.url_name == 'list' %}text-gray-900{% else %} text-green-400 {% endif %} transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                        viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 5.365V3m0 2.365a5.338 5.338 0 0 1 5.133 5.368v1.8c0 2.386 1.867 2.982 1.867 4.175 0 .593 0 1.193-.538 1.193H5.538c-.538 0-.538-.6-.538-1.193 0-1.193 1.867-1.789 1.867-4.175v-1.8A5.338 5.338 0 0 1 12 5.365Zm-8.134 5.368a8.458 8.458 0 0 1 2.252-5.714m14.016 5.714a8.458 8.458 0 0 0-2.252-5.714M8.54 17.901a3.48 3.48 0 0 0 6.92 0H8.54Z" />
                     </svg>
-                    <span class="flex-1 ms-3 whitespace-nowrap sidebar-text">Settings</span>
+
+                    <span class="flex-1 ms-3 whitespace-nowrap sidebar-text">Alerts</span>
                 </a>
             </li>
             <li>
@@ -44,6 +52,36 @@
                     </svg>
 
                     <span class="flex-1 ms-3 whitespace-nowrap sidebar-text">Subscription</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'accounts:settings' %}"
+                    class="flex items-center p-2 {% if request.resolver_match.url_name == 'settings' %}bg-green-100 text-gray-900{% else %} text-green-400 dark:text-white {% endif %} rounded-lg  hover:bg-green-100 dark:hover:bg-green-700 group"
+                    data-tooltip-target="tooltip-monitors" data-tooltip-placement="right">
+
+                    <svg class="w-6 h-6 {% if request.resolver_match.url_name == 'settings' %}text-gray-900{% else %} text-green-400 {% endif %} transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="flex-1 ms-3 whitespace-nowrap sidebar-text">Settings</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'contact:support' %}"
+                    class="flex items-center p-2 {% if request.resolver_match.url_name == 'support' %}bg-green-100 text-gray-900{% else %}text-green-400 dark:text-white{% endif %} rounded-lg hover:bg-green-100 dark:hover:bg-green-700 group"
+                    data-tooltip-target="tooltip-monitors" data-tooltip-placement="right">
+                    <svg class="w-6 h-6 {% if request.resolver_match.url_name == 'support' %}text-gray-900{% else %}text-green-400{% endif %} transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                        viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+
+
+                    <span class="flex-1 ms-3 whitespace-nowrap sidebar-text">Help & Support</span>
                 </a>
             </li>
 
