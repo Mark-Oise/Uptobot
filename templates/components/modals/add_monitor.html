@@ -6,9 +6,13 @@
         <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
             <!-- Modal header -->
             <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    Add Monitor
-                </h3>
+
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white"> Add Monitor</h3>
+                    <p class="text-gray-600 text-sm dark:text-gray-100">Create a new monitor to track the uptime and
+                        performance of your website or API.</p>
+                </div>
+
                 <button type="button"
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                     data-modal-toggle="addMonitorModal">
@@ -49,8 +53,8 @@
                     </div>
 
                     <div class="">
-                        <label for="URL"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Url</label>
+                        <label for="URL" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Url to
+                            Monitor</label>
                         <input type="text" name="url" id="url"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
                             placeholder="http://example.com" required="">
@@ -91,13 +95,6 @@
                                 class="text-sm text-gray-500 dark:text-gray-400 absolute start-1/2 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">5m</span>
                             <span class="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">60m</span>
                         </div>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <label for="description"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                        <textarea id="description" name="description" rows="4"
-                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-600 focus:border-green-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Write monitor description here"></textarea>
                     </div>
                 </div>
                 <button type="submit"

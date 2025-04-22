@@ -1,11 +1,12 @@
 {% if monitors %}
-<div class="flex justify-between items-center mb-8">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 sm:gap-0">
     <div>
         <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Your Monitors</h2>
+        <p class="text-gray-600 text-md dark:text-gray-100">Track and manage your website and API monitors</p>
     </div>
-    <div class="flex items-center">
+    <div class="flex items-center w-full sm:w-auto">
         <button data-modal-target="addMonitorModal" data-modal-toggle="addMonitorModal" type="button"
-            class="text-white inline-flex items-center bg-green-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+            class="w-full sm:w-auto text-white inline-flex items-center justify-center bg-green-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
             <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
                     d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
@@ -15,6 +16,93 @@
         </button>
     </div>
 </div>
+<div class="mb-8 grid gap-4 grid-cols-1 lg:grid-cols-3 mt-6">
+    <!-- Total Monitors Widget -->
+    <div
+        class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-900 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border-green-200">
+        <div class="flex justify-between items-start">
+            <div>
+                <h5 class="text-gray-500 text-sm font-bold dark:text-gray-200">Total Monitors</h5>
+                <div class="mt-4">
+                    <span class="text-3xl font-semibold dark:text-gray-100">2</span>
+                    <div class="text-sm {% if lead_growth >= 0 %}text-green-500{% else %}text-red-500{% endif %} mt-1">
+                        {% if lead_growth >= 0 %}+{% endif %}{{ lead_growth }}%
+                        <span class="text-gray-400">from last month</span>
+                    </div>
+                </div>
+            </div>
+            <div class="text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-globe-icon lucide-globe w-6 h-6">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                    <path d="M2 12h20" />
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Positive Sentiment Widget -->
+    <div
+        class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-900 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border-green-200">
+        <div class="flex justify-between items-start">
+            <div>
+                <h5 class="text-gray-500 text-sm font-bold dark:text-gray-200">Uptime
+                </h5>
+                <div class="mt-4">
+                    <span class="text-3xl font-semibold dark:text-gray-200">
+                        99.8%</span>
+                    <div
+                        class="text-sm {% if sentiment_growth >= 0 %}text-green-500{% else %}text-red-500{% endif %} mt-1">
+                        {% if sentiment_growth >= 0 %}+{% endif %}{{ sentiment_growth }}%
+                        <span class="text-gray-400">from last month</span>
+                    </div>
+                </div>
+            </div>
+            <div class="text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-activity-icon lucide-activity w-6 h-6">
+                    <path
+                        d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2" />
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Engagement Rate Widget -->
+    <div
+        class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-900 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border-green-200">
+        <div class="flex justify-between items-start">
+            <div>
+                <h5 class="text-gray-500 text-sm font-bold dark:text-gray-200">Avg. Response Time</h5>
+                <div class="mt-4">
+                    <span class="text-3xl font-semibold dark:text-gray-200">
+                        20 ms</span>
+                    <div
+                        class="text-sm {% if engagement_growth >= 0 %}text-green-500{% else %}text-red-500{% endif %} mt-1">
+                        {% if engagement_growth >= 0 %}+{% endif %}{{ engagement_growth }}%
+                        <span class="text-gray-400">from last month</span>
+                    </div>
+                </div>
+            </div>
+            <div class="text-gray-400">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-clock-icon lucide-clock w-6 h-6">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                </svg>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
 <div id="monitor-list-cards" class="grid gap-4 xl:grid-cols-3 2xl:grid-cols-2">
 
     {% for monitor in monitors %}
@@ -107,7 +195,7 @@
                     <h3 class="text-lg font-bold text-gray-900 dark:text-white">
                         {{ monitor.get_average_response_time}} ms
                     </h3>
-                    <p class="text-sm font-light text-gray-800 dark:text-gray-400">Avg. Response time</p>
+                    <p class="text-sm font-light text-gray-800 dark:text-gray-400">Response time</p>
                 </div>
             </div>
 
