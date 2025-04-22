@@ -12,7 +12,7 @@ def contact(request):
                 contact.user = request.user
             contact.save()
             messages.success(request, 'Your message has been sent successfully!')
-            return redirect('contact')
+            return redirect('contact:support')
         else:
             messages.error(request, 'Please correct the errors below.')
     else:
