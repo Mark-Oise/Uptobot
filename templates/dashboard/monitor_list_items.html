@@ -23,7 +23,11 @@
                         <p hx-get="{% url 'monitor:monitor_detail' monitor.slug %}" hx-target="#body" hx-push-url="true"
                             hx-swap="innerHTML transition:true show:window:top"
                             class="mt-1 inline-flex items-center text-sm font-medium text-gray-600 hover:underline dark:text-gray-400 leading-none">
+                            {% if monitor.url|length > 20 %}
+                            {{ monitor.url|slice:":20" }}...
+                            {% else %}
                             {{ monitor.url }}
+                            {% endif %}
                             <svg class="w-3 h-3 ml-1 rtl:rotate-[270deg]" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
