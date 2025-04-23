@@ -24,9 +24,10 @@
             <div>
                 <h5 class="text-gray-500 text-sm font-bold dark:text-gray-200">Total Monitors</h5>
                 <div class="mt-4">
-                    <span class="text-3xl font-semibold dark:text-gray-100">2</span>
-                    <div class="text-sm {% if lead_growth >= 0 %}text-green-500{% else %}text-red-500{% endif %} mt-1">
-                        {% if lead_growth >= 0 %}+{% endif %}{{ lead_growth }}%
+                    <span class="text-3xl font-semibold dark:text-gray-100">{{ total_monitors }}</span>
+                    <div
+                        class="text-sm {% if monitor_growth >= 0 %}text-green-500{% else %}text-red-500{% endif %} mt-1">
+                        {% if monitor_growth >= 0 %}+{% endif %}{{ monitor_growth }}%
                         <span class="text-gray-400">from last month</span>
                     </div>
                 </div>
@@ -52,10 +53,10 @@
                 </h5>
                 <div class="mt-4">
                     <span class="text-3xl font-semibold dark:text-gray-200">
-                        99.8%</span>
+                        {{ avg_uptime }}%</span>
                     <div
-                        class="text-sm {% if sentiment_growth >= 0 %}text-green-500{% else %}text-red-500{% endif %} mt-1">
-                        {% if sentiment_growth >= 0 %}+{% endif %}{{ sentiment_growth }}%
+                        class="text-sm {% if uptime_growth >= 0 %}text-green-500{% else %}text-red-500{% endif %} mt-1">
+                        {% if uptime_growth >= 0 %}+{% endif %}{{ uptime_growth }}%
                         <span class="text-gray-400">from last month</span>
                     </div>
                 </div>
@@ -79,10 +80,10 @@
                 <h5 class="text-gray-500 text-sm font-bold dark:text-gray-200">Avg. Response Time</h5>
                 <div class="mt-4">
                     <span class="text-3xl font-semibold dark:text-gray-200">
-                        20 ms</span>
+                        {{ avg_response_time }} ms</span>
                     <div
-                        class="text-sm {% if engagement_growth >= 0 %}text-green-500{% else %}text-red-500{% endif %} mt-1">
-                        {% if engagement_growth >= 0 %}+{% endif %}{{ engagement_growth }}%
+                        class="text-sm {% if response_time_growth >= 0 %}text-green-500{% else %}text-red-500{% endif %} mt-1">
+                        {% if response_time_growth >= 0 %}+{% endif %}{{ response_time_growth }}%
                         <span class="text-gray-400">from last month</span>
                     </div>
                 </div>
