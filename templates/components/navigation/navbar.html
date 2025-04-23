@@ -166,8 +166,8 @@
                                 </svg>
                             </div>
                             <input hx-get="{% url 'monitor:search_monitors' %}"
-                                hx-trigger="input changed delay:100ms, search" hx-target="#monitor-listing"
-                                name="search" type="search" id="monitor-search"
+                                hx-trigger="input changed delay:100ms, search" hx-target="#monitor-list-items-container"
+                                name="search" type="search" id="monitor-search-input"
                                 class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-400 focus:border-green-500 block w-full ps-10 p-2.5 shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
                                 placeholder="Search monitors..." />
                         </div>

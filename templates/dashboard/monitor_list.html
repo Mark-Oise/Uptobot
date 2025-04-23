@@ -3,7 +3,10 @@
 
 <div id="monitor-list-container">
     <div class="px-6 mt-6 pb-8" id="monitor-listing">
+        {% if monitors %}
+        {% include 'dashboard/monitor_list_widgets.html' %}
         {% include 'dashboard/monitor_list_items.html' %}
+        {% endif %}
     </div>
     {% include 'components/modals/add_monitor.html' %}
 </div>
