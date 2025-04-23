@@ -88,12 +88,51 @@
 
         </ul>
 
+        <div class="pt-4 mt-4 border-t border-gray-200">
+            <div id="dropdown-cta-premiums" class="shadow-sm p-4 mt-6 rounded-lg bg-gray-50" role="alert">
+                <div class="flex items-center mb-3">
+                    <span
+                        class="flex bg-gradient-to-r from-teal-300 to-lime-300 text-teal-900 dark:text-teal-900 text-sm font-semibold me-2 px-2.5 py-0.5 rounded-sm dark:bg-orange-200 dark:text-orange-900 items-start justify-between">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-crown-icon lucide-crown w-4 h-4 me-2">
+                            <path
+                                d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" />
+                            <path d="M5 21h14" />
+                        </svg>
+                        Premium</span>
+                    <button type="button"
+                        class="ms-auto -mx-1.5 -my-1.5 inline-flex justify-center items-center w-6 h-6 text-blue-900 rounded-lg focus:ring-2 focus:ring-blue-400 p-1 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-400 dark:hover:bg-blue-800"
+                        data-dismiss-target="#dropdown-cta-premium" aria-label="Close">
+                        <span class="sr-only">Close</span>
+                        <svg class="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-base font-medium text-sm text-gray-800 dark:text-white">Monitors
+                            remaining</span>
+                        <span class="text-base font-medium text-sm text-gray-800 dark:text-white">42/100</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                        <div class="bg-gray-900 h-2 rounded-full" style="width: 45%"></div>
+                    </div>
+                </div>
+
+
+                <button type="button" class="w-full justify-center bg-gradient-to-br from-teal-300 to-lime-300 text-teal-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700
+                    font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Manage
+                    Subscription</button>
+
+            </div>
+        </div>
+
     </div>
-    <button id="sidebar-collapse-btn"
-        class="absolute top-1/2 -right-4 transform -translate-y-1/2 bg-green-400 hover:bg-green-500 text-white rounded-full p-2 w-8 h-8 flex items-center justify-center transition-transform duration-300 ease-in-out hidden sm:block">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-        </svg>
-    </button>
+
 
 </aside>
