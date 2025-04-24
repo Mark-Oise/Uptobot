@@ -273,3 +273,6 @@ BASE_URL = 'https://uptobot.xyz'
 # Fix for SSL certificate verification issues
 import certifi
 os.environ['SSL_CERT_FILE'] = certifi.where()
+
+
+POLAR_API_KEY = env('POLAR_API_KEY')
