@@ -15,15 +15,21 @@ def subscription(request):
 def create_checkout_session(request, plan_type):
     plan = SubscriptionPlan.objects.get(plan_type=plan_type)
     
-    with Polar(access_token=settings.POLAR_API_KEY) as polar:
-        # Changed from dict parameter to named arguments
+    with Polar(server="sandbox", access_token=settings.POLAR_API_KEY) as polar:
+        # Create checkout using the proper request structure
         checkout = polar.checkouts.create(request={
-            
+            "products": [plan.polar_product_id],  # List of product IDs - required field
+            "success_url": request.build_absolute_uri(reverse('subscriptions:subscription_success')) + "?checkout_id={CHECKOUT_ID}",
+            "customer_email": request.user.email if request.user.is_authenticated else None,
+            "customer_name": f"{request.user.first_name} {request.user.last_name}" if request.user.is_authenticated else None,
+            "metadata": {
+                "plan_type": plan_type,
+                "user_id": str(request.user.id) if request.user.is_authenticated else None
+            },
         })
         
-    return JsonResponse({
-        'checkout_url': checkout.url
-    })
+    return redirect(checkout.url)
+
 
 def subscription_success(request):
     checkout_id = request.GET.get('checkout_id')
