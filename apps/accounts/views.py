@@ -4,6 +4,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from .forms import UserAccountUpdateForm, UserAlertSettingsForm
 from .models import UserAlertSettings
+from apps.subscriptions.models import UserSubscription
 
 
 # Create your views here.
@@ -12,6 +13,10 @@ def settings_view(request):
      # Get the alert settings for the current user
     alert_settings = UserAlertSettings.objects.get(user=request.user)
     
+    # Get all subscriptions for the user, ordered by start date
+    subscriptions = UserSubscription.objects.filter(user=request.user).order_by('-start_date')
+    current_subscription = subscriptions.filter(active=True).first()
+
     if request.method == 'POST':
         if 'alert_settings_form' in request.POST:
             alert_form = UserAlertSettingsForm(request.POST, instance=alert_settings)
@@ -50,5 +55,7 @@ def settings_view(request):
         'account_form': account_form,  # Renamed to be more explicit
         'alert_form': alert_form,
         'password_form': password_form,  # Add password form to context
+        'current_subscription': current_subscription,
+        'subscriptions': subscriptions,  # Add all subscriptions to context
     }
     return render(request, 'dashboard/settings.html', context)

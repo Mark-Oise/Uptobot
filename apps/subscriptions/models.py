@@ -33,7 +33,10 @@ class SubscriptionPlan(models.Model):
         return current_monitor_count < self.max_monitors
 
     def get_allowed_channels(self):
-        return self.allowed_notification_channels
+        if not self.allowed_notification_channels:
+            return []
+        # Return as a simple list of channel names
+        return list(self.allowed_notification_channels)
 
     def __str__(self):
         return f"{self.name} (${self.price}/month)"
