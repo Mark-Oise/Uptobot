@@ -105,3 +105,22 @@ class UserSubscription(models.Model):
                     polar.subscriptions.cancel(self.polar_subscription_id)
             except Exception as e:
                 logger.error(f"Failed to cancel Polar subscription: {e}")
+
+
+class CancellationReason(models.Model):
+    REASON_CHOICES = [
+        ('too_expensive', 'Too expensive'),
+        ('not_using', 'Not using enough'),
+        ('missing_features', 'Missing features'),
+        ('technical_issues', 'Technical issues'),
+        ('switching_service', 'Switching to another service'),
+        ('other', 'Other'),
+    ]
+
+    subscription = models.OneToOneField(UserSubscription, on_delete=models.CASCADE, related_name='cancellation_reason')
+    reason = models.CharField(max_length=50, choices=REASON_CHOICES)
+    feedback = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.subscription.user.email} - {self.reason}"

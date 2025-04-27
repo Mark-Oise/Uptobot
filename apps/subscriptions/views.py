@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from polar_sdk import Polar
 from django.conf import settings
-from django.http import JsonResponse
 from .models import SubscriptionPlan, UserSubscription
 from django.urls import reverse
+from .forms import CancellationForm
+from django.contrib import messages
+
 
 # Create your views here.
 def subscription(request):
@@ -11,10 +13,9 @@ def subscription(request):
 
 
 
-
 def create_checkout_session(request, plan_type):
     plan = SubscriptionPlan.objects.get(plan_type=plan_type)
-    
+
     with Polar(server="sandbox", access_token=settings.POLAR_API_KEY) as polar:
         # Create checkout using the proper request structure
         checkout = polar.checkouts.create(request={
@@ -51,3 +52,15 @@ def subscription_success(request):
         )
         
     return redirect('subscriptions:subscription')
+
+
+def cancel_subscription(request):
+    if request.method == 'POST':
+        form = CancellationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your subscription has been cancelled successfully.')
+            return redirect('subscriptions:subscription')
+        else:
+            messages.error(request, 'There was an error cancelling your subscription.')
+    return render(request, 'settings/partials/subscription.html')
