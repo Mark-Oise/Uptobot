@@ -36,25 +36,26 @@
                     <span class="sr-only">Close modal</span>
                 </button>
             </div>
-            <form class="p-4 md:p-5">
+            <form method="post" class="p-4 md:p-5">
+                {% csrf_token %}
+                <input type="hidden" name="cancel_subscription" value="1">
                 <div class="grid gap-4 mb-4 grid-cols-1">
                     <div class="col-span-2">
-                        <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Why
+                        <label for="reason" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Why
                             are you cancelling?</label>
-                        <select id="category"
+                        <select id="reason" name="reason"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500">
-                            <option selected="">Select reason</option>
-                            <option value="TV">TV/Monitors</option>
-                            <option value="PC">PC</option>
-                            <option value="GA">Gaming/Console</option>
-                            <option value="PH">Phones</option>
+                            <option value="" selected="">Select reason</option>
+                            {% for value, label in cancellation_form.reason.field.choices %}
+                            <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="col-span-2">
                         <label for="description"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Additional feedback
                             (optional)</label>
-                        <textarea id="description" rows="4"
+                        <textarea id="feedback" name="feedback" rows="4"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
                             placeholder="Tell us how we can improve"></textarea>
                     </div>
@@ -65,7 +66,7 @@
                     <button data-modal-hide="cancel-subscription-modal" type="button"
                         class="w-full py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-green-600 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Keep
                         My Subscription</button>
-                    <button data-modal-hide="" type="button"
+                    <button data-modal-hide="" type="submit"
                         class="w-full text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Confirm
                         Cancellation</button>
                 </div>
