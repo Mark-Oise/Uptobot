@@ -9,7 +9,7 @@ from django.contrib import messages
 
 # Create your views here.
 def subscription(request):
-    return render(request, 'subscription/success.html')
+    return render(request, 'subscription/failure.html')
 
 
 

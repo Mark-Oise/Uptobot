@@ -1,0 +1,141 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+<div id="subscription-container">
+    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
+        <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-12">
+            <div class="flex justify-center mb-4">
+                <div class="mb-4 flex h-18 w-18 items-center justify-center rounded-full bg-red-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-triangle-alert-icon lucide-triangle-alert lucide lucide-circle-alert h-10 w-10 text-red-600">
+                        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+                        <path d="M12 9v4" />
+                        <path d="M12 17h.01" />
+                    </svg>
+                </div>
+            </div>
+
+            <h2 class="mb-4 text-3xl tracking-tight font-extrabold text-gray-900 dark:text-white">Payment
+                Failed
+            </h2>
+            <p class="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">We were unable to process your
+                payment. Please review the details below.
+            </p>
+        </div>
+        <div class="grid grid-row-2 gap-4">
+            <div id="alert-additional-content-2"
+                class="p-4 text-red-800 border border-red-300 rounded-lg dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+                role="alert">
+                <div class="flex items-center">
+                    <svg class="shrink-0 w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                    </svg>
+                    <span class="sr-only">Info</span>
+                    <h3 class="text-lg font-medium">This is a danger alert</h3>
+                </div>
+                <div class="mt-2 mb-4 text-sm">
+                    More info about this info danger goes here. This example text is going to run a bit longer so that
+                    you can see how spacing within an alert works with this kind of content.
+                </div>
+            </div>
+            <div class="block max-w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm
+                dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+
+                <div class="space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-semibold mb-1">Transaction Details</h2>
+                        <p class="text-gray-600 dark:text-gray-400">Information about your failed payment attempt</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex justify-between">
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-400">Plan</p>
+                                <p class="font-medium">Pro Monitoring</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-gray-600 dark:text-gray-400">Amount</p>
+                                <p class="font-medium">$29.99/month</p>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-400">Date</p>
+                                <p class="font-medium">4/27/2025</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-gray-600 dark:text-gray-400">Next Billing</p>
+                                <p class="font-medium">5/27/2025</p>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-gray-200 pt-4">
+                            <div class="flex items-center justify-between">
+                                <div class="space-y-1">
+                                    <p class="text-sm text-muted-foreground">Transaction ID</p>
+                                    <p class="font-medium">TXN-OIP4RSLQ</p>
+                                </div><button
+                                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-10"
+                                    data-state="closed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="lucide lucide-copy h-4 w-4">
+                                        <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+                                        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+                                    </svg><span class="sr-only">Copy transaction ID</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="p-2">
+                <h2 class="text-xl font-semibold mb-4">Next Steps</h2>
+                <div class="grid gap-4 mb-8">
+                    <button class="w-full px-4 py-2.5 bg-black text-white font-medium rounded-lg hover:bg-gray-800">
+                        Retry Payment
+                    </button>
+
+                </div>
+            </div>
+
+            <div>
+                <div
+                    class="block max-w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+
+
+
+
+                    <div>
+                        <h3 class="font-semibold mb-4">Need Help?</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <a href="{% url 'contact:support' %}"
+                                class="w-full px-4 py-2.5 bg-white border border-gray-200 text-black font-medium rounded-lg hover:bg-gray-100 flex items-center justify-center gap-2">
+
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                    viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+
+                                Contact Support
+                            </a>
+                            <a href="{% url 'monitor:monitor_list' %}"
+                                class="w-full px-4 py-2.5 bg-white border border-gray-200 text-black font-medium rounded-lg hover:bg-gray-100 flex items-center justify-center gap-2">
+                                Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock content %}
