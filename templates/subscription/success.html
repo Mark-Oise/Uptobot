@@ -1,0 +1,141 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+<div id="subscription-container">
+    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
+        <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-12">
+            <div class="flex justify-center mb-4">
+
+                <svg class="w-18 h-18 text-green-500 dark:text-white" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd"
+                        d="M12 2c-.791 0-1.55.314-2.11.874l-.893.893a.985.985 0 0 1-.696.288H7.04A2.984 2.984 0 0 0 4.055 7.04v1.262a.986.986 0 0 1-.288.696l-.893.893a2.984 2.984 0 0 0 0 4.22l.893.893a.985.985 0 0 1 .288.696v1.262a2.984 2.984 0 0 0 2.984 2.984h1.262c.261 0 .512.104.696.288l.893.893a2.984 2.984 0 0 0 4.22 0l.893-.893a.985.985 0 0 1 .696-.288h1.262a2.984 2.984 0 0 0 2.984-2.984V15.7c0-.261.104-.512.288-.696l.893-.893a2.984 2.984 0 0 0 0-4.22l-.893-.893a.985.985 0 0 1-.288-.696V7.04a2.984 2.984 0 0 0-2.984-2.984h-1.262a.985.985 0 0 1-.696-.288l-.893-.893A2.984 2.984 0 0 0 12 2Zm3.683 7.73a1 1 0 1 0-1.414-1.413l-4.253 4.253-1.277-1.277a1 1 0 0 0-1.415 1.414l1.985 1.984a1 1 0 0 0 1.414 0l4.96-4.96Z"
+                        clip-rule="evenodd" />
+                </svg>
+
+            </div>
+
+            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Payment
+                Successful!
+            </h2>
+            <p class="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">Thank you for your payment. Your
+                monitoring plan is now active.
+            </p>
+        </div>
+        <div class="grid grid-row-2 gap-4">
+            <div class="block max-w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm
+                dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+
+                <div class="space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-semibold mb-1">Transaction Details</h2>
+                        <p class="text-gray-600 dark:text-gray-400">Your payment has been processed successfully</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex justify-between">
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-400">Plan</p>
+                                <p class="font-medium">Pro Monitoring</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-gray-600 dark:text-gray-400">Amount</p>
+                                <p class="font-medium">$29.99/month</p>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-400">Date</p>
+                                <p class="font-medium">4/27/2025</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-gray-600 dark:text-gray-400">Next Billing</p>
+                                <p class="font-medium">5/27/2025</p>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-gray-200 pt-4">
+                            <div class="flex items-center justify-between">
+                                <div class="space-y-1">
+                                    <p class="text-sm text-muted-foreground">Transaction ID</p>
+                                    <p class="font-medium">TXN-OIP4RSLQ</p>
+                                </div><button
+                                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-10"
+                                    data-state="closed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="lucide lucide-copy h-4 w-4">
+                                        <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+                                        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+                                    </svg><span class="sr-only">Copy transaction ID</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between pt-4">
+                    <button
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                        </svg>
+                        Download Receipt
+                    </button>
+                    <button
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        View Billing History
+                    </button>
+                </div>
+            </div>
+            <div class="block max-w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm
+                    dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+
+                <div class="space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-semibold mb-1">Next Steps</h2>
+                        <p class="text-gray-600 dark:text-gray-400">Get started with your uptobot monitoring service
+                        </p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <!-- Set Up Monitors Card -->
+                            <div class="p-6 bg-white border border-gray-200 rounded-lg">
+                                <h3 class="text-lg font-semibold">Set Up Monitors</h3>
+                                <p class="text-gray-600 mb-4">Configure your first website or API monitor</p>
+                                <a href="{% url 'monitor:monitor_list' %}"
+                                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-black rounded-lg hover:bg-gray-800">
+                                    Go to Dashboard
+                                    <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </a>
+                            </div>
+
+
+
+                            <!-- Get Support Card -->
+                            <div class="p-6 bg-white border border-gray-200 rounded-lg">
+                                <h3 class="text-lg font-semibold">Get Support</h3>
+                                <p class="text-gray-600 mb-4">Contact our team if you need any assistance</p>
+                                <a href="{% url 'contact:support' %}"
+                                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                                    Contact Support
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock content %}

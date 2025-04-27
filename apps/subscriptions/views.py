@@ -9,7 +9,7 @@ from django.contrib import messages
 
 # Create your views here.
 def subscription(request):
-    return render(request, 'dashboard/subscription.html')
+    return render(request, 'subscription/success.html')
 
 
 
@@ -36,21 +36,33 @@ def subscription_success(request):
     checkout_id = request.GET.get('checkout_id')
     
     with Polar(access_token=settings.POLAR_API_KEY) as polar:
-        # Fetch the checkout session to get subscription details
-        checkout = polar.checkouts.get(checkout_id)
-        
-        # Update the user's subscription
-        subscription = UserSubscription.objects.get_or_create(
-            user=request.user,
-            defaults={
-                'plan': SubscriptionPlan.objects.get(
-                    polar_product_id=checkout.products[0]
-                ),
-                'polar_subscription_id': checkout.subscription_id,
-                'active': True
-            }
-        )
-        
+        try:
+            # Use the get() method
+            checkout = polar.checkouts.get(id=checkout_id)
+            
+            # Get the subscription details and create/update subscription
+            if checkout and checkout.subscription_id:
+                plan = SubscriptionPlan.objects.get(
+                    polar_product_id=checkout.product.id
+                )
+                
+                subscription, created = UserSubscription.objects.update_or_create(
+                    user=request.user,
+                    defaults={
+                        'plan': plan,
+                        'polar_subscription_id': checkout.subscription_id,
+                        'polar_customer_id': checkout.customer_id,
+                        'active': True
+                    }
+                )
+                
+                messages.success(request, 'Your subscription has been activated successfully!')
+            else:
+                messages.error(request, 'Unable to process subscription. Please contact support.')
+                
+        except Exception as e:
+            messages.error(request, f'Error processing subscription: {str(e)}')
+            
     return redirect('subscriptions:subscription')
 
 
