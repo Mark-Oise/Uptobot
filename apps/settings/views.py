@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from apps.subscriptions.models import UserSubscription
 from apps.subscriptions.forms import CancellationForm
-from .forms import CustomChangePasswordForm
+from .forms import CustomChangePasswordForm, UserAccountUpdateForm
 from django.contrib.auth import update_session_auth_hash
 # Create your views here.
 
@@ -13,6 +13,15 @@ from django.contrib.auth import update_session_auth_hash
 
 def settings_view(request):
     if request.method == 'POST':
+
+        if 'account_update' in request.POST:
+            account_update_form = UserAccountUpdateForm(request.POST, instance=request.user)
+            if account_update_form.is_valid():
+                account_update_form.save()
+                messages.success(request, 'Your account has been updated successfully.')
+            else:
+                messages.error(request, 'Please correct the errors below.')
+
         if 'cancel_subscription' in request.POST:
             current_subscription = UserSubscription.objects.filter(
                 user=request.user, 
