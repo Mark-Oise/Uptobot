@@ -10,7 +10,7 @@ from .forms import CancellationForm
 
 # Create your views here.
 def subscription(request):
-    return render(request, 'subscription/subscription.html')
+    return render(request, 'dashboard/subscription.html')
 
 
 @login_required
@@ -19,7 +19,7 @@ def create_checkout_session(request, plan_type):
     try:
         plan = SubscriptionPlan.objects.get(plan_type=plan_type)
         
-        polar = Polar(server="sandbox",access_token=settings.POLAR_API_KEY)
+        polar = Polar(server="sandbox", access_token=settings.POLAR_API_KEY)
         checkout = polar.checkouts.create(request={
             "products": [plan.polar_product_id],
             "success_url": request.build_absolute_uri(reverse('subscriptions:subscription_success')),
@@ -33,7 +33,7 @@ def create_checkout_session(request, plan_type):
         return redirect(checkout.url)
         
     except Exception as e:
-        messages.error(request, "Unable to create checkout session. Please try again.")
+        messages.error(request, "Unable to create checkout session. Please try again or contact support.")
         return redirect('subscriptions:subscription')
 
 

@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from apps.subscriptions.models import UserSubscription
 from apps.subscriptions.forms import CancellationForm
+from .forms import CustomChangePasswordForm
+from django.contrib.auth import update_session_auth_hash
 # Create your views here.
 
 
@@ -29,6 +31,20 @@ def settings_view(request):
                     return redirect('settings:settings')
             
             messages.error(request, 'There was an error cancelling your subscription.')
+
+        elif 'password_change' in request.POST:
+            password_change_form = CustomChangePasswordForm(request.user, request.POST)
+            if password_change_form.is_valid():
+                password_change_form.save()
+
+                # Update session to prevent logging out after password change
+                update_session_auth_hash(request, request.user)
+                
+                messages.success(request, 'Password updated successfully.')
+                return redirect('settings:settings')
+            else:
+                messages.error(request, 'Please correct the errors below.')
+
         return redirect('settings:settings')
 
     # Get all subscriptions for the user, ordered by start date
