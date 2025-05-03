@@ -13,7 +13,8 @@ def search_monitors(request):
     
     if search_query:
         monitors_list = monitors_list.filter(
-            Q(name__icontains=search_query) 
+            Q(name__icontains=search_query) | 
+            Q(url__icontains=search_query)
         )
     
     # Add pagination
