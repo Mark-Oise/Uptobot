@@ -1,129 +1,220 @@
-<div id="notifications" role="tabpanel"
-                        class="hidden opacity-0 mb-4 ">
-                        <div>
-                        <h3 class="text-xl font-semibold dark:text-white">Notification Preferences</h3>
+<div id="notifications" role="tabpanel" class="hidden opacity-0 mb-4 ">
+    <div>
+        <h3 class="text-xl font-semibold dark:text-white">Notification Preferences</h3>
+    </div>
+    <!-- Email Notifications Section -->
+    <div class="mb-8 block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700"
+        id="email-notifications">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <h4 class="text-lg font-medium text-gray-900 dark:text-white">Email Notifications</h4>
+            </div>
+            <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
+                Available
+            </span>
+        </div>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Configure which email notifications you receive.</p>
+
+        <div class="mt-4">
+            <label class="text-sm font-medium text-gray-900 dark:text-white">Notification Email</label>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Email address where notifications will be sent.</p>
+            <input type="email" value="john.doe@example.com"
+                class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+
+            <!-- Email Verification Message -->
+            <div class="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                <div class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" class="text-gray-400">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    <div>
+                        <h5 class="text-base font-medium text-gray-900 dark:text-white">Email Verification Required</h5>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">You need to verify this email address to
+                            receive notifications.</p>
                     </div>
-                        <!-- Email Notifications Section -->
-                        <div class="mb-8 block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700" id="email-notifications">
-                            <h4 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Email Notifications</h4>
-                            <p class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4">Customize how and when you receive email notifications.</p>
-                            
-                            <form method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="notification_settings_form" value="1">
-                                
-                                <!-- Email Notifications Toggle -->
-                                <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <div>
-                                            <h4 class="text-base font-medium text-gray-900 dark:text-white">Enable Email Notifications</h4>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">Receive email notifications for important updates.</p>
-                                        </div>
-                                        <label class="relative inline-flex items-center cursor-pointer">
-                                            <input type="checkbox" name="email_notifications_enabled" {% if notification_settings_form.email_notifications_enabled.value %} checked {% endif %} class="sr-only peer">
-                                            <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
-                                        </label>
-                                    </div>
-                                </div>
+                </div>
+            </div>
+        </div>
 
-                                <!-- Email Notification Options -->
-                                <div class="space-y-4 mt-4 p-2">
-                                    <div class="flex items-start">
-                                        <div class="flex items-center h-5 mt-1">
-                                            <input id="new_leads_email" name="new_leads_email" type="checkbox" {% if notification_settings_form.new_leads_email.value %} checked{% endif %} class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-black focus:ring-black dark:focus:ring-black dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        </div>
-                                        <div class="ml-3">
-                                            <label for="new_leads_email" class="text-sm font-medium text-gray-900 dark:text-white">New Leads</label>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">Get notified when new leads are generated.</p>
-                                        </div>
-                                    </div>
+        <!-- Monitor Alerts Section -->
+         <div class="mt-6 border-t border-gray-200">
+        <div class="mt-6">
+            <h5 class="text-base font-medium text-gray-900 dark:text-white mb-4">Monitor Alerts</h5>
 
-                                    <div class="flex items-start">
-                                        <div class="flex items-center h-5 mt-1">
-                                            <input id="account_updates_email" name="account_updates_email" type="checkbox" {% if notification_settings_form.account_updates_email.value %} checked {% endif %} class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-black focus:ring-black dark:focus:ring-black dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        </div>
-                                        <div class="ml-3">
-                                            <label for="account_updates_email" class="text-sm font-medium text-gray-900 dark:text-white">Account Updates</label>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">Get notified about important account changes.</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="flex items-start">
-                                        <div class="flex items-center h-5 mt-1">
-                                            <input id="marketing_emails" name="marketing_emails" type="checkbox" {% if notification_settings_form.marketing_emails.value %} checked {% endif %} class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-black focus:ring-black dark:focus:ring-black dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        </div>
-                                        <div class="ml-3">
-                                            <label for="marketing_emails" class="text-sm font-medium text-gray-900 dark:text-white">Marketing Emails</label>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">Receive promotional emails and special offers.</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mt-6">
-                                    <button class="px-5 py-2.5 text-sm font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-gray-300 rounded-lg dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Save Email Preferences</button>
-                                </div>
-                            </form>
-                        </div>
-
-                        <!-- Slack Notifications Section -->
-                        <div class="mb-4 block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700" id="slack-notifications">
-                            <div class="flex items-center gap-2 mb-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-slack-icon lucide-slack"><rect width="3" height="8" x="13" y="2" rx="1.5"/><path d="M19 8.5V10h1.5A1.5 1.5 0 1 0 19 8.5"/><rect width="3" height="8" x="8" y="14" rx="1.5"/><path d="M5 15.5V14H3.5A1.5 1.5 0 1 0 5 15.5"/><rect width="8" height="3" x="14" y="13" rx="1.5"/><path d="M15.5 19H14v1.5a1.5 1.5 0 1 0 1.5-1.5"/><rect width="8" height="3" x="2" y="8" rx="1.5"/><path d="M8.5 5H10V3.5A1.5 1.5 0 1 0 8.5 5"/></svg>
-                                <h4 class="text-lg font-medium text-gray-900 dark:text-white">Slack Integration</h4>
-                            </div>
-                            <form method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="notification_settings_form" value="1">
-                                
-                                <!-- Slack Integration Toggle -->
-                                <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <div>
-                                            <h4 class="text-base font-medium text-gray-900 dark:text-white">Enable Slack Integration</h4>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">Connect HabitatHunt with your Slack workspace.</p>
-                                        </div>
-                                        <label class="relative inline-flex items-center cursor-pointer">
-                                            <input type="checkbox" name="slack_notifications_enabled" {% if notification_settings_form.slack_notifications_enabled.value %} checked {% endif %} class="sr-only peer">
-                                            <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="mt-6">
-                                    <button class="px-5 py-2.5 text-sm font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-gray-300 rounded-lg dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Save Slack Preferences</button>
-                                </div>
-                            </form>
-                        </div>
-
-
-                        <div class="mb-4 block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700" id="slack-notifications">
-                            
-                            <div class="flex items-center gap-2 mb-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send-icon lucide-send"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>
-                                <h4 class="text-lg font-medium text-gray-900 dark:text-white">Telegram Integration</h4>
-                            </div>
-                            <p class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4">Configure your Slack notification settings.</p>
-                            <form method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="notification_settings_form" value="1">
-                                
-                                <!-- Slack Integration Toggle -->
-                                <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <div>
-                                            <h4 class="text-base font-medium text-gray-900 dark:text-white">Enable Slack Integration</h4>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">Connect HabitatHunt with your Slack workspace.</p>
-                                        </div>
-                                        <label class="relative inline-flex items-center cursor-pointer">
-                                            <input type="checkbox" name="slack_notifications_enabled" {% if notification_settings_form.slack_notifications_enabled.value %} checked {% endif %} class="sr-only peer">
-                                            <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="mt-6">
-                                    <button class="px-5 py-2.5 text-sm font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-gray-300 rounded-lg dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Save Slack Preferences</button>
-                                </div>
-                            </form>
-                        </div>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <label class="text-sm font-medium text-gray-900 dark:text-white">Downtime Alerts</label>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Get notified when a monitor goes down.</p>
                     </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" class="sr-only peer" checked>
+  <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+  
+                    </label>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div>
+                        <label class="text-sm font-medium text-gray-900 dark:text-white">Uptime Alerts</label>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Get notified when a monitor comes back up.
+                        </p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" class="sr-only peer" checked>
+  <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+  
+                    </label>
+                </div>
+
+               
+            </div>
+        </div>
+        </div>
+
+        <!-- System Notifications Section -->
+        <!-- <div class="mt-6 border-t border-gray-200">
+            <h5 class="text-base font-medium text-gray-900 dark:text-white mb-4">System Notifications</h5>
+
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <label class="text-sm font-medium text-gray-900 dark:text-white">Maintenance Updates</label>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Get notified about scheduled maintenance.
+                        </p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-gray-900"></div>
+                    </label>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div>
+                        <label class="text-sm font-medium text-gray-900 dark:text-white">Billing Notifications</label>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Get notified about billing events.</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-gray-900"></div>
+                    </label>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div>
+                        <label class="text-sm font-medium text-gray-900 dark:text-white">Product Updates</label>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Receive news about new features and updates.
+                        </p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-gray-900"></div>
+                    </label>
+                </div>
+            </div>
+        </div> -->
+    </div>
+
+    <!-- Slack Notifications Section -->
+    <div class="mb-4 block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700"
+        id="slack-notifications">
+        <div class="flex items-center gap-2 mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-slack-icon lucide-slack">
+                <rect width="3" height="8" x="13" y="2" rx="1.5" />
+                <path d="M19 8.5V10h1.5A1.5 1.5 0 1 0 19 8.5" />
+                <rect width="3" height="8" x="8" y="14" rx="1.5" />
+                <path d="M5 15.5V14H3.5A1.5 1.5 0 1 0 5 15.5" />
+                <rect width="8" height="3" x="14" y="13" rx="1.5" />
+                <path d="M15.5 19H14v1.5a1.5 1.5 0 1 0 1.5-1.5" />
+                <rect width="8" height="3" x="2" y="8" rx="1.5" />
+                <path d="M8.5 5H10V3.5A1.5 1.5 0 1 0 8.5 5" />
+            </svg>
+            <h4 class="text-lg font-medium text-gray-900 dark:text-white">Slack Integration</h4>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="notification_settings_form" value="1">
+
+            <!-- Slack Integration Toggle -->
+            <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                <div class="flex items-center justify-between mb-2">
+                    <div>
+                        <h4 class="text-base font-medium text-gray-900 dark:text-white">Enable Slack Integration</h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Connect HabitatHunt with your Slack
+                            workspace.</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="slack_notifications_enabled" {% if notification_settings_form.slack_notifications_enabled.value %} checked {% endif %}
+                            class="sr-only peer">
+                        <div
+                            class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600">
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <button
+                    class="px-5 py-2.5 text-sm font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-gray-300 rounded-lg dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Save
+                    Slack Preferences</button>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="mb-4 block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700"
+        id="slack-notifications">
+
+        <div class="flex items-center gap-2 mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-send-icon lucide-send">
+                <path
+                    d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z" />
+                <path d="m21.854 2.147-10.94 10.939" />
+            </svg>
+            <h4 class="text-lg font-medium text-gray-900 dark:text-white">Telegram Integration</h4>
+        </div>
+        <p class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4">Configure your Slack notification settings.
+        </p>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="notification_settings_form" value="1">
+
+            <!-- Slack Integration Toggle -->
+            <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                <div class="flex items-center justify-between mb-2">
+                    <div>
+                        <h4 class="text-base font-medium text-gray-900 dark:text-white">Enable Slack Integration</h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Connect HabitatHunt with your Slack
+                            workspace.</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="slack_notifications_enabled" 
+                        {% if notification_settings_form.slack_notifications_enabled.value %} checked {% endif %}
+                            class="sr-only peer">
+                        <div
+                            class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600">
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <button
+                    class="px-5 py-2.5 text-sm font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-gray-300 rounded-lg dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Save
+                    Slack Preferences</button>
+            </div>
+        </form>
+    </div>
+</div>
