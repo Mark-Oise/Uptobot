@@ -126,54 +126,102 @@
     <!-- Slack Notifications Section -->
     <div class="mb-4 block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700"
         id="slack-notifications">
-        <div class="flex items-center gap-2 mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-slack-icon lucide-slack">
-                <rect width="3" height="8" x="13" y="2" rx="1.5" />
-                <path d="M19 8.5V10h1.5A1.5 1.5 0 1 0 19 8.5" />
-                <rect width="3" height="8" x="8" y="14" rx="1.5" />
-                <path d="M5 15.5V14H3.5A1.5 1.5 0 1 0 5 15.5" />
-                <rect width="8" height="3" x="14" y="13" rx="1.5" />
-                <path d="M15.5 19H14v1.5a1.5 1.5 0 1 0 1.5-1.5" />
-                <rect width="8" height="3" x="2" y="8" rx="1.5" />
-                <path d="M8.5 5H10V3.5A1.5 1.5 0 1 0 8.5 5" />
-            </svg>
-            <h4 class="text-lg font-medium text-gray-900 dark:text-white">Slack Integration</h4>
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <div class="flex items-center gap-2 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-slack-icon lucide-slack">
+                        <rect width="3" height="8" x="13" y="2" rx="1.5" />
+                        <path d="M19 8.5V10h1.5A1.5 1.5 0 1 0 19 8.5" />
+                        <rect width="3" height="8" x="8" y="14" rx="1.5" />
+                        <path d="M5 15.5V14H3.5A1.5 1.5 0 1 0 5 15.5" />
+                        <rect width="8" height="3" x="14" y="13" rx="1.5" />
+                        <path d="M15.5 19H14v1.5a1.5 1.5 0 1 0 1.5-1.5" />
+                        <rect width="8" height="3" x="2" y="8" rx="1.5" />
+                        <path d="M8.5 5H10V3.5A1.5 1.5 0 1 0 8.5 5" />
+                    </svg>
+                    <h4 class="text-lg font-medium text-gray-900 dark:text-white">Slack Integration</h4>
+                </div>
+                <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Connect Uptobot to your Slack workspace.</p>
+            </div>
+            <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
+                Connected
+            </span>
         </div>
-        <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="notification_settings_form" value="1">
-
-            <!-- Slack Integration Toggle -->
-            <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                <div class="flex items-center justify-between mb-2">
-                    <div>
-                        <h4 class="text-base font-medium text-gray-900 dark:text-white">Enable Slack Integration</h4>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Connect HabitatHunt with your Slack
-                            workspace.</p>
+        
+        <div class="mb-4">
+            <div class="flex items-center justify-between">
+                <h5 class="text-base font-medium text-gray-900 dark:text-white">Connected Workspace</h5>
+                <button class="px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-green-500 focus:z-10 focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-500 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                    Disconnect
+                </button>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Acme Inc. Workspace</p>
+        </div>
+        
+        <div class="mt-6">
+            <div class="flex items-center justify-between mb-2">
+                <h5 class="text-base font-medium text-gray-900 dark:text-white">Slack Channels</h5>
+                <button class="inline-flex items-center text-white bg-gray-900 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+                    <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Add Channel
+                </button>
+            </div>
+            
+            <div class="mb-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4">
+                    <div class="flex items-center gap-2 mb-2 sm:mb-0">
+                        <span class="text-sm font-medium text-gray-900 dark:text-white">#monitoring-alerts</span>
+                        <span class="bg-gray-800 text-white text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">Default</span>
                     </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" name="slack_notifications_enabled" {% if notification_settings_form.slack_notifications_enabled.value %} checked {% endif %}
-                            class="sr-only peer">
-                        <div
-                            class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600">
+                    <div class="flex gap-2 w-full sm:w-auto">
+                        <button class="flex-1 sm:flex-none text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Edit</button>
+                        <button class="flex-1 sm:flex-none focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Remove</button>
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label class="text-sm font-medium text-gray-900 dark:text-white">Downtime Alerts</label>
                         </div>
-                    </label>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="" class="sr-only peer" checked>
+                            <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                        </label>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label class="text-sm font-medium text-gray-900 dark:text-white">Uptime Alerts</label>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="" class="sr-only peer" checked>
+                            <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                        </label>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label class="text-sm font-medium text-gray-900 dark:text-white">SSL Alerts</label>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="" class="sr-only peer">
+                            <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                        </label>
+                    </div>
                 </div>
             </div>
-
-            <div class="mt-6">
-                <button
-                    class="px-5 py-2.5 text-sm font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-gray-300 rounded-lg dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Save
-                    Slack Preferences</button>
-            </div>
-        </form>
+        </div>
     </div>
 
 
     <div class="mb-4 block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700"
-        id="slack-notifications">
+        id="telegram-notifications">
 
         <div class="flex items-center gap-2 mb-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
