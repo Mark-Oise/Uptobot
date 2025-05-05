@@ -1,0 +1,145 @@
+<!-- Main modal -->
+<div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+                <div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    Add Slack Channel
+                </h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Connect Uptobot to your Slack workspace.</p>
+            </div>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form class="p-4 md:p-5">
+                <div class="grid gap-4 mb-4 grid-cols-1">
+                    <div class="col-span-2">
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Channel Name</label>
+                        <div class="flex items-center">
+                            <span class="mr-2 text-gray-500">#</span>
+                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="monitoring-alerts" required="">
+                        </div>
+                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Enter the Slack channel name without the # symbol.</p>
+                    </div>
+                    <div class="col-span-2">
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description (Optional)</label>
+                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Channel for monitoring alerts" required="">
+                    </div>
+                    <div class="col-span-2">
+                        <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Channel Type</label>
+                        <select id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <option selected="">Select channel type</option>
+                            <option value="TV">TV/Monitors</option>
+                            <option value="PC">PC</option>
+                            <option value="GA">Gaming/Console</option>
+                            <option value="PH">Phones</option>
+                        </select>
+                    </div>
+                   
+                    <div class="col-span-2">
+                        <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notification Settings</label>
+                        <div class="mb-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-900 dark:text-white">Downtime Alerts</label>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" value="" class="sr-only peer" checked>
+                                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                                    </label>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-900 dark:text-white">Uptime Alerts</label>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" value="" class="sr-only peer" checked>
+                                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                                    </label>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-900 dark:text-white">SSL Alerts</label>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" value="" class="sr-only peer">
+                                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>  
+                    
+                    </div>
+                    <div class="w-full mt-4">
+                        <div class="relative right-0">
+                            <ul id="slack-tabs" class="relative mb-4 flex flex-col sm:flex-row flex-wrap px-1.5 py-1.5 list-none rounded-md bg-gray-100 dark:bg-gray-800 gap-2 sm:gap-0"
+                                data-tabs="tabs" role="list">
+                                <li class="z-20 flex-auto">
+                                    <a class="z-30 flex items-center justify-center w-full px-2 py-2 text-sm mb-0 transition-all ease-in-out border-0 rounded-md cursor-pointer text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white aria-selected:bg-white dark:aria-selected:bg-gray-700 aria-selected:text-gray-900 dark:aria-selected:text-white"
+                                        data-tab-target="up-overview" role="tab" aria-selected="true" aria-controls="up-overview">
+                                        Uptime
+                                    </a>
+                                </li>
+                                <li class="z-20 flex-auto">
+                                    <a class="z-20 flex items-center justify-center w-full px-2 py-2 mb-0 text-sm transition-all ease-in-out border-0 rounded-md cursor-pointer text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white aria-selected:bg-white dark:aria-selected:bg-gray-700 aria-selected:text-gray-900 dark:aria-selected:text-white"
+                                        data-tab-target="" role="tab" aria-selected="false" aria-controls="account">
+                                        Downtime
+                                    </a>
+                                </li>
+                                <li class="z-20 flex-auto">
+                                    <a class="z-20 flex items-center justify-center w-full px-2 py-2 text-sm mb-0 transition-all ease-in-out border-0 rounded-md cursor-pointer text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white aria-selected:bg-white dark:aria-selected:bg-gray-700 aria-selected:text-gray-900 dark:aria-selected:text-white"
+                                        data-tab-target="" role="tab" aria-selected="false" aria-controls="notifications">
+                                        SSL
+                                    </a>
+                                </li>
+                            </ul>
+            
+                            <div data-tab-content="">
+                                <div class="mb-4" id="id_uptime-overview" role="tabpanel">
+
+                                    <div id="uptime-overview"
+                                        class="p-6 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700">
+                                        Hye
+                                    </div>
+                                
+                                </div>
+                                <div class="mb-4" id="id_downtime-overview" role="tabpanel">
+
+                                    <div id="downtime-overview"
+                                        class="p-6 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700">
+                                        up
+                                    </div>
+                                
+                                </div>
+                                <div class="mb-4" id="id_ssl_overview" role="tabpanel">
+
+                                    <div id="ssl-overview"
+                                        class="p-6 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700">
+                                        ssl
+                                    </div>
+                                
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                    Add new product
+                </button>
+            </form>
+        </div>
+    </div>
+</div> 
