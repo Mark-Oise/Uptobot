@@ -11,44 +11,48 @@
             </div>
         </div>
 
-        <div class="w-full mt-4">
-            <div class="relative right-0">
-                <ul class="relative mb-4 flex flex-col sm:flex-row flex-wrap px-1.5 py-1.5 list-none rounded-md bg-gray-100 dark:bg-gray-800 gap-2 sm:gap-0"
-                    data-tabs="tabs" role="list">
-                    <li class="z-20 flex-auto">
-                        <a class="z-20 flex items-center justify-center w-full px-2 py-2 text-sm mb-0 transition-all ease-in-out border-0 rounded-md cursor-pointer text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white aria-selected:bg-white dark:aria-selected:bg-gray-700 aria-selected:text-gray-900 dark:aria-selected:text-white"
-                            data-tab-target="" role="tab" aria-selected="true" aria-controls="overview">
-                            Overview
-                        </a>
-                    </li>
-                    <li class="z-20 flex-auto">
-                        <a class="z-20 flex items-center justify-center w-full px-2 py-2 mb-0 text-sm transition-all ease-in-out border-0 rounded-md cursor-pointer text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white aria-selected:bg-white dark:aria-selected:bg-gray-700 aria-selected:text-gray-900 dark:aria-selected:text-white"
-                            data-tab-target="" role="tab" aria-selected="false" aria-controls="account">
-                            Account
-                        </a>
-                    </li>
-                    <li class="z-20 flex-auto">
-                        <a class="z-20 flex items-center justify-center w-full px-2 py-2 text-sm mb-0 transition-all ease-in-out border-0 rounded-md cursor-pointer text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white aria-selected:bg-white dark:aria-selected:bg-gray-700 aria-selected:text-gray-900 dark:aria-selected:text-white"
-                            data-tab-target="" role="tab" aria-selected="false" aria-controls="notifications">
-                            Notifications
-                        </a>
-                    </li>
-                    <li class="z-20 flex-auto">
-                        <a class="z-20 flex items-center justify-center w-full px-2 py-2 text-sm mb-0 transition-all ease-in-out border-0 rounded-md cursor-pointer text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white aria-selected:bg-white dark:aria-selected:bg-gray-700 aria-selected:text-gray-900 dark:aria-selected:text-white"
-                            data-tab-target="" role="tab" aria-selected="false" aria-controls="subscription">
-                            Subscription
-                        </a>
-                    </li>
-                </ul>
 
-                <div data-tab-content="">
-                    {% include 'settings/partials/overview.html' %}
-                    {% include 'settings/partials/account.html' %}
-                    {% include 'settings/partials/notifications.html' %}
-                    {% include 'settings/partials/subscription.html' %}
-                </div>
+        <div class=" flex grid w-full max-w-lg gap-2 mt-4">
+            <ul id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist"
+                class="rounded-lg px-2 flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+                <li class="me-0 sm:me-2 py-2" role="presentation">
+                    <button id="uptime-tab" data-tabs-target="#uptime" type="button" role="tab" aria-selected="false"
+                        class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg" aria-current="page">Overview
+                    </button>
+                </li>
+                <li class="me-0 sm:me-2 py-2" role="presentation">
+                    <button id="incidents-tab" data-tabs-target="#incidents" type="button" role="tab"
+                        aria-controls="incidents" aria-selected="false"
+                        class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg">
+                        Account
+                    </button>
+                </li>
+                <li class="me-0 sm:me-2 py-2" role="presentation">
+                    <button id="notifications-tab" data-tabs-target="#notifications" type="button" role="tab"
+                        aria-controls="notifications" aria-selected="false"
+                        class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg">
+                        Notifications
+                    </button>
+                </li>
+                <li class="me-0 sm:me-2 py-2" role="presentation">
+                    <button id="subscription-tab" data-tabs-target="#subscription" type="button" role="tab"
+                        aria-controls="subscription" aria-selected="false"
+                        class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg">
+                        Subscription
+                    </button>
+                </li>
+
+            </ul>
+        </div>
+
+
+        <div class="grid grid-cols-1 my-4 xl:gap-4">
+            <div id="default-tab-content">
+                {% include 'settings/partials/tab_content.html' %}
             </div>
         </div>
+
+        
     </div>
 </div>
 {% endblock content %}
