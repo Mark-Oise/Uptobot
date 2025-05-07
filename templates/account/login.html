@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% load socialaccount %}
 {% block content %}
-<section class="">
-    <div id="login" class="max-w-screen-xl px-4 py-8 mx-auto lg:grid lg:gap-20 lg:py-16 lg:grid-cols-12">
+<section class="h-screen flex">
+    <div id="login" class="max-w-screen-xl justify-center items-center px-4 py-8 mx-auto lg:grid lg:gap-20 lg:py-16 lg:grid-cols-12">
         <div id="features" class="flex-col justify-between hidden col-span-6 lg:flex xl:mb-0">
             <div>
                 <a href="{% url 'landing:index' %}"
@@ -155,4 +155,8 @@
         </div>
     </div>
 </section>
+
+
+
 {% endblock content %}
+
