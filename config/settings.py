@@ -33,8 +33,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'uptobot.xyz',
-    '16.171.26.87',
-    'watchtower-ydwj.onrender.com',
+    '141.147.68.132',
     'localhost',  # For local development
     '127.0.0.1'  # For local development
 ]
