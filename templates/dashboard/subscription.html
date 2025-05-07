@@ -1,14 +1,13 @@
 {% extends 'dashboard/base.html' %}
 {% block content %}
-<div id="subscription-container">
-    <div class="px-6 pt-4 pb-8" id="subscription-listing">
-        <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
+
+    <div class="px-6 mt-6 pb-8" id="subscription-listing">  
             <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-12">
-                <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Pricing Plans</h2>
-                <p class="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">Choose the perfect plan for your
+                <h2 class="text-3xl font-bold dark:text-gray-200">Pricing Plans</h2>
+                <p class="text-gray-600 mt-2 text-md dark:text-gray-100">Choose the perfect plan for your
                     monitoring needs. All plans include our core uptime monitoring features.</p>
             </div>
-            <div class="grid gap-8 mb-8 xl:grid-cols-3">
+            <div class="grid gap-4 mb-8 xl:grid-cols-3">
                 <!-- Pricing Card -->
                 <div
                     class="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-200 shadow-sm dark:border-gray-700 xl:p-8 dark:text-white dark:bg-gray-800">
@@ -503,7 +502,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+      
     </div>
-</div>
+
 {% endblock content %}
