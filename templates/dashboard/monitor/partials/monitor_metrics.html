@@ -86,7 +86,7 @@
                 <div id="response-time-metric">
                     {% with avg_time=monitor.get_average_response_time %}
                     {% if avg_time is not None %}
-                    <span class="text-2xl font-bold text-gray-900 dark:text-white">{{ avg_time|floatformat:0 }}ms</span>
+                    <span class="text-2xl font-bold text-gray-900 dark:text-white">{{ avg_time|floatformat:0 }} ms</span>
                     {% elif monitor.has_failed_checks %}
                     <span class="text-2xl font-bold text-gray-500 dark:text-gray-400">N/A</span>
                     {% else %}
