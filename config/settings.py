@@ -33,6 +33,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'uptobot.xyz',
+    'www.uptobot.xyz',
     '141.147.68.132',
     'localhost',  # For local development
     '127.0.0.1'  # For local development
