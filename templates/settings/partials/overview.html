@@ -1,82 +1,93 @@
-<div class="mb-4" id="overview" role="tabpanel">
-    <div id="profile-overview"
-        class="p-6 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700">
-        <h3 class="text-xl font-bold mb-1 dark:text-white">Profile Overview</h3>
-        <p class="text-gray-600 dark:text-gray-400 mb-4">Your personal information and
-            subscription summary.</p>
+<div id="overview" role="tabpanel" aria-labelledby="overview-tab"
+    class="p-6 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700">
+    <h3 class="text-xl font-bold mb-1 dark:text-white">Profile Overview</h3>
+    <p class="text-gray-600 dark:text-gray-400 mb-6">Your personal information and
+        subscription summary.</p>
 
-        <div class="flex items-start gap-5">
-            <div class="items-center sm:flex xl:block 2xl:flex sm:space-x-4 xl:space-x-0 2xl:space-x-4">
-                <img class="mb-4 rounded-lg w-28 h-28 sm:mb-0 xl:mb-4 2xl:mb-0"
-                    src="https://flowbite-admin-dashboard.vercel.app/images/users/bonnie-green-2x.png"
-                    alt="Jese picture">
-                <div>
-                    <div class="flex items-center space-x-4">
-                        <button
-                            class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700 dark:text-white">
-                            Edit Profile
-                        </button>
-
-
-                    </div>
-                </div>
-            </div>
-            <div class="flex-grow">
-                <h4 class="text-lg font-bold dark:text-white">{{ user.name }}</h4>
-                <p class="text-gray-600 dark:text-gray-400">Premium Member</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-                    <div>
-                        <p class="text-gray-500 text-sm mb-1">Email</p>
-                        <p class="text-gray-900 dark:text-white">
-                            {{ user.email }}</p>
-                    </div>
-                    <div>
-                        <p class="text-gray-500 text-sm mb-1">Phone</p>
-                        <p class="text-gray-900 dark:text-white">
-                            {{ user.name }}</p>
-                    </div>
-                </div>
-
-            </div>
+    <div class="flex items-start gap-5">
+        <div class="flex-shrink-0 flex flex-col items-start md:mb-0">
+            <img class="rounded-lg w-28 h-28 mb-4"
+                src="https://flowbite-admin-dashboard.vercel.app/images/users/bonnie-green-2x.png"
+                alt="Profile picture">
+            <button
+                class="w-28 px-4 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700 dark:text-white flex justify-center">
+               
+                Edit Profile
+            </button>
         </div>
+        <div class="flex-grow">
+            <h4 class="text-lg font-bold dark:text-white">{{ user.name }}</h4>
+            <p class="text-gray-600 dark:text-gray-400">Premium Member</p>
 
-        <hr class="my-6 border-gray-200 dark:border-gray-700">
-
-        <h3 class="text-xl font-bold mb-4 dark:text-white">Current Subscription</h3>
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-            <div class="flex justify-between items-center mb-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                 <div>
-                    <h4 class="text-lg font-semibold dark:text-white">{{ subscription.plan.name }} {{ subscription.plan.price }}
-                    </h4>
-                    <p class="text-gray-600 dark:text-gray-400">Billed annually</p>
-                </div>
-                <span
-                    class="bg-black text-white text-xs font-medium px-3 py-1 rounded-full dark:bg-gray-700">Active</span>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div>
-                    <h5 class="font-medium dark:text-white">Lead Generatio</h5>
-                    <p class="text-gray-600 dark:text-gray-400">Unlimited leads</p>
+                    <p class="text-gray-500 text-sm mb-1">Email</p>
+                    <p class="text-gray-900 dark:text-white">
+                        {{ user.email }}</p>
                 </div>
                 <div>
-                    <h5 class="font-medium dark:text-white">Analytics</h5>
-                    <p class="text-gray-600 dark:text-gray-400">Advanced insights</p>
-                </div>
-                <div>
-                    <h5 class="font-medium dark:text-white">Support</h5>
-                    <p class="text-gray-600 dark:text-gray-400">Priority support</p>
+                    <p class="text-gray-500 text-sm mb-1">Phone</p>
+                    <p class="text-gray-900 dark:text-white">
+                        {{ user.email }}</p>
                 </div>
             </div>
 
-            <div>
-                <button
-                    class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700 dark:text-white">
-                    Manage Subscription
-                </button>
-            </div>
         </div>
     </div>
 
+    <hr class="my-6 border-gray-200 dark:border-gray-700">
+
+    <h3 class="text-xl font-bold mb-4 dark:text-white">Current Subscription</h3>
+    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <h4 class="text-lg font-semibold dark:text-white">{{ subscription.plan.name }} Plan</h4>
+                <p class="text-gray-600 dark:text-gray-400">Billed annually</p>
+            </div>
+            {% if subscription.active %}
+            <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
+                Active
+            </span>
+            {% else %}
+            <span class="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+                <span class="w-2 h-2 me-1 bg-red-500 rounded-full"></span>
+                Inactive
+            </span>
+            {% endif %}
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div>
+                <h5 class="font-medium dark:text-white">Monitors</h5>
+                <p class="text-gray-600 dark:text-gray-400">Up to {{ subscription.plan.max_monitors }} monitors</p>
+            </div>
+            <div>
+                <h5 class="font-medium dark:text-white">Check Interval</h5>
+                <p class="text-gray-600 dark:text-gray-400">Every
+                    {{subscription.plan.check_interval }} minute</p>
+            </div>
+            <div>
+                <h5 class="font-medium dark:text-white">Notification Channels</h5>
+                <p class="text-gray-600 dark:text-gray-400">
+                    {% with channels=subscription.plan.get_allowed_channels %}
+                    {% if channels %}
+                    {% for channel in channels %}
+                    {{ channel.notification_channel }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    Basic notifications
+                    {% endif %}
+                    {% endwith %}
+                </p>
+            </div>
+        </div>
+
+        <div>
+            <button
+                class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700 dark:text-white">
+                Manage Subscription
+            </button>
+        </div>
+    </div>
 </div>
