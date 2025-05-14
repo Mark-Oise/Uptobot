@@ -32,6 +32,9 @@ class UserAlertSettingsForm(forms.ModelForm):
         }
 
 
+        
+
+
 class CustomChangePasswordForm(ChangePasswordForm):
     old_password = forms.CharField(
         label="Current Password",

@@ -6,11 +6,11 @@
 
     <div class="flex items-start gap-5">
         <div class="flex-shrink-0 flex flex-col items-start md:mb-0">
+
             <img class="rounded-lg w-28 h-28 mb-4"
                 src="https://flowbite-admin-dashboard.vercel.app/images/users/bonnie-green-2x.png"
                 alt="Profile picture">
-            <button 
-                onclick="document.getElementById('account-tab').click()"
+            <button onclick="document.getElementById('account-tab').click()"
                 class="w-28 px-4 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700 dark:text-white flex justify-center">
                 Edit Profile
             </button>
@@ -45,12 +45,14 @@
                 <p class="text-gray-600 dark:text-gray-400">Billed annually</p>
             </div>
             {% if subscription.active %}
-            <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+            <span
+                class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
                 <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
                 Active
             </span>
             {% else %}
-            <span class="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+            <span
+                class="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
                 <span class="w-2 h-2 me-1 bg-red-500 rounded-full"></span>
                 Inactive
             </span>

@@ -7,18 +7,20 @@ from .models import AlertDelivery, BatchedAlert
 from datetime import timedelta
 from django.db.models import Count
 from collections import defaultdict
+import requests
 
 @shared_task(
     bind=True,
     max_retries=3,
     default_retry_delay=300  # 5 minutes
 )
-def send_alert_email(self, delivery_id):
-    """Task to send alert emails with retry mechanism"""
+def send_notification(self, delivery_id):
+    """Task to send notifications through enabled channels"""
     try:
         delivery = AlertDelivery.objects.select_related(
             'alert', 
-            'alert__monitor'
+            'alert__monitor',
+            'notification_channel'
         ).get(id=delivery_id)
         
         if delivery.status == 'sent':
@@ -26,77 +28,74 @@ def send_alert_email(self, delivery_id):
 
         alert = delivery.alert
         monitor = alert.monitor
+        channel = delivery.notification_channel
 
-        # Prepare email content with improved readability
-        subject = f"[{alert.get_severity_display()}] {alert.get_alert_type_display()}: {monitor.name}"
-        
-        # Use direct URL construction instead of reverse to avoid NoReverseMatch errors
+        # Prepare basic message content
+        message = f"[{alert.get_severity_display()}] {monitor.name}: {alert.message}"
         monitor_url = f"{settings.BASE_URL}/monitors/{monitor.slug}/"
-        
-        # Create context for HTML template
-        context = {
-            'monitor_name': monitor.name,
-            'monitor_url': monitor.url,
-            'alert_type': alert.get_alert_type_display(),
-            'alert_severity': alert.get_severity_display(),
-            'alert_time': alert.created_at.strftime('%B %d, %Y at %H:%M UTC'),
-            'alert_message': alert.message,
-            'monitor_details_url': monitor_url,
-            'response_code': getattr(alert, 'response_code', 'N/A'),
-            'response_time': getattr(alert, 'response_time', 'N/A'),
-        }
-        
-        # Render HTML email
-        html_message = render_to_string('alerts/incident_email.html', context)
-        
-        # Plain text fallback
-        plain_message = f"""
-MONITOR ALERT: {monitor.name}
---------------------------------------------------
-URL: {monitor.url}
-Status: {alert.get_alert_type_display()}
-Severity: {alert.get_severity_display()}
-Time: {alert.created_at.strftime('%Y-%m-%d %H:%M')}
 
-Message:
-{alert.message}
-
-View Monitor Details: {monitor_url}
-        """
-
-        # Send email with HTML content
-        send_mail(
-            subject=subject,
-            message=plain_message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[delivery.recipient],
-            fail_silently=False,
-            html_message=html_message,
-        )
+        # Send based on channel type
+        if channel.channel == 'email':
+            send_email_alert(delivery, message, monitor_url)
+        elif channel.channel == 'slack':
+            send_slack_alert(delivery, message, monitor_url)
+        elif channel.channel == 'discord':
+            send_discord_alert(delivery, message, monitor_url)
 
         # Update delivery status
         delivery.status = 'sent'
         delivery.sent_at = timezone.now()
         delivery.save()
 
-        return f"Alert email sent successfully to {delivery.recipient}"
+        return f"Alert sent successfully via {channel.channel}"
 
-    except AlertDelivery.DoesNotExist:
-        return f"Alert delivery {delivery_id} not found"
-    
     except Exception as e:
-        # Update retry count and error message
         delivery.retry_count += 1
         delivery.error_message = str(e)
         delivery.save()
         
-        # Retry with exponential backoff if under max retries
         if delivery.retry_count <= 3:
-            raise self.retry(exc=e, countdown=300 * (2 ** (delivery.retry_count - 1)))
+            raise self.retry(exc=e)
         else:
             delivery.status = 'failed'
             delivery.save()
             return f"Failed to send alert after {delivery.retry_count} retries: {str(e)}"
+
+def send_email_alert(delivery, message, monitor_url):
+    """Helper function to send email alerts"""
+    subject = f"Monitor Alert: {delivery.alert.monitor.name}"
+    send_mail(
+        subject=subject,
+        message=f"{message}\n\nView Details: {monitor_url}",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[delivery.recipient],
+        fail_silently=False,
+    )
+
+def send_slack_alert(delivery, message, monitor_url):
+    """Helper function to send Slack alerts"""
+    webhook_url = delivery.notification_channel.webhook_url
+    if not webhook_url:
+        raise ValueError("Slack webhook URL not configured")
+
+    payload = {
+        "text": f"{message}\nView Details: {monitor_url}",
+    }
+    response = requests.post(webhook_url, json=payload)
+    response.raise_for_status()
+
+
+def send_discord_alert(delivery, message, monitor_url):
+    """Helper function to send Discord alerts"""
+    webhook_url = delivery.notification_channel.webhook_url
+    if not webhook_url:
+        raise ValueError("Discord webhook URL not configured")
+
+    payload = {
+        "content": f"{message}\nView Details: {monitor_url}",
+    }
+    response = requests.post(webhook_url, json=payload)
+    response.raise_for_status()
 
 
 @shared_task
