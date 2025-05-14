@@ -34,7 +34,7 @@
                     <div>
                         <p class="text-gray-500 text-sm mb-1">Phone</p>
                         <p class="text-gray-900 dark:text-white">
-                            {{ realtor.phone|default:'N/A' }}</p>
+                            {{ user.name }}</p>
                     </div>
                 </div>
 
@@ -47,7 +47,8 @@
         <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
             <div class="flex justify-between items-center mb-4">
                 <div>
-                    <h4 class="text-lg font-semibold dark:text-white">Premium Plan</h4>
+                    <h4 class="text-lg font-semibold dark:text-white">{{ subscription.plan.name }} {{ subscription.plan.price }}
+                    </h4>
                     <p class="text-gray-600 dark:text-gray-400">Billed annually</p>
                 </div>
                 <span
@@ -56,7 +57,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div>
-                    <h5 class="font-medium dark:text-white">Lead Generation</h5>
+                    <h5 class="font-medium dark:text-white">Lead Generatio</h5>
                     <p class="text-gray-600 dark:text-gray-400">Unlimited leads</p>
                 </div>
                 <div>
