@@ -2,12 +2,11 @@ from celery import shared_task
 from django.core.mail import send_mail
 from django.conf import settings
 from django.utils import timezone
-from django.template.loader import render_to_string
-from .models import AlertDelivery, BatchedAlert
-from datetime import timedelta
-from django.db.models import Count
-from collections import defaultdict
+from .models import AlertDelivery
 import requests
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
+
 
 @shared_task(
     bind=True,
@@ -30,19 +29,17 @@ def send_notification(self, delivery_id):
         monitor = alert.monitor
         channel = delivery.notification_channel
 
-        # Prepare basic message content
-        message = f"[{alert.get_severity_display()}] {monitor.name}: {alert.message}"
-        monitor_url = f"{settings.BASE_URL}/monitors/{monitor.slug}/"
+        # Simple message format for all channels
+        message = f"[{alert.get_severity_display()}] {monitor.name}: {alert.message}\n\nView Details: {settings.BASE_URL}/monitors/{monitor.slug}/"
 
         # Send based on channel type
         if channel.channel == 'email':
-            send_email_alert(delivery, message, monitor_url)
+            send_email_alert(delivery, message)
         elif channel.channel == 'slack':
-            send_slack_alert(delivery, message, monitor_url)
+            send_slack_alert(delivery, message)
         elif channel.channel == 'discord':
-            send_discord_alert(delivery, message, monitor_url)
+            send_discord_alert(delivery, message)
 
-        # Update delivery status
         delivery.status = 'sent'
         delivery.sent_at = timezone.now()
         delivery.save()
@@ -61,120 +58,50 @@ def send_notification(self, delivery_id):
             delivery.save()
             return f"Failed to send alert after {delivery.retry_count} retries: {str(e)}"
 
-def send_email_alert(delivery, message, monitor_url):
-    """Helper function to send email alerts"""
+
+
+def send_email_alert(delivery, message):
+    """Send simple email alert"""
     subject = f"Monitor Alert: {delivery.alert.monitor.name}"
     send_mail(
         subject=subject,
-        message=f"{message}\n\nView Details: {monitor_url}",
+        message=message,
         from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[delivery.recipient],
+        recipient_list=[delivery.notification_channel.user.email],
         fail_silently=False,
     )
 
-def send_slack_alert(delivery, message, monitor_url):
-    """Helper function to send Slack alerts"""
-    webhook_url = delivery.notification_channel.webhook_url
-    if not webhook_url:
-        raise ValueError("Slack webhook URL not configured")
 
-    payload = {
-        "text": f"{message}\nView Details: {monitor_url}",
+
+def send_slack_alert(delivery, message):
+    """Send simple Slack alert"""
+    if not delivery.notification_channel.oauth_token:
+        raise Exception("Slack not properly connected")
+
+    client = WebClient(token=delivery.notification_channel.oauth_token)
+    client.chat_postMessage(
+        channel=delivery.notification_channel.channel_id,
+        text=message
+    )
+
+
+def send_discord_alert(delivery, message):
+    """Send simple Discord alert"""
+    if not delivery.notification_channel.oauth_token:
+        raise Exception("Discord not properly connected")
+
+    headers = {
+        'Authorization': f'Bot {delivery.notification_channel.oauth_token}'
     }
-    response = requests.post(webhook_url, json=payload)
+    payload = {
+        'content': message
+    }
+
+    response = requests.post(
+        f'https://discord.com/api/channels/{delivery.notification_channel.channel_id}/messages',
+        headers=headers,
+        json=payload
+    )
     response.raise_for_status()
 
 
-def send_discord_alert(delivery, message, monitor_url):
-    """Helper function to send Discord alerts"""
-    webhook_url = delivery.notification_channel.webhook_url
-    if not webhook_url:
-        raise ValueError("Discord webhook URL not configured")
-
-    payload = {
-        "content": f"{message}\nView Details: {monitor_url}",
-    }
-    response = requests.post(webhook_url, json=payload)
-    response.raise_for_status()
-
-
-@shared_task
-def process_batched_alerts():
-    """Periodic task to process and send batched alerts with HTML template"""
-    now = timezone.now()
-    
-    # Get all unsent batched alerts
-    batched_alerts = BatchedAlert.objects.filter(
-        sent=False
-    ).select_related('user').prefetch_related('alerts', 'alerts__monitor')
-
-    for batch in batched_alerts:
-        settings = batch.user.useralertsettings
-        
-        # Check if it's time to send based on frequency
-        if settings.alert_frequency == 'daily':
-            if (now - settings.last_alert_sent) < timedelta(days=1):
-                continue
-        elif settings.alert_frequency == 'weekly':
-            if (now - settings.last_alert_sent) < timedelta(weeks=1):
-                continue
-                
-        # Group alerts by monitor and prepare monitor stats
-        monitors_data = {}
-        for alert in batch.alerts.select_related('monitor').order_by('created_at'):
-            monitor = alert.monitor
-            if monitor not in monitors_data:
-                monitors_data[monitor] = {
-                    'name': monitor.name,
-                    'url': monitor.url,
-                    'status': monitor.availability,
-                    'uptime': monitor.get_uptime_percentage(days=7),
-                    'avg_response': monitor.get_average_response_time(days=7),
-                    'incidents': [],
-                    'health_score': monitor.get_health_score(),
-                    'slug': monitor.slug
-                }
-            monitors_data[monitor]['incidents'].append({
-                'severity': alert.get_severity_display(),
-                'timestamp': alert.created_at,
-                'message': alert.message
-            })
-
-        # Prepare context for HTML template
-        context = {
-            'user': batch.user,
-            'monitors': monitors_data.values(),
-            'report_period': f"{(now - timedelta(days=7)).strftime('%B %d')}-{now.strftime('%d, %Y')}",
-            'base_url': settings.BASE_URL
-        }
-        
-        # Render HTML email
-        html_message = render_to_string('alerts/batched_alerts.html', context)
-        
-        # Create plain text version as fallback
-        plain_message = "Monitor Alert Summary\n\n"
-        for monitor_data in monitors_data.values():
-            plain_message += f"\n{monitor_data['name']} ({monitor_data['url']})\n"
-            plain_message += f"Status: {monitor_data['status']}\n"
-            plain_message += f"Uptime: {monitor_data['uptime']}%\n"
-            plain_message += f"Average Response: {monitor_data['avg_response']}ms\n"
-            plain_message += "Incidents:\n"
-            for incident in monitor_data['incidents']:
-                plain_message += f"- [{incident['severity']}] {incident['timestamp'].strftime('%Y-%m-%d %H:%M')}: {incident['message']}\n"
-            plain_message += f"\nView Monitor: {settings.BASE_URL}/monitors/{monitor_data['slug']}/\n"
-
-        # Send digest email
-        send_mail(
-            subject=f"Your {'daily' if settings.alert_frequency == 'daily' else 'weekly'} alert digest is ready!",
-            message=plain_message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[batch.user.email],
-            fail_silently=False,
-            html_message=html_message
-        )
-        
-        # Update batch and settings
-        batch.sent = True
-        batch.save()
-        settings.last_alert_sent = now
-        settings.save()

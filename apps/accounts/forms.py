@@ -1,6 +1,6 @@
 from django import forms
 from allauth.account.forms import ChangePasswordForm
-from .models import User, UserAlertSettings
+from .models import User
 
 class UserAccountUpdateForm(forms.ModelForm):
     email = forms.EmailField()
@@ -16,24 +16,9 @@ class UserAccountUpdateForm(forms.ModelForm):
         return email
 
 
-class UserAlertSettingsForm(forms.ModelForm):
-    class Meta:
-        model = UserAlertSettings
-        fields = [
-            'email_alerts_enabled',
-            'sms_alerts_enabled',
-            'alert_frequency',
-            'silent_hours_start',
-            'silent_hours_end'
-        ]
-        widgets = {
-            'silent_hours_start': forms.TimeInput(attrs={'type': 'time'}),
-            'silent_hours_end': forms.TimeInput(attrs={'type': 'time'}),
-        }
-
-
+class NotificationChannelForm(forms.ModelForm):
+    pass
         
-
 
 class CustomChangePasswordForm(ChangePasswordForm):
     old_password = forms.CharField(

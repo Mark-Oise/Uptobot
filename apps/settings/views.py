@@ -5,15 +5,15 @@ from apps.subscriptions.models import UserSubscription
 from apps.subscriptions.forms import CancellationForm
 from .forms import CustomChangePasswordForm, UserAccountUpdateForm
 from django.contrib.auth import update_session_auth_hash
-# Create your views here.
-
-
-
+from django.conf import settings
+from django.urls import reverse
+import requests
+from apps.accounts.models import UserNotificationChannel
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def settings_view(request):
     if request.method == 'POST':
-
         if 'account_update' in request.POST:
             account_update_form = UserAccountUpdateForm(request.POST, instance=request.user)
             if account_update_form.is_valid():
@@ -66,3 +66,90 @@ def settings_view(request):
         'cancellation_form': CancellationForm(),
     }
     return render(request, 'settings/settings.html', context)
+
+
+
+@login_required
+def slack_oauth_connect(request):
+    """Initiate Slack OAuth flow"""
+    return redirect(
+        f'https://slack.com/oauth/v2/authorize?'
+        f'client_id={settings.SLACK_CLIENT_ID}&'
+        f'scope=chat:write&'  # Minimal scope needed
+        f'redirect_uri={request.build_absolute_uri(reverse("slack_oauth_callback"))}'
+    )
+
+@login_required
+def slack_oauth_callback(request):
+    """Handle Slack OAuth callback"""
+    code = request.GET.get('code')
+    if not code:
+        messages.error(request, 'Slack integration failed')
+        return redirect('settings_notifications')
+
+    response = requests.post('https://slack.com/api/oauth.v2.access', data={
+        'client_id': settings.SLACK_CLIENT_ID,
+        'client_secret': settings.SLACK_CLIENT_SECRET,
+        'code': code
+    })
+    
+    data = response.json()
+    if data.get('ok', False):
+        UserNotificationChannel.objects.update_or_create(
+            user=request.user,
+            channel='slack',
+            defaults={
+                'oauth_token': data['access_token'],
+                'enabled': True
+            }
+        )
+        messages.success(request, 'Slack connected successfully')
+    else:
+        messages.error(request, 'Failed to connect Slack')
+    
+    return redirect('settings_notifications')
+
+
+@login_required
+def discord_oauth_connect(request):
+    """Initiate Discord OAuth flow"""
+    return redirect(
+        f'https://discord.com/api/oauth2/authorize?'
+        f'client_id={settings.DISCORD_CLIENT_ID}&'
+        f'scope=messages.read&'  # Minimal scope needed
+        f'response_type=code&'
+        f'redirect_uri={request.build_absolute_uri(reverse("discord_oauth_callback"))}'
+    )
+
+
+@login_required
+def discord_oauth_callback(request):
+    """Handle Discord OAuth callback"""
+    code = request.GET.get('code')
+    if not code:
+        messages.error(request, 'Discord integration failed')
+        return redirect('settings_notifications')
+
+    response = requests.post('https://discord.com/api/oauth2/token', data={
+        'client_id': settings.DISCORD_CLIENT_ID,
+        'client_secret': settings.DISCORD_CLIENT_SECRET,
+        'grant_type': 'authorization_code',
+        'code': code,
+        'redirect_uri': request.build_absolute_uri(reverse("discord_oauth_callback"))
+    })
+    
+    if response.ok:
+        data = response.json()
+        UserNotificationChannel.objects.update_or_create(
+            user=request.user,
+            channel='discord',
+            defaults={
+                'oauth_token': data['access_token'],
+                'enabled': True
+            }
+        )
+        messages.success(request, 'Discord connected successfully')
+    else:
+        messages.error(request, 'Failed to connect Discord')
+    
+    return redirect('settings_notifications')

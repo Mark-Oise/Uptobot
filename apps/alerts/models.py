@@ -74,17 +74,3 @@ class AlertDelivery(models.Model):
             models.Index(fields=['alert', 'status']),
         ]
 
-
-class BatchedAlert(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
-    alerts = models.ManyToManyField(Alert)
-    created_at = models.DateTimeField(auto_now_add=True)
-    sent = models.BooleanField(default=False)
-    
-    class Meta:
-        indexes = [
-            models.Index(fields=['user', 'sent', 'created_at'])
-        ]

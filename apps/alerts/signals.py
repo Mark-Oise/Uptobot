@@ -5,8 +5,7 @@ from datetime import timedelta
 from apps.monitor.models import Monitor, MonitorLog
 from .models import Alert, AlertDelivery
 from .tasks import send_notification
-from apps.accounts.models import UserAlertSettings
-from apps.alerts.models import BatchedAlert
+
 
 
 @receiver(post_save, sender=MonitorLog)
