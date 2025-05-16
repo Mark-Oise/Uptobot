@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from apps.subscriptions.models import UserSubscription
 from apps.subscriptions.forms import CancellationForm
+from apps.accounts.forms import NotificationChannelForm
 from .forms import CustomChangePasswordForm, UserAccountUpdateForm
 from django.contrib.auth import update_session_auth_hash
 from django.conf import settings
@@ -10,6 +11,7 @@ from django.urls import reverse
 import requests
 from apps.accounts.models import UserNotificationChannel
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 # Create your views here.
 
 def settings_view(request):
@@ -54,16 +56,22 @@ def settings_view(request):
             else:
                 messages.error(request, 'Please correct the errors below.')
 
-        return redirect('settings:settings')
 
     # Get all subscriptions for the user, ordered by start date
     subscriptions = UserSubscription.objects.filter(user=request.user).order_by('-start_date')
     current_subscription = subscriptions.filter(active=True).first()
 
+    # Get notification channels
+    notification_channels = {
+        channel.channel: channel
+        for channel in UserNotificationChannel.objects.filter(user=request.user)
+    }
+
     context = {
         'current_subscription': current_subscription,
         'subscriptions': subscriptions,
         'cancellation_form': CancellationForm(),
+        'notification_channels': notification_channels,
     }
     return render(request, 'settings/settings.html', context)
 

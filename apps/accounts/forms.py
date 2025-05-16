@@ -1,6 +1,6 @@
 from django import forms
 from allauth.account.forms import ChangePasswordForm
-from .models import User
+from .models import User, UserNotificationChannel
 
 class UserAccountUpdateForm(forms.ModelForm):
     email = forms.EmailField()
@@ -17,7 +17,10 @@ class UserAccountUpdateForm(forms.ModelForm):
 
 
 class NotificationChannelForm(forms.ModelForm):
-    pass
+    class Meta:
+        model = UserNotificationChannel
+        fields = ['enabled']
+        
         
 
 class CustomChangePasswordForm(ChangePasswordForm):
