@@ -58,12 +58,17 @@ class AlertDelivery(models.Model):
         on_delete=models.CASCADE,
         related_name='deliveries'
     )
+    notification_channel = models.ForeignKey(
+        'accounts.UserNotificationChannel',
+        on_delete=models.CASCADE,
+        related_name='alert_deliveries'
+    )
     status = models.CharField(
         max_length=10,
         choices=DELIVERY_STATUS,
         default='pending'
     )
-    recipient = models.EmailField()
+    recipient = models.EmailField(null=True, blank=True)
     sent_at = models.DateTimeField(null=True, blank=True)
     error_message = models.TextField(null=True, blank=True)
     retry_count = models.PositiveSmallIntegerField(default=0)

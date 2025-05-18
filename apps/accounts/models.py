@@ -34,6 +34,10 @@ class UserNotificationChannel(models.Model):
     enabled = models.BooleanField(default=True)
     oauth_token = models.CharField(max_length=255, blank=True, null=True)
     channel_id = models.CharField(max_length=100, blank=True, null=True)
+    workspace_name = models.CharField(max_length=255, blank=True, null=True)
+    channel_name = models.CharField(max_length=255, blank=True, null=True)
+    connected_at = models.DateTimeField(auto_now_add=True)
+    workspace_icon = models.URLField(max_length=500, blank=True, null=True)
 
     class Meta:
         unique_together = ('user', 'channel')

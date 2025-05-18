@@ -35,12 +35,14 @@ ALLOWED_HOSTS = [
     'uptobot.xyz',
     'www.uptobot.xyz',
     '141.147.68.132',
+    'e4bf-197-211-59-59.ngrok-free.app',
     'localhost',  # For local development
     '127.0.0.1'  # For local development
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://watchtower-ydwj.onrender.com',
+    'https://e4bf-197-211-59-59.ngrok-free.app',
 ]
 
 ENVIRONMENT = env('ENVIRONMENT', default='development')
@@ -278,3 +280,8 @@ os.environ['SSL_CERT_FILE'] = certifi.where()
 
 
 POLAR_API_KEY = env('POLAR_API_KEY')
+
+# Add these with your other environment variables
+SLACK_CLIENT_ID = env('SLACK_CLIENT_ID')
+SLACK_CLIENT_SECRET = env('SLACK_CLIENT_SECRET')
+  # Optional, can build dynamically in view

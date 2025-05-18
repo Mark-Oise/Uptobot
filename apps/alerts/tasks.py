@@ -81,7 +81,10 @@ def send_slack_alert(delivery, message):
     client = WebClient(token=delivery.notification_channel.oauth_token)
     client.chat_postMessage(
         channel=delivery.notification_channel.channel_id,
-        text=message
+        text=message,
+        unfurl_links=False,
+        unfurl_media=False,
+        parse='mrkdwn'
     )
 
 

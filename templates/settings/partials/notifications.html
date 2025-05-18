@@ -1,3 +1,23 @@
+<script>
+    function toggleContainer(channel, isEnabled) {
+        const container = document.getElementById(`${channel}-button-container`);
+        if (container) {
+            container.classList.toggle('hidden', !isEnabled);
+        }
+    }
+
+    // Set initial state on page load
+    document.addEventListener('DOMContentLoaded', function () {
+        const channels = ['email', 'slack', 'discord'];
+        channels.forEach(channel => {
+            const checkbox = document.querySelector(`input[name="${channel}_notifications_enabled"]`);
+            if (checkbox) {
+                toggleContainer(channel, checkbox.checked);
+            }
+        });
+    });
+</script>
+
 <div class="hidden" id="notifications" role="tabpanel" aria-labelledby="notifications-tab">
     <div class="mb-4">
         <h3 class="text-xl font-semibold dark:text-white">Notification Preferences</h3>
@@ -40,7 +60,7 @@
                         workspace.</p>
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" name="email_notifications_enabled" class="sr-only peer" {% if notification_channels.email and notification_channels.email.enabled %}checked{% endif %} onchange="document.getElementById('email-nofification-container').classList.toggle('hidden', !this.checked)">
+                    <input type="checkbox" name="email_notifications_enabled" class="sr-only peer" {% if notification_channels.email and notification_channels.email.enabled %}checked{% endif %} hx-post="{% url 'settings:toggle_notification' %}" hx-trigger="change" hx-vals='{"channel": "email"}' onchange="toggleContainer('email', this.checked)">
                     <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600">
                     </div>
                 </label>
@@ -49,7 +69,7 @@
 
 
         <!-- Email Notifications Section -->
-        <div id="email-nofification-container" class="hidden">
+        <div id="email-button-container" class="hidden">
             <div class="mt-4">
                 <label class="text-sm font-medium text-gray-900 dark:text-white">Notification Email</label>
                 <p class="text-sm text-gray-500 dark:text-gray-400">Email address where notifications will
@@ -90,7 +110,7 @@
         <div class="flex items-center justify-between mb-4">
             <div>
                 <div class="flex items-center gap-2 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-slack-icon lucide-slack">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-slack-icon lucide-slack text-red-500">
                         <rect width="3" height="8" x="13" y="2" rx="1.5" />
                         <path d="M19 8.5V10h1.5A1.5 1.5 0 1 0 19 8.5" />
                         <rect width="3" height="8" x="8" y="14" rx="1.5" />
@@ -102,9 +122,7 @@
                     </svg>
                     <h4 class="text-lg font-medium text-gray-900 dark:text-white">Slack Integration</h4>
                 </div>
-                <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Connect Uptobot to your Slack
-                    workspace.
-                </p>
+
             </div>
             {% if notification_channels.slack.enabled %}
             <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
@@ -122,20 +140,45 @@
                     <div>
                         <h4 class="text-base font-medium text-gray-900 dark:text-white">Enable Slack Integration
                         </h4>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Connect HabitatHunt with your Slack
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Receive notifications in your Slack
                             workspace.</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" name="slack_notifications_enabled" {% if notification_channels.slack.enabled %}checked{% endif %} class="sr-only peer" onchange="document.getElementById('slack-button-container').classList.toggle('hidden', !this.checked)">
+                        <input type="checkbox" name="slack_notifications_enabled" {% if notification_channels.slack.enabled %}checked{% endif %} class="sr-only peer" hx-post="{% url 'settings:toggle_notification' %}" hx-trigger="change" hx-vals='{"channel": "slack"}' onchange="toggleContainer('slack', this.checked)">
                         <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600">
                         </div>
                     </label>
                 </div>
             </div>
-            <div id="slack-button-container" class="mt-4 hidden">
-                <button type="button" class="text-white w-full text-center bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-[#F7BE38]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center dark:focus:ring-[#F7BE38]/50 me-2 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-slack-icon lucide-slack w-5 h-5 me-2 -ms-1" focusable="false" data-prefix="fab" role="img">
-                        <rect width=" 3" height="8" x="13" y="2" rx="1.5" />
+            <div id="slack-button-container" class="mt-6 hidden">
+                {% if notification_channels.slack and notification_channels.slack.oauth_token %}
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-2">
+                        <img src="{{ notification_channels.slack.workspace_icon|default:'https://flowbite-admin-dashboard.vercel.app/images/users/bonnie-green-2x.png' }}" class="w-10 h-10 rounded-lg" alt="{{ notification_channels.slack.workspace_name }}">
+                        <div class="flex flex-col">
+                            <h2 class="font-medium">{{ notification_channels.slack.workspace_name }}</h2>
+                            <span class="text-gray-500 text-sm">{{ notification_channels.slack.channel_name }}</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center mt-4 bg-gray-100 p-4 rounded-lg">
+                        <span class="text-gray-500">Connected on</span>
+                        <span class="text-gray-900">{{ notification_channels.slack.connected_at|date:"M d, Y" }}</span>
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-2 mt-4">
+                        <a href="{% url 'settings:slack_change_channel' %}" class="text-center w-full md:w-1/2 py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-green-500 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                            Change Channel
+                        </a>
+
+                        <a href="{% url 'settings:slack_disconnect' %}" class="text-center w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                            Disconnect
+                        </a>
+
+                    </div>
+                </div>
+                {% else %}
+                <button type="button" onclick="window.location.href='{% url 'settings:slack_oauth_connect' %}'" class="text-white w-full text-center bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-[#F7BE38]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center dark:focus:ring-[#F7BE38]/50 me-2 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-slack-icon lucide-slack w-5 h-5 me-2 -ms-1">
+                        <rect width="3" height="8" x="13" y="2" rx="1.5" />
                         <path d="M19 8.5V10h1.5A1.5 1.5 0 1 0 19 8.5" />
                         <rect width="3" height="8" x="8" y="14" rx="1.5" />
                         <path d="M5 15.5V14H3.5A1.5 1.5 0 1 0 5 15.5" />
@@ -146,6 +189,7 @@
                     </svg>
                     Connect With Slack
                 </button>
+                {% endif %}
             </div>
         </form>
     </div>
@@ -187,7 +231,7 @@
                             workspace.</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" name="discord_notifications_enabled" {% if notification_channels.discord.enabled %}checked{% endif %} class="sr-only peer" onchange="document.getElementById('discord-button-container').classList.toggle('hidden', !this.checked)">
+                        <input type="checkbox" name="discord_notifications_enabled" {% if notification_channels.discord.enabled %}checked{% endif %} class="sr-only peer" hx-post="{% url 'settings:toggle_notification' %}" hx-trigger="change" hx-vals='{"channel": "discord"}' onchange="toggleContainer('discord', this.checked)">
                         <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600">
                         </div>
                     </label>

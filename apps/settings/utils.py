@@ -7,7 +7,7 @@ from django.contrib import messages
 @login_required
 def toggle_notification(request):
     channel = request.POST.get('channel')
-    enabled = request.POST.get('enabled') == 'true'
+    enabled = request.POST.get(f'{channel}_notifications_enabled') == 'on'
     
     if channel in ['email', 'slack', 'discord']:
         notification_channel, created = UserNotificationChannel.objects.get_or_create(
