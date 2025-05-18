@@ -82,13 +82,11 @@ def settings_view(request):
 @login_required
 def slack_oauth_connect(request):
     """Initiate Slack OAuth flow"""
-    redirect_uri = 'https://e4bf-197-211-59-59.ngrok-free.app/slack/callback/'
-    
     return redirect(
         f'https://slack.com/oauth/v2/authorize?'
         f'client_id={settings.SLACK_CLIENT_ID}&'
         f'scope=chat:write,chat:write.public,incoming-webhook&'
-        f'redirect_uri={redirect_uri}'
+        f'redirect_uri={settings.SLACK_REDIRECT_URI}'
     )
 
 @login_required
@@ -99,14 +97,12 @@ def slack_oauth_callback(request):
         messages.error(request, 'Slack integration failed')
         return redirect('settings:settings')
 
-    redirect_uri = 'https://e4bf-197-211-59-59.ngrok-free.app/slack/callback/'
-
     # Exchange code for access token
     response = requests.post('https://slack.com/api/oauth.v2.access', data={
         'client_id': settings.SLACK_CLIENT_ID,
         'client_secret': settings.SLACK_CLIENT_SECRET,
         'code': code,
-        'redirect_uri': redirect_uri
+        'redirect_uri': settings.SLACK_REDIRECT_URI
     })
     
     data = response.json()
@@ -201,8 +197,6 @@ def slack_change_channel(request):
         messages.error(request, 'No Slack connection found')
         return redirect('settings:settings')
     
-    redirect_uri = 'https://e4bf-197-211-59-59.ngrok-free.app/slack/callback/'
-    
     # Use the same OAuth flow but store a session flag to indicate it's a channel change
     request.session['slack_channel_change'] = True
     
@@ -210,7 +204,7 @@ def slack_change_channel(request):
         f'https://slack.com/oauth/v2/authorize?'
         f'client_id={settings.SLACK_CLIENT_ID}&'
         f'scope=chat:write,chat:write.public,incoming-webhook&'
-        f'redirect_uri={redirect_uri}'
+        f'redirect_uri={settings.SLACK_REDIRECT_URI}'
     )
 
 @login_required

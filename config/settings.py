@@ -284,4 +284,4 @@ POLAR_API_KEY = env('POLAR_API_KEY')
 # Add these with your other environment variables
 SLACK_CLIENT_ID = env('SLACK_CLIENT_ID')
 SLACK_CLIENT_SECRET = env('SLACK_CLIENT_SECRET')
-  # Optional, can build dynamically in view
+SLACK_REDIRECT_URI = env('SLACK_REDIRECT_URI') if ENVIRONMENT == 'production' else 'http://localhost:8000/settings/slack/callback/'
