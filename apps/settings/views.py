@@ -85,7 +85,7 @@ def slack_oauth_connect(request):
     return redirect(
         f'https://slack.com/oauth/v2/authorize?'
         f'client_id={settings.SLACK_CLIENT_ID}&'
-        f'scope=chat:write,chat:write.public,incoming-webhook&'
+        f'scope=chat:write,chat:write.public,incoming-webhook,team:read&'
         f'redirect_uri={settings.SLACK_REDIRECT_URI}'
     )
 
@@ -125,7 +125,7 @@ def slack_oauth_callback(request):
                 'channel_id': incoming_webhook.get('channel_id'),
                 'workspace_name': team.get('name'),
                 'channel_name': incoming_webhook.get('channel'),
-                'workspace_icon': team.get('icon', {}).get('image_132'),
+                'workspace_icon': team.get('icon', {}).get('image_132') or team.get('image_132') or None,
                 'enabled': True
             }
         )

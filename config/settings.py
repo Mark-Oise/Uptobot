@@ -35,14 +35,14 @@ ALLOWED_HOSTS = [
     'uptobot.xyz',
     'www.uptobot.xyz',
     '141.147.68.132',
-    'e4bf-197-211-59-59.ngrok-free.app',
+    '8712-197-211-59-59.ngrok-free.app',
     'localhost',  # For local development
     '127.0.0.1'  # For local development
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://watchtower-ydwj.onrender.com',
-    'https://e4bf-197-211-59-59.ngrok-free.app',
+    'https://8712-197-211-59-59.ngrok-free.app',
 ]
 
 ENVIRONMENT = env('ENVIRONMENT', default='development')
