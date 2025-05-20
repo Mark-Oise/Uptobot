@@ -64,9 +64,12 @@ def settings_view(request):
     subscriptions = UserSubscription.objects.filter(user=request.user).order_by('-start_date')
     current_subscription = subscriptions.filter(active=True).first()
 
-    # Get notification channels
+    # Get notification channels and parse JSON details
     notification_channels = {
-        channel.channel: channel
+        channel.channel: {
+            **channel.__dict__,
+            'details': json.loads(channel.details) if channel.details else {}
+        }
         for channel in UserNotificationChannel.objects.filter(user=request.user)
     }
 
@@ -139,6 +142,54 @@ def slack_oauth_callback(request):
         messages.error(request, f'Failed to connect Slack: {data.get("error", "Unknown error")}')
     
     return redirect('settings:settings')
+
+
+
+@login_required
+def slack_change_channel(request):
+    """Initiate Slack OAuth flow for channel change"""
+    # Get existing slack connection
+    slack_connection = UserNotificationChannel.objects.filter(
+        user=request.user,
+        channel='slack'
+    ).first()
+    
+    if not slack_connection:
+        messages.error(request, 'No Slack connection found')
+        return redirect('settings:settings')
+    
+    # Use the same OAuth flow but store a session flag to indicate it's a channel change
+    request.session['slack_channel_change'] = True
+    
+    return redirect(
+        f'https://slack.com/oauth/v2/authorize?'
+        f'client_id={settings.SLACK_CLIENT_ID}&'
+        f'scope=chat:write,chat:write.public,incoming-webhook&'
+        f'redirect_uri={settings.SLACK_REDIRECT_URI}'
+    )
+
+@login_required
+def slack_disconnect(request):
+    """Disconnect Slack integration"""
+    try:
+        slack_connection = UserNotificationChannel.objects.get(
+            user=request.user,
+            channel='slack'
+        )
+        # Instead of deleting, clear Slack-specific fields and disable
+        slack_connection.oauth_token = None
+        slack_connection.channel_id = None
+        slack_connection.workspace_name = None
+        slack_connection.channel_name = None
+        slack_connection.workspace_icon = None
+        slack_connection.save()
+        
+        messages.success(request, 'Slack disconnected successfully')
+    except UserNotificationChannel.DoesNotExist:
+        messages.error(request, 'No Slack connection found')
+    
+    return redirect('settings:settings')
+
 
 
 @login_required
@@ -265,47 +316,3 @@ def discord_oauth_callback(request):
     messages.success(request, "Successfully connected to Discord!")
     return redirect('settings:settings')
 
-@login_required
-def slack_change_channel(request):
-    """Initiate Slack OAuth flow for channel change"""
-    # Get existing slack connection
-    slack_connection = UserNotificationChannel.objects.filter(
-        user=request.user,
-        channel='slack'
-    ).first()
-    
-    if not slack_connection:
-        messages.error(request, 'No Slack connection found')
-        return redirect('settings:settings')
-    
-    # Use the same OAuth flow but store a session flag to indicate it's a channel change
-    request.session['slack_channel_change'] = True
-    
-    return redirect(
-        f'https://slack.com/oauth/v2/authorize?'
-        f'client_id={settings.SLACK_CLIENT_ID}&'
-        f'scope=chat:write,chat:write.public,incoming-webhook&'
-        f'redirect_uri={settings.SLACK_REDIRECT_URI}'
-    )
-
-@login_required
-def slack_disconnect(request):
-    """Disconnect Slack integration"""
-    try:
-        slack_connection = UserNotificationChannel.objects.get(
-            user=request.user,
-            channel='slack'
-        )
-        # Instead of deleting, clear Slack-specific fields and disable
-        slack_connection.oauth_token = None
-        slack_connection.channel_id = None
-        slack_connection.workspace_name = None
-        slack_connection.channel_name = None
-        slack_connection.workspace_icon = None
-        slack_connection.save()
-        
-        messages.success(request, 'Slack disconnected successfully')
-    except UserNotificationChannel.DoesNotExist:
-        messages.error(request, 'No Slack connection found')
-    
-    return redirect('settings:settings')
