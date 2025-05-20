@@ -89,19 +89,32 @@ def send_slack_alert(delivery, message):
 
 
 def send_discord_alert(delivery, message):
-    """Send simple Discord alert"""
+    """Send Discord alert with webhook"""
     if not delivery.notification_channel.oauth_token:
         raise Exception("Discord not properly connected")
 
+    # For Discord, we'll use the bot token to send messages directly to a channel
     headers = {
-        'Authorization': f'Bot {delivery.notification_channel.oauth_token}'
+        'Authorization': f'Bot {delivery.notification_channel.oauth_token}',
+        'Content-Type': 'application/json'
     }
+    
+    # Create a rich embed for better formatting
     payload = {
-        'content': message
+        'content': '',
+        'embeds': [{
+            'title': 'Alert Notification',
+            'description': message,
+            'color': 16711680 if 'critical' in message.lower() else 5814783,  # Red for critical, blue for others
+            'footer': {
+                'text': 'Sent by Uptobot'
+            },
+            'timestamp': timezone.now().isoformat()
+        }]
     }
 
     response = requests.post(
-        f'https://discord.com/api/channels/{delivery.notification_channel.channel_id}/messages',
+        f'https://discord.com/api/v10/channels/{delivery.notification_channel.channel_id}/messages',
         headers=headers,
         json=payload
     )

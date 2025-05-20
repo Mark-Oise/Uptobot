@@ -35,14 +35,14 @@ ALLOWED_HOSTS = [
     'uptobot.xyz',
     'www.uptobot.xyz',
     '141.147.68.132',
-    '8712-197-211-59-59.ngrok-free.app',
+    'eb69-197-211-59-59.ngrok-free.app',
     'localhost',  # For local development
     '127.0.0.1'  # For local development
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://watchtower-ydwj.onrender.com',
-    'https://8712-197-211-59-59.ngrok-free.app',
+    'https://eb69-197-211-59-59.ngrok-free.app',
 ]
 
 ENVIRONMENT = env('ENVIRONMENT', default='development')
@@ -285,3 +285,9 @@ POLAR_API_KEY = env('POLAR_API_KEY')
 SLACK_CLIENT_ID = env('SLACK_CLIENT_ID')
 SLACK_CLIENT_SECRET = env('SLACK_CLIENT_SECRET')
 SLACK_REDIRECT_URI = env('SLACK_REDIRECT_URI')
+
+
+DISCORD_CLIENT_ID = env('DISCORD_CLIENT_ID')
+DISCORD_CLIENT_SECRET = env('DISCORD_CLIENT_SECRET')
+DISCORD_BOT_TOKEN = env('DISCORD_BOT_TOKEN')
+DISCORD_REDIRECT_URI = env('DISCORD_REDIRECT_URI')

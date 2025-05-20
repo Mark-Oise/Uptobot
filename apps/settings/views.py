@@ -12,6 +12,7 @@ import requests
 from apps.accounts.models import UserNotificationChannel
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+import json
 # Create your views here.
 
 
@@ -142,47 +143,127 @@ def slack_oauth_callback(request):
 
 @login_required
 def discord_oauth_connect(request):
-    """Initiate Discord OAuth flow"""
-    return redirect(
-        f'https://discord.com/api/oauth2/authorize?'
-        f'client_id={settings.DISCORD_CLIENT_ID}&'
-        f'scope=messages.read&'  # Minimal scope needed
-        f'response_type=code&'
-        f'redirect_uri={request.build_absolute_uri(reverse("discord_oauth_callback"))}'
+    """Redirect user to Discord OAuth authorization page"""
+    
+    # Create Discord OAuth URL using the predefined redirect URI
+    oauth_url = (
+        f"https://discord.com/api/oauth2/authorize"
+        f"?client_id={settings.DISCORD_CLIENT_ID}"
+        f"&redirect_uri={settings.DISCORD_REDIRECT_URI}"
+        f"&response_type=code"
+        f"&scope=identify%20bot%20applications.commands"
+        f"&permissions=2147483648"  # Permissions integer for your bot
     )
-
+    
+    return redirect(oauth_url)
 
 @login_required
 def discord_oauth_callback(request):
     """Handle Discord OAuth callback"""
     code = request.GET.get('code')
     if not code:
-        messages.error(request, 'Discord integration failed')
-        return redirect('settings_notifications')
-
-    response = requests.post('https://discord.com/api/oauth2/token', data={
+        messages.error(request, "Failed to connect to Discord")
+        return redirect('settings:index')
+    
+    # Exchange the code for an access token using the predefined redirect URI
+    data = {
         'client_id': settings.DISCORD_CLIENT_ID,
         'client_secret': settings.DISCORD_CLIENT_SECRET,
         'grant_type': 'authorization_code',
         'code': code,
-        'redirect_uri': request.build_absolute_uri(reverse("discord_oauth_callback"))
-    })
+        'redirect_uri': settings.DISCORD_REDIRECT_URI,
+        'scope': 'identify bot applications.commands',
+    }
     
-    if response.ok:
-        data = response.json()
-        UserNotificationChannel.objects.update_or_create(
-            user=request.user,
-            channel='discord',
-            defaults={
-                'oauth_token': data['access_token'],
-                'enabled': True
-            }
-        )
-        messages.success(request, 'Discord connected successfully')
-    else:
-        messages.error(request, 'Failed to connect Discord')
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
     
-    return redirect('settings_notifications')
+    # Get token
+    response = requests.post('https://discord.com/api/oauth2/token', data=data, headers=headers)
+    if response.status_code != 200:
+        messages.error(request, "Failed to obtain Discord authorization")
+        return redirect('settings:settings')
+    
+    token_data = response.json()
+    access_token = token_data['access_token']
+    
+    # Get guild (server) information
+    guild_headers = {
+        'Authorization': f"Bot {settings.DISCORD_BOT_TOKEN}"
+    }
+    
+    # Get guild ID from the URL parameters (the user selected a guild)
+    guild_id = request.GET.get('guild_id')
+    
+    if not guild_id:
+        messages.error(request, "No Discord server was selected")
+        return redirect('settings:settings')
+    
+    # Get detailed guild info
+    guild_response = requests.get(
+        f'https://discord.com/api/v10/guilds/{guild_id}', 
+        headers=guild_headers
+    )
+    
+    if guild_response.status_code != 200:
+        messages.error(request, "Failed to get Discord server details")
+        return redirect('settings:index')
+    
+    guild_data = guild_response.json()
+    
+    # Get channel info to select a channel for notifications
+    channels_response = requests.get(
+        f'https://discord.com/api/v10/guilds/{guild_id}/channels', 
+        headers=guild_headers
+    )
+    
+    if channels_response.status_code != 200:
+        messages.error(request, "Failed to get Discord channels")
+        return redirect('settings:settings')
+    
+    channels = channels_response.json()
+    text_channels = [c for c in channels if c['type'] == 0]  # 0 = text channel
+    
+    # For simplicity, use the first text channel for notifications
+    channel_id = text_channels[0]['id'] if text_channels else None
+    channel_name = text_channels[0]['name'] if text_channels else None
+    
+    if not channel_id:
+        messages.error(request, "No valid text channel found in the server")
+        return redirect('settings:settings')
+    
+    # Get server member count
+    members_response = requests.get(
+        f'https://discord.com/api/v10/guilds/{guild_id}?with_counts=true', 
+        headers=guild_headers
+    )
+    members_data = members_response.json()
+    member_count = members_data.get('approximate_member_count', 0)
+    
+    # Save the Discord connection info
+    discord_channel, created = UserNotificationChannel.objects.update_or_create(
+        user=request.user, 
+        channel='discord',
+        defaults={
+            'enabled': True,
+            'oauth_token': settings.DISCORD_BOT_TOKEN,  # Store bot token, not user token
+            'channel_id': channel_id,
+            'channel_name': channel_name,
+            'workspace_name': guild_data.get('name'),
+            'workspace_icon': f"https://cdn.discordapp.com/icons/{guild_id}/{guild_data.get('icon')}.png" if guild_data.get('icon') else None,
+            'details': json.dumps({
+                'server_id': guild_id,
+                'region': guild_data.get('region', 'unknown'),
+                'member_count': member_count,
+                'bot_name': 'Uptobot Alerts',  # Your bot name
+                'permissions': ['Send Messages', 'Read Message History', 'Embed Links']
+            })
+        }
+    )
+    
+    messages.success(request, "Successfully connected to Discord!")
+    return redirect('settings:settings')
 
 @login_required
 def slack_change_channel(request):

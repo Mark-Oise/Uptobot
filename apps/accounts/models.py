@@ -38,6 +38,9 @@ class UserNotificationChannel(models.Model):
     channel_name = models.CharField(max_length=255, blank=True, null=True)
     connected_at = models.DateTimeField(auto_now_add=True)
     workspace_icon = models.URLField(max_length=500, blank=True, null=True)
+    
+    # New field to store additional Discord details
+    details = models.JSONField(blank=True, null=True)
 
     class Meta:
         unique_together = ('user', 'channel')
