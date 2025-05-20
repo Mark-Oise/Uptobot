@@ -11,5 +11,7 @@ urlpatterns = [
     path('slack/disconnect/', views.slack_disconnect, name='slack_disconnect'),
     path('discord/connect/', views.discord_oauth_connect, name='discord_oauth_connect'),
     path('discord/callback/', views.discord_oauth_callback, name='discord_oauth_callback'),
+    path('discord/change-channel/', views.discord_change_channel, name='discord_change_channel'),
+    path('discord/disconnect/', views.discord_disconnect, name='discord_disconnect'),
     path('toggle-notification/', utils.toggle_notification, name='toggle_notification'),
 ]

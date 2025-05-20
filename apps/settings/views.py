@@ -316,3 +316,48 @@ def discord_oauth_callback(request):
     messages.success(request, "Successfully connected to Discord!")
     return redirect('settings:settings')
 
+
+@login_required
+def discord_change_channel(request):
+    """Initiate Discord OAuth flow for channel change"""
+    # Get the current Discord connection
+    discord_channel = UserNotificationChannel.objects.filter(
+        user=request.user,
+        channel='discord'
+    ).first()
+
+    if not discord_channel:
+        messages.error(request, "No Discord connection found")
+        return redirect('settings:settings')
+
+    # Get the server ID from the existing connection
+    details = json.loads(discord_channel.details)
+    guild_id = details.get('server_id')
+
+    # Construct OAuth URL with guild_id pre-selected
+    oauth_url = (
+        f'https://discord.com/oauth2/authorize?'
+        f'client_id={settings.DISCORD_CLIENT_ID}&'
+        f'permissions=2048&'  # Permission to send messages
+        f'guild_id={guild_id}&'
+        f'disable_guild_select=true&'
+        f'response_type=code&'
+        f'scope=bot%20applications.commands&'
+        f'redirect_uri={settings.DISCORD_REDIRECT_URI}'
+    )
+    return redirect(oauth_url)
+
+@login_required
+def discord_disconnect(request):
+    """Disconnect Discord integration"""
+    try:
+        channel = UserNotificationChannel.objects.get(
+            user=request.user,
+            channel='discord'
+        )
+        channel.delete()
+        messages.success(request, "Discord has been disconnected successfully")
+    except UserNotificationChannel.DoesNotExist:
+        messages.error(request, "No Discord connection found")
+    
+    return redirect('settings:settings')
