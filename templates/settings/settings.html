@@ -1,53 +1,45 @@
 {% extends 'dashboard/base.html' %}
 {% block content %}
 <div class="px-6 mt-6 pb-8" id="user-settings">
-        <div class="flex flex-col md:flex-row justify-between items-start gap-4 md:items-center">
-            <div>
-                <h1 class="text-3xl font-bold dark:text-gray-200">Your Settings</h1>
-                <p class="text-gray-600 mt-2 text-md dark:text-gray-100">Manage your personal information,
-                    account settings, and lead preferences.
-                </p>
-            </div>
+    <div class="flex flex-col md:flex-row justify-between items-start gap-4 md:items-center">
+        <div>
+            <h1 class="text-3xl font-bold dark:text-gray-200">Your Settings</h1>
+            <p class="text-gray-600 mt-2 text-md dark:text-gray-100">Manage your personal information,
+                account settings, and lead preferences.
+            </p>
         </div>
-        <div class=" flex grid w-full max-w-lg gap-2 mt-4">
-            <ul id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist"
-                class="rounded-lg px-2 flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-                <li class="me-0 sm:me-2 py-2" role="presentation">
-                    <button id="overview-tab" data-tabs-target="#overview" type="button" role="tab" aria-selected="false"
-                        class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg" aria-current="page">Overview
-                    </button>
-                </li>
-                <li class="me-0 sm:me-2 py-2" role="presentation">
-                    <button id="account-tab" data-tabs-target="#account" type="button" role="tab"
-                        aria-controls="account" aria-selected="false"
-                        class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg">
-                        Account
-                    </button>
-                </li>
-                <li class="me-0 sm:me-2 py-2" role="presentation">
-                    <button id="notifications-tab" data-tabs-target="#notifications" type="button" role="tab"
-                        aria-controls="notifications" aria-selected="false"
-                        class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg">
-                        Notifications
-                    </button>
-                </li>
-                <li class="me-0 sm:me-2 py-2" role="presentation">
-                    <button id="subscription-tab" data-tabs-target="#subscription" type="button" role="tab"
-                        aria-controls="subscription" aria-selected="false"
-                        class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg">
-                        Subscription
-                    </button>
-                </li>
+    </div>
+    <div class="flex grid w-full max-w-lg gap-2 mt-4">
+        <ul id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist" class="rounded-lg px-2 flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+            <li class="me-0 sm:me-2 py-2" role="presentation">
+                <button id="overview-tab" data-tabs-target="#overview" type="button" role="tab" aria-selected="false" class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg" aria-current="page">Overview
+                </button>
+            </li>
+            <li class="me-0 sm:me-2 py-2" role="presentation">
+                <button id="account-tab" data-tabs-target="#account" type="button" role="tab" aria-controls="account" aria-selected="false" class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg">
+                    Account
+                </button>
+            </li>
+            <li class="me-0 sm:me-2 py-2" role="presentation">
+                <button id="notifications-tab" data-tabs-target="#notifications" type="button" role="tab" aria-controls="notifications" aria-selected="false" class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg">
+                    Notifications
+                </button>
+            </li>
+            <li class="me-0 sm:me-2 py-2" role="presentation">
+                <button id="subscription-tab" data-tabs-target="#subscription" type="button" role="tab" aria-controls="subscription" aria-selected="false" class="w-full sm:w-auto inline-block px-4 py-3 rounded-lg">
+                    Subscription
+                </button>
+            </li>
 
-            </ul>
+        </ul>
+    </div>
+    <div class="grid grid-cols-1 my-4 xl:gap-4">
+        <div id="default-tab-content">
+            {% include 'settings/partials/overview.html' %}
+            {% include 'settings/partials/account.html' %}
+            {% include 'settings/partials/notifications.html' %}
+            {% include 'settings/partials/subscription.html' %}
         </div>
-        <div class="grid grid-cols-1 my-4 xl:gap-4">
-            <div id="default-tab-content">
-                {% include 'settings/partials/overview.html' %}
-                {% include 'settings/partials/account.html' %}
-                {% include 'settings/partials/notifications.html' %}
-                {% include 'settings/partials/subscription.html' %}
-            </div>
-        </div>
+    </div>
 </div>
 {% endblock content %}

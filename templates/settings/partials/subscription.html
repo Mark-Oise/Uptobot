@@ -1,282 +1,241 @@
-<div class="hidden" id="subscription" role="tabpanel" aria-labelledby="subscription-tab">
-    <div class="mb-4 p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700">
-        <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Subscription Plan</h3>
-        <p class="mb-6 font-normal text-sm text-gray-700 dark:text-gray-400">Manage your
-            subscription and billing information.</p>
+<div class="hidden mb-4 p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700" id="subscription" role="tabpanel" aria-labelledby="subscription-tab">
+    <h3 class="text-xl font-bold mb-1 dark:text-white">
+        Subscription Plan</h3>
+    <p class="mb-6 font-normal text-sm text-gray-700 dark:text-gray-400">Manage your
+        subscription and billing information.</p>
 
-        <!-- Current Plan Section -->
-        <h4 class="text-lg font-semibold mb-4 dark:text-white">Current Plan</h4>
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-8">
-            <div class="flex justify-between items-center mb-4">
-                <div>
-                    <h5 class="text-lg font-semibold dark:text-white">{{ subscription.plan.name }}
-                    </h5>
-                    <p class="text-gray-600 dark:text-gray-400">${{ subscription.plan.price }}/month
-                    </p>
-                </div>
-                {% if subscription.active %}
-        <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
-            <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
-            Active
-        </span>
-        {% else %}
-        <span class="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
-            <span class="w-2 h-2 me-1 bg-red-500 rounded-full"></span>
-            Inactive
-        </span>
-        {% endif %}
+    <!-- Current Plan Section -->
+    <h4 class="text-lg font-semibold mb-4 dark:text-white">Current Plan</h4>
+    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-8">
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <h5 class="text-lg font-semibold dark:text-white">{{ subscription.plan.name }}
+                </h5>
+                <p class="text-gray-600 dark:text-gray-400">${{ subscription.plan.price }}/month
+                </p>
             </div>
-
-            <hr class="my-4 border-gray-200 dark:border-gray-700">
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-2">
-                <div>
-                    <h5 class="font-medium dark:text-white">Monitors</h5>
-                    <p class="text-gray-600 dark:text-gray-400">Up to
-                        {{ subscription.plan.max_monitors }} monitors</p>
-                </div>
-                <div>
-                    <h5 class="font-medium dark:text-white">Check Interval</h5>
-                    <p class="text-gray-600 dark:text-gray-400">Every
-                        {{subscription.plan.check_interval }} minutes</p>
-                </div>
-                <div>
-                    <h5 class="font-medium dark:text-white">Notifications</h5>
-                    <p class="text-gray-600 dark:text-gray-400">
-                        {% with channels=subscription.plan.get_allowed_channels %}
-                        {% if channels %}
-                        {% for channel in channels %}
-                        {{ channel.notification_channel }}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                        {% else %}
-                        Basic notifications
-                        {% endif %}
-                        {% endwith %}
-                    </p>
-                </div>
-                <div>
-                    <h5 class="font-medium dark:text-white">Next Billing Date</h5>
-                    <p class="text-gray-600 dark:text-gray-400">
-                        {% if subscription.active and subscription.end_date %}
-                        {{ subscription.end_date|date:"F j, Y" }}
-                        {% else %}
-                        No active subscription
-                        {% endif %}
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Available Plans Section -->
-        <h4 class="text-lg font-semibold mb-4 dark:text-white">Available Plans</h4>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Starter Plan -->
-            <div
-                class="border {% if subscription.plan.plan_type == 'starter' %}border-2 border-green-500 dark:border-green-600{% else %}border-gray-200 dark:border-gray-700{% endif %} rounded-lg p-6 relative">
-                {% if subscription.plan.plan_type == 'starter' %}
-                <span
-                    class="absolute -top-3 right-4 px-3 py-1 bg-white dark:bg-gray-900 text-sm font-medium text-gray-800 dark:text-white">Current</span>
-                {% endif %}
-                <h5 class="font-semibold dark:text-white">Starter</h5>
-                <div class="flex items-baseline mt-2">
-                    <span class="text-3xl font-bold dark:text-white">$0</span>
-                    <span class="ml-1 text-gray-500 dark:text-gray-400">per month</span>
-                </div>
-                <div class="mt-6 space-y-4">
-                    <div class="flex items-start">
-                        <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="text-gray-800 dark:text-gray-200">2
-                            monitors</span>
-                    </div>
-                    <div class="flex items-start">
-                        <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="text-gray-800 dark:text-gray-200">Email alerts</span>
-                    </div>
-                    <div class="flex items-start">
-                        <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="text-gray-800 dark:text-gray-200">5-minute check interval</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Builder Plan -->
-            <div
-                class="border {% if subscription.plan.plan_type == 'builder' %}border-2 border-green-500 dark:border-green-600{% else %}border-gray-200 dark:border-gray-700{% endif %} rounded-lg p-6 relative">
-                {% if subscription.plan.plan_type == 'builder' %}
-                <span
-                    class="absolute -top-3 right-4 px-3 py-1 bg-white dark:bg-gray-900 text-sm font-medium text-gray-800 dark:text-white">Current</span>
-                {% endif %}
-                <h5 class="font-semibold dark:text-white">Builder Plan</h5>
-                <div class="flex items-baseline mt-2">
-                    <span class="text-3xl font-bold dark:text-white">$9</span>
-                    <span class="ml-1 text-gray-500 dark:text-gray-400">per month</span>
-                </div>
-                <div class="mt-6 space-y-4">
-                    <div class="flex items-start">
-                        <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="text-gray-800 dark:text-gray-200">10 monitors</span>
-                    </div>
-                    <div class="flex items-start">
-                        <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="text-gray-800 dark:text-gray-200">Email + Discord alerts</span>
-                    </div>
-                    <div class="flex items-start">
-                        <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="text-gray-800 dark:text-gray-200">1-minute check interval</span>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Pro Plan -->
-            <div
-                class="border {% if subscription.plan.plan_type == 'pro' %}border-2 border-green-500 dark:border-green-600{% else %}border-gray-200 dark:border-gray-700{% endif %} rounded-lg p-6 relative">
-                {% if subscription.plan.plan_type == 'pro' %}
-                <span
-                    class="absolute -top-3 right-4 px-3 py-1 bg-white dark:bg-gray-900 text-sm font-medium text-gray-800 dark:text-white">Current</span>
-                {% endif %}
-                <h5 class="font-semibold dark:text-white">Pro Plan</h5>
-                <div class="flex items-baseline mt-2">
-                    <span class="text-3xl font-bold dark:text-white">$29</span>
-                    <span class="ml-1 text-gray-500 dark:text-gray-400">per month</span>
-                </div>
-                <div class="mt-6 space-y-4">
-                    <div class="flex items-start">
-                        <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="text-gray-800 dark:text-gray-200">50 monitors</span>
-                    </div>
-                    <div class="flex items-start">
-                        <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="text-gray-800 dark:text-gray-200">Email + Discord + Slack alerts</span>
-                    </div>
-                    <div class="flex items-start">
-                        <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="text-gray-800 dark:text-gray-200">1-minute check interval</span>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Payment Method Section -->
-        <h4 class="text-lg font-semibold mb-4 mt-8 dark:text-white">Payment Method</h4>
-        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 mb-8">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <svg class="w-8 h-8 mr-3 text-gray-800 dark:text-white" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 10h18M6 14h2m3 0h5M3 7v10a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1Z" />
-                    </svg>
-
-                    <div>
-                        <p class="font-medium text-gray-900 dark:text-white">Visa ending in
-                            4242</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Expires 12/2025
-                        </p>
-                    </div>
-                </div>
-                <button type="button"
-                    class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700">
-                    Update
-                </button>
-            </div>
-        </div>
-
-
-        <!-- Billing History Section -->
-        <h4 class="text-lg font-semibold mb-4 dark:text-white">Billing History</h4>
-        <div class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden mb-8">
-            {% if subscriptions %}
-            {% for subscription in subscriptions %}
-            <div
-                class="p-6 flex justify-between items-center {% if not forloop.last %}border-b border-gray-200 dark:border-gray-700{% endif %}">
-                <div>
-                    <p class="font-medium text-gray-900 dark:text-white">{{ subscription.plan.name }}</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ subscription.start_date|date:"F j, Y" }}</p>
-
-                </div>
-                <div class="text-right">
-                    <p class="font-medium text-gray-900 dark:text-white">${{ subscription.plan.price }}</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                        {% if subscription.active %}
-                        Active
-                        {% else %}
-                        {% if subscription.end_date %}
-                        Ended {{ subscription.end_date|date:"F j, Y" }}
-                        {% else %}
-                        Inactive
-                        {% endif %}
-                        {% endif %}
-                    </p>
-                </div>
-            </div>
-            {% endfor %}
+            {% if subscription.active %}
+            <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
+                Active
+            </span>
             {% else %}
-            <div class="p-6 text-center text-gray-500 dark:text-gray-400">
-                No subscription history available
-            </div>
+            <span class="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+                <span class="w-2 h-2 me-1 bg-red-500 rounded-full"></span>
+                Inactive
+            </span>
             {% endif %}
         </div>
 
-        <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row justify-between items-center w-full gap-4">
-            <button type="button" data-modal-target="cancel-subscription-modal"
-                data-modal-toggle="cancel-subscription-modal"
-                class="w-full sm:w-auto py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-green-600 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                Cancel Subscription
-            </button>
-            <button type="button"
-                class="w-full sm:w-auto text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
-                Save Changes
+        <hr class="my-4 border-gray-200 dark:border-gray-700">
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-2">
+            <div>
+                <h5 class="font-medium dark:text-white">Monitors</h5>
+                <p class="text-gray-600 dark:text-gray-400">Up to
+                    {{ subscription.plan.max_monitors }} monitors</p>
+            </div>
+            <div>
+                <h5 class="font-medium dark:text-white">Check Interval</h5>
+                <p class="text-gray-600 dark:text-gray-400">Every
+                    {{subscription.plan.check_interval }} minutes</p>
+            </div>
+            <div>
+                <h5 class="font-medium dark:text-white">Notifications</h5>
+                <p class="text-gray-600 dark:text-gray-400">
+                    {% with channels=subscription.plan.get_allowed_channels %}
+                    {% if channels %}
+                    {% for channel in channels %}
+                    {{ channel.notification_channel }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    Basic notifications
+                    {% endif %}
+                    {% endwith %}
+                </p>
+            </div>
+            <div>
+                <h5 class="font-medium dark:text-white">Next Billing Date</h5>
+                <p class="text-gray-600 dark:text-gray-400">
+                    {% if subscription.active and subscription.end_date %}
+                    {{ subscription.end_date|date:"F j, Y" }}
+                    {% else %}
+                    No active subscription
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Available Plans Section -->
+    <h4 class="text-lg font-semibold mb-4 dark:text-white">Available Plans</h4>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Starter Plan -->
+        <div class="border {% if subscription.plan.plan_type == 'starter' %}border-2 border-green-500 dark:border-green-600{% else %}border-gray-200 dark:border-gray-700{% endif %} rounded-lg p-6 relative">
+            {% if subscription.plan.plan_type == 'starter' %}
+            <span class="absolute -top-3 right-4 px-3 py-1 bg-white dark:bg-gray-900 text-sm font-medium text-gray-800 dark:text-white">Current</span>
+            {% endif %}
+            <h5 class="font-semibold dark:text-white">Starter</h5>
+            <div class="flex items-baseline mt-2">
+                <span class="text-3xl font-bold dark:text-white">$0</span>
+                <span class="ml-1 text-gray-500 dark:text-gray-400">per month</span>
+            </div>
+            <div class="mt-6 space-y-4">
+                <div class="flex items-start">
+                    <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-800 dark:text-gray-200">2
+                        monitors</span>
+                </div>
+                <div class="flex items-start">
+                    <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-800 dark:text-gray-200">Email alerts</span>
+                </div>
+                <div class="flex items-start">
+                    <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-800 dark:text-gray-200">5-minute check interval</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Builder Plan -->
+        <div class="border {% if subscription.plan.plan_type == 'builder' %}border-2 border-green-500 dark:border-green-600{% else %}border-gray-200 dark:border-gray-700{% endif %} rounded-lg p-6 relative">
+            {% if subscription.plan.plan_type == 'builder' %}
+            <span class="absolute -top-3 right-4 px-3 py-1 bg-white dark:bg-gray-900 text-sm font-medium text-gray-800 dark:text-white">Current</span>
+            {% endif %}
+            <h5 class="font-semibold dark:text-white">Builder Plan</h5>
+            <div class="flex items-baseline mt-2">
+                <span class="text-3xl font-bold dark:text-white">$9</span>
+                <span class="ml-1 text-gray-500 dark:text-gray-400">per month</span>
+            </div>
+            <div class="mt-6 space-y-4">
+                <div class="flex items-start">
+                    <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-800 dark:text-gray-200">10 monitors</span>
+                </div>
+                <div class="flex items-start">
+                    <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-800 dark:text-gray-200">Email + Discord alerts</span>
+                </div>
+                <div class="flex items-start">
+                    <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-800 dark:text-gray-200">1-minute check interval</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Pro Plan -->
+        <div class="border {% if subscription.plan.plan_type == 'pro' %}border-2 border-green-500 dark:border-green-600{% else %}border-gray-200 dark:border-gray-700{% endif %} rounded-lg p-6 relative">
+            {% if subscription.plan.plan_type == 'pro' %}
+            <span class="absolute -top-3 right-4 px-3 py-1 bg-white dark:bg-gray-900 text-sm font-medium text-gray-800 dark:text-white">Current</span>
+            {% endif %}
+            <h5 class="font-semibold dark:text-white">Pro Plan</h5>
+            <div class="flex items-baseline mt-2">
+                <span class="text-3xl font-bold dark:text-white">$29</span>
+                <span class="ml-1 text-gray-500 dark:text-gray-400">per month</span>
+            </div>
+            <div class="mt-6 space-y-4">
+                <div class="flex items-start">
+                    <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-800 dark:text-gray-200">50 monitors</span>
+                </div>
+                <div class="flex items-start">
+                    <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-800 dark:text-gray-200">Email + Discord + Slack alerts</span>
+                </div>
+                <div class="flex items-start">
+                    <svg class="w-4 h-4 text-green-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-800 dark:text-gray-200">1-minute check interval</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Method Section -->
+    <h4 class="text-lg font-semibold mb-4 mt-8 dark:text-white">Payment Method</h4>
+    <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 mb-8">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <svg class="w-8 h-8 mr-3 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M6 14h2m3 0h5M3 7v10a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1Z" />
+                </svg>
+
+                <div>
+                    <p class="font-medium text-gray-900 dark:text-white">Visa ending in
+                        4242</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Expires 12/2025
+                    </p>
+                </div>
+            </div>
+            <button type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700">
+                Update
             </button>
         </div>
     </div>
-{% include 'settings/components/cancel_subscription_modal.html' %}
+
+
+    <!-- Billing History Section -->
+    <h4 class="text-lg font-semibold mb-4 dark:text-white">Billing History</h4>
+    <div class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden mb-8">
+        {% if subscriptions %}
+        {% for subscription in subscriptions %}
+        <div class="p-6 flex justify-between items-center {% if not forloop.last %}border-b border-gray-200 dark:border-gray-700{% endif %}">
+            <div>
+                <p class="font-medium text-gray-900 dark:text-white">{{ subscription.plan.name }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ subscription.start_date|date:"F j, Y" }}</p>
+
+            </div>
+            <div class="text-right">
+                <p class="font-medium text-gray-900 dark:text-white">${{ subscription.plan.price }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    {% if subscription.active %}
+                    Active
+                    {% else %}
+                    {% if subscription.end_date %}
+                    Ended {{ subscription.end_date|date:"F j, Y" }}
+                    {% else %}
+                    Inactive
+                    {% endif %}
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="p-6 text-center text-gray-500 dark:text-gray-400">
+            No subscription history available
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row justify-between items-center w-full gap-4">
+        <button type="button" data-modal-target="cancel-subscription-modal" data-modal-toggle="cancel-subscription-modal" class="w-full sm:w-auto py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-green-600 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+            Cancel Subscription
+        </button>
+        <button type="button" class="w-full sm:w-auto text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+            Save Changes
+        </button>
+    </div>
+
+    {% include 'settings/components/cancel_subscription_modal.html' %}
 </div>

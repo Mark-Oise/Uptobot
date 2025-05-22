@@ -1,17 +1,13 @@
-<div id="overview" role="tabpanel" aria-labelledby="overview-tab"
-    class="p-6 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700">
+<div id="overview" role="tabpanel" aria-labelledby="overview-tab" class="p-6 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700">
     <h3 class="text-xl font-bold mb-1 dark:text-white">Profile Overview</h3>
-    <p class="text-gray-600 dark:text-gray-400 mb-6">Your personal information and
+    <p class="mb-6 font-normal text-sm text-gray-700 dark:text-gray-400">Your personal information and
         subscription summary.</p>
 
     <div class="flex items-start gap-5">
         <div class="flex-shrink-0 flex flex-col items-start md:mb-0">
 
-            <img class="rounded-lg w-28 h-28 mb-4"
-                src="https://flowbite-admin-dashboard.vercel.app/images/users/bonnie-green-2x.png"
-                alt="Profile picture">
-            <button onclick="document.getElementById('account-tab').click()"
-                class="w-28 px-4 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700 dark:text-white flex justify-center">
+            <img class="rounded-lg w-28 h-28 mb-4" src="https://flowbite-admin-dashboard.vercel.app/images/users/bonnie-green-2x.png" alt="Profile picture">
+            <button onclick="document.getElementById('account-tab').click()" class="w-28 px-4 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700 dark:text-white flex justify-center">
                 Edit Profile
             </button>
         </div>
@@ -45,14 +41,12 @@
                 <p class="text-gray-600 dark:text-gray-400">Billed annually</p>
             </div>
             {% if subscription.active %}
-            <span
-                class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+            <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
                 <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
                 Active
             </span>
             {% else %}
-            <span
-                class="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+            <span class="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
                 <span class="w-2 h-2 me-1 bg-red-500 rounded-full"></span>
                 Inactive
             </span>
@@ -86,8 +80,7 @@
         </div>
 
         <div>
-            <button onclick="document.getElementById('subscription-tab').click()"
-                class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700 dark:text-white">
+            <button onclick="document.getElementById('subscription-tab').click()" class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700 dark:text-white">
                 Manage Subscription
             </button>
         </div>

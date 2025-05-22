@@ -19,9 +19,6 @@
 </script>
 
 <div class="hidden" id="notifications" role="tabpanel" aria-labelledby="notifications-tab">
-    <div class="mb-4">
-        <h3 class="text-xl font-semibold dark:text-white">Notification Preferences</h3>
-    </div>
     <!-- Email Notifications Section -->
     <div class="mb-8 block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-900 dark:border-gray-700" id="email-notifications">
         <div class="flex items-center justify-between mb-4">
@@ -39,9 +36,6 @@
                     </svg>
                     <h4 class="text-lg font-medium text-gray-900 dark:text-white">Email Notifications</h4>
                 </div>
-                <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Connect Uptobot to your Slack
-                    workspace.
-                </p>
             </div>
             {% if notification_channels.email.enabled %}
             <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
