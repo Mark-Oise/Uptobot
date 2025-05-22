@@ -2,14 +2,10 @@
     <div class="px-4 py-3 lg:px-5 lg:pl-3">
         <div class="flex items-center justify-between">
             <div class="flex items-center rtl:justify-end space-x-4">
-                <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
-                    type="button"
-                    class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                     <span class="sr-only">Open sidebar</span>
-                    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path clip-rule="evenodd" fill-rule="evenodd"
-                            d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
+                    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
                         </path>
                     </svg>
                 </button>
@@ -18,11 +14,8 @@
                     <ol class="inline-flex items-center mb-3 sm:mb-0">
                         <li>
                             <div class="flex items-center">
-                                <a href="{% url 'monitor:monitor_list' %}"
-                                    class="inline-flex items-center px-3 py-2 text-sm font-normal text-center bg-white text-gray-900 hover:bg-white rounded-lg focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white dark:focus:ring-gray-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="lucide lucide-bot me-2">
+                                <a href="{% url 'monitor:monitor_list' %}" class="inline-flex items-center px-3 py-2 text-sm font-normal text-center bg-white text-gray-900 hover:bg-white rounded-lg focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white dark:focus:ring-gray-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bot me-2">
                                         <path d="M12 8V4H8" />
                                         <rect width="16" height="12" x="4" y="8" rx="2" />
                                         <path d="M2 14h2" />
@@ -38,11 +31,8 @@
                         {% if request.resolver_match.url_name == 'monitor_list' %}
                         <li aria-current="page">
                             <div class="flex items-center">
-                                <span
-                                    class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:text-white">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="lucide lucide-globe me-2">
+                                <span class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe me-2">
                                         <circle cx="12" cy="12" r="10" />
                                         <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
                                         <path d="M2 12h20" />
@@ -54,15 +44,11 @@
                         {% elif request.resolver_match.url_name == 'list' %}
                         <li aria-current="page">
                             <div class="flex items-center">
-                                <span
-                                    class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:text-white">
-                                    <svg class="w-6 h-6 me-2 text-gray-800 dark:text-white" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                        viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M16 10.5h.01m-4.01 0h.01M8 10.5h.01M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-6.6a1 1 0 0 0-.69.275l-2.866 2.723A.5.5 0 0 1 8 18.635V17a1 1 0 0 0-1-1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" />
+                                <span class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:text-white">
+                                    <svg class="w-5 h-5 me-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 10.5h.01m-4.01 0h.01M8 10.5h.01M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-6.6a1 1 0 0 0-.69.275l-2.866 2.723A.5.5 0 0 1 8 18.635V17a1 1 0 0 0-1-1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" />
                                     </svg>
+
 
                                     Notifications
                                 </span>
@@ -71,13 +57,9 @@
                         {% elif request.resolver_match.url_name == 'settings' %}
                         <li aria-current="page">
                             <div class="flex items-center">
-                                <span
-                                    class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:text-white">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="lucide lucide-settings me-2">
-                                        <path
-                                            d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                                <span class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings me-2">
+                                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
                                         <circle cx="12" cy="12" r="3" />
                                     </svg>
                                     Settings
@@ -87,11 +69,8 @@
                         {% elif request.resolver_match.url_name == 'monitor_detail' %}
                         <li>
                             <div class="flex items-center">
-                                <a href="{% url 'monitor:monitor_list' %}"
-                                    class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white dark:focus:ring-gray-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="lucide lucide-globe me-2">
+                                <a href="{% url 'monitor:monitor_list' %}" class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white dark:focus:ring-gray-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe me-2">
                                         <circle cx="12" cy="12" r="10" />
                                         <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
                                         <path d="M2 12h20" />
@@ -103,8 +82,7 @@
                         <span class="mx-2 text-gray-400">/</span>
                         <li aria-current="page">
                             <div class="flex items-center">
-                                <span
-                                    class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:text-white">
+                                <span class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:text-white">
                                     <span class="truncate max-w-[200px]">{{ monitor.slug }}</span>
                                 </span>
                             </div>
@@ -113,14 +91,9 @@
                         {% if request.resolver_match.url_name == 'subscription' %}
                         <li aria-current="page">
                             <div class="flex items-center">
-                                <span
-                                    class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:text-white">
-                                    <svg class="w-5 h-5 text-gray-800 dark:text-white me-2" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                        viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="m10.051 8.102-3.778.322-1.994 1.994a.94.94 0 0 0 .533 1.6l2.698.316m8.39 1.617-.322 3.78-1.994 1.994a.94.94 0 0 1-1.595-.533l-.4-2.652m8.166-11.174a1.366 1.366 0 0 0-1.12-1.12c-1.616-.279-4.906-.623-6.38.853-1.671 1.672-5.211 8.015-6.31 10.023a.932.932 0 0 0 .162 1.111l.828.835.833.832a.932.932 0 0 0 1.111.163c2.008-1.102 8.35-4.642 10.021-6.312 1.475-1.478 1.133-4.77.855-6.385Zm-2.961 3.722a1.88 1.88 0 1 1-3.76 0 1.88 1.88 0 0 1 3.76 0Z" />
+                                <span class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:text-white">
+                                    <svg class="w-5 h-5 text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10.051 8.102-3.778.322-1.994 1.994a.94.94 0 0 0 .533 1.6l2.698.316m8.39 1.617-.322 3.78-1.994 1.994a.94.94 0 0 1-1.595-.533l-.4-2.652m8.166-11.174a1.366 1.366 0 0 0-1.12-1.12c-1.616-.279-4.906-.623-6.38.853-1.671 1.672-5.211 8.015-6.31 10.023a.932.932 0 0 0 .162 1.111l.828.835.833.832a.932.932 0 0 0 1.111.163c2.008-1.102 8.35-4.642 10.021-6.312 1.475-1.478 1.133-4.77.855-6.385Zm-2.961 3.722a1.88 1.88 0 1 1-3.76 0 1.88 1.88 0 0 1 3.76 0Z" />
                                     </svg>
 
                                     Subscriptions
@@ -131,14 +104,9 @@
                         {% if request.resolver_match.url_name == 'support' %}
                         <li aria-current="page">
                             <div class="flex items-center">
-                                <span
-                                    class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:text-white">
-                                    <svg class="me-2 w-4 h-4 text-gray-800 dark:text-white" aria-hidden=" true"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                        viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                <span class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-gray-900 rounded-lg bg-white focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-900 dark:text-white">
+                                    <svg class="me-2 w-4 h-4 text-gray-800 dark:text-white" aria-hidden=" true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                     </svg>
 
 
@@ -159,47 +127,32 @@
                         <label for="voice-search" class="sr-only">Search</label>
                         <div class="relative w-full">
                             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                 </svg>
                             </div>
-                            <input hx-get="{% url 'monitor:search_monitors' %}"
-                                hx-trigger="input changed delay:100ms, search" hx-target="#monitor-list-items-container"
-                                name="search" type="search" id="monitor-search-input"
-                                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-400 focus:border-green-500 block w-full ps-10 p-2.5 shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
-                                placeholder="Search monitors..." />
+                            <input hx-get="{% url 'monitor:search_monitors' %}" hx-trigger="input changed delay:100ms, search" hx-target="#monitor-list-items-container" name="search" type="search" id="monitor-search-input" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-400 focus:border-green-500 block w-full ps-10 p-2.5 shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Search monitors..." />
                         </div>
                     </form>
                     <div id="notification-controls" hx-ext="ws" ws-connect="/ws/notifications/">
                         <div class="flex-shrink-0 flex items-center space-x-4">
-                            <button type="button" data-dropdown-toggle="notification-dropdown"
-                                class="relative p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700">
+                            <button type="button" data-dropdown-toggle="notification-dropdown" class="relative p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700">
                                 <span class="sr-only">View notifications</span>
-                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z">
                                     </path>
                                 </svg>
-                                <div id="notification-count"
-                                    class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-gray-200 rounded-full -top-2 -end-2 dark:border-gray-900 {% if not notification_count %}hidden{% endif %}">
+                                <div id="notification-count" class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-gray-200 rounded-full -top-2 -end-2 dark:border-gray-900 {% if not notification_count %}hidden{% endif %}">
                                     {{ notification_count }}
                                 </div>
                             </button>
 
-                            <button type="button"
-                                class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                                aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                            <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                                 <span class="sr-only">Open user menu</span>
                                 {% if user.socialaccount_set.exists %}
-                                <img class="w-8 h-8 rounded-full"
-                                    src="{{ user.socialaccount_set.first.get_avatar_url }}"
-                                    alt="{{ user.username }}'s photo">
+                                <img class="w-8 h-8 rounded-full" src="{{ user.socialaccount_set.first.get_avatar_url }}" alt="{{ user.username }}'s photo">
                                 {% else %}
-                                <div
-                                    class="relative inline-flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-600 rounded-full">
+                                <div class="relative inline-flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-600 rounded-full">
                                     <span class="font-medium text-white">
                                         {{ user.username|make_list|first|upper }}</span>
                                 </div>
@@ -216,8 +169,7 @@
 
 
                 <!-- Dropdown menu -->
-                <div class="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
-                    id="dropdown-user">
+                <div class="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
                     <div class="py-3 px-4">
                         <span class="block text-sm font-semibold text-gray-900 dark:text-white">
                             {{ user.username }}</span>
@@ -226,17 +178,14 @@
                     </div>
                     <ul class="py-1 font-light text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
                         <li>
-                            <a hx-get="{% url 'settings:settings' %}" hx-target="#body" hx-push-url="true"
-                                hx-swap="innerHTML transition:true show:window:top"
-                                class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Account
+                            <a hx-get="{% url 'settings:settings' %}" hx-target="#body" hx-push-url="true" hx-swap="innerHTML transition:true show:window:top" class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Account
                                 settings</a>
                         </li>
                     </ul>
 
                     <ul class="py-1 font-light text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
                         <li>
-                            <a href="{% url 'account_logout' %}"
-                                class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign
+                            <a href="{% url 'account_logout' %}" class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign
                                 out</a>
                         </li>
                     </ul>
