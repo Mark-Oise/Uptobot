@@ -5,6 +5,7 @@ from datetime import timedelta
 from apps.monitor.models import Monitor, MonitorLog
 from .models import Alert, AlertDelivery
 from .tasks import send_notification
+from apps.subscriptions.models import UserSubscription, SubscriptionPlan
 
 
 
@@ -108,8 +109,23 @@ def handle_alert_delivery(sender, instance, created, **kwargs):
     
     user = instance.monitor.user
     
-    # Get all enabled notification channels for the user
-    enabled_channels = user.notification_channels.filter(enabled=True)
+    # Get user's subscription and allowed channels
+    try:
+        subscription = user.subscription
+        if not subscription.is_active:
+            return  # Don't send alerts for inactive subscriptions
+        
+        allowed_channels = subscription.plan.get_allowed_channels()
+    except UserSubscription.DoesNotExist:
+        # User has no subscription, use default plan
+        default_plan = SubscriptionPlan.get_default_plan()
+        allowed_channels = default_plan.get_allowed_channels()
+    
+    # Get enabled notification channels filtered by subscription limits
+    enabled_channels = user.notification_channels.filter(
+        enabled=True,
+        channel__in=allowed_channels  # Only channels allowed by subscription
+    )
     
     for channel in enabled_channels:
         # Create delivery for each enabled channel

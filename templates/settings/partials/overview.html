@@ -69,10 +69,10 @@
                     {% with channels=subscription.plan.get_allowed_channels %}
                     {% if channels %}
                     {% for channel in channels %}
-                    {{ channel.notification_channel }}{% if not forloop.last %}, {% endif %}
+                        {{ channel|title }}{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                     {% else %}
-                    Basic notifications
+                        Basic notifications
                     {% endif %}
                     {% endwith %}
                 </p>
